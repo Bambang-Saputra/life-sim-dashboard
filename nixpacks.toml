@@ -1,0 +1,34 @@
+[phases.setup]
+# Paket PHP, ekstensi yang dibutuhkan Laravel + Node.js untuk Vite
+nixPkgs = [
+    "php82", "php82Extensions.pdo", "php82Extensions.pdo_mysql",
+    "php82Extensions.mbstring", "php82Extensions.bcmath",
+    "php82Extensions.xml", "php82Extensions.tokenizer",
+    "php82Extensions.ctype", "php82Extensions.fileinfo",
+    "php82Extensions.curl", "php82Extensions.zip",
+    "php82Extensions.gd", "composer", "nodejs_20"
+]
+
+[phases.install]
+# Install PHP dependencies tanpa dev packages
+# Install Node dependencies untuk Vite + Tailwind + Alpine
+cmds = [
+    "composer install --no-dev --optimize-autoloader --no-interaction",
+    "npm ci"    # ci lebih cepat dari install di CI/CD, pakai package-lock.json
+]
+
+[phases.build]
+# KUNCI: Build aset Vite (Tailwind + Alpine + Chart.js)
+# Ini menghasilkan file di public/build/ yang di-serve Nginx/PHP
+cmds = [
+    "npm run build",
+    "php artisan config:cache",
+    "php artisan route:cache",
+    "php artisan view:cache",
+    "php artisan event:cache",    # Cache event listeners
+    "php artisan livewire:publish --assets"  # Publish Livewire JS assets
+]
+
+[start]
+# Migrasi + serve. Gunakan --force agar jalan di production mode
+cmd = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"

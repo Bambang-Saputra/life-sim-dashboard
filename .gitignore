@@ -1,0 +1,50 @@
+# ── Dependencies (di-install via composer install & npm install) ──
+/node_modules
+/vendor
+
+# ── Build output (auto-generated, di-build saat deploy) ──
+/public/build
+/public/hot
+/public/storage
+
+# ── Environment & secrets (KRITIS — jangan sampai ke-push) ──
+.env
+.env.backup
+.env.production
+.env.local
+.env.*.local
+
+# ── Laravel framework cache ──
+/storage/*.key
+/storage/pail
+/bootstrap/ssr
+/bootstrap/cache/*.php
+
+# ── IDE / Editor ──
+/.idea
+/.vscode
+/.cursor/
+/.zed
+/.codex
+/.nova
+/.fleet
+/.claude
+/memory
+.phpactor.json
+_ide_helper.php
+_ide_helper_models.php
+
+# ── Logs & test caches ──
+*.log
+.phpunit.cache
+.phpunit.result.cache
+/.phpunit.cache
+
+# ── OS / Misc ──
+.DS_Store
+Thumbs.db
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log

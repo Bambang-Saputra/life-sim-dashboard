@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Share+Tech+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ══════════════════════════════════════════
+   BASE — Cozy Farm
+══════════════════════════════════════════ */
+@layer base {
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    /* Keep pixel art look on decorative containers, not buttons/inputs */
+    .pixel-box, .pixel-box * { border-radius: 0 !important; }
+
+    html {
+        scroll-behavior: smooth;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        @apply bg-cream-light text-soil-dark font-sans min-h-screen;
+        background-image:
+            radial-gradient(circle at 20% 8%,  rgba(229,181,103,0.06) 0%, transparent 50%),
+            radial-gradient(circle at 85% 75%, rgba(107,163,104,0.05) 0%, transparent 55%),
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='6' height='6' fill='%23FBF7EC'/%3E%3Ccircle cx='1' cy='1' r='0.6' fill='%23E8DEC4' opacity='0.45'/%3E%3C/svg%3E");
+    }
+
+    ::-webkit-scrollbar       { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #F5EFE0; }
+    ::-webkit-scrollbar-thumb { background: #A88B6E; border: 1px solid #5C4632; }
+    ::-webkit-scrollbar-thumb:hover { background: #83644A; }
+
+    /* Time-of-day body tints (very subtle) */
+    body.tod-morning { background-color: #FBF7EC; }
+    body.tod-day     { background-color: #FBF7EC; }
+    body.tod-evening { background-color: #FAF0E0; }
+    body.tod-night   { background-color: #EDE7DB; }
+}
+
+/* ══════════════════════════════════════════
+   COMPONENTS
+══════════════════════════════════════════ */
+@layer components {
+
+    /* ─── PANELS ─── */
+    .panel {
+        @apply bg-white border border-cream-dark shadow-cozy p-5;
+        border-radius: 4px;
+        position: relative;
+    }
+    .panel::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border: 1px solid rgba(255,255,255,0.6);
+        border-radius: 3px;
+    }
+    /* Compat alias */
+    .panel-parchment { @apply panel; }
+    .panel-wood      { @apply bg-cream border border-cream-dark; border-radius: 4px; }
+
+    /* ─── CARDS (list items) ─── */
+    .card-item {
+        @apply bg-cream-light/60 border border-cream-dark/60 transition-colors duration-100;
+        border-radius: 4px;
+    }
+    .card-item:hover { @apply bg-cream/80 border-soil-light/50; }
+
+    .stat-card {
+        @apply bg-white border border-cream-dark shadow-cozy relative;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+    .stat-card::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: currentColor;
+        opacity: 0.85;
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn-base {
+        @apply inline-flex items-center justify-center gap-1.5 cursor-pointer select-none
+               font-sans font-semibold text-xs tracking-wide
+               border transition-all duration-100;
+        padding: 8px 16px;
+        border-radius: 4px;
+        letter-spacing: 0.025em;
+    }
+    .btn-base:active { transform: translateY(1px); }
+
+    .btn-primary {
+        @apply btn-base bg-grass text-white border-grass-dark
+               hover:bg-grass-dark hover:shadow-cozy;
+        box-shadow: 0 2px 0 #4E7D4C;
+    }
+    .btn-primary:active { box-shadow: 0 0 0 transparent; }
+
+    .btn-danger {
+        @apply btn-base bg-berry text-white border-berry-dark
+               hover:bg-berry-dark;
+        box-shadow: 0 2px 0 #9A3F56;
+    }
+    .btn-danger:active { box-shadow: 0 0 0 transparent; }
+
+    .btn-ghost {
+        @apply btn-base bg-white text-soil-dark border-cream-dark
+               hover:bg-cream hover:border-soil-light;
+        box-shadow: 0 1px 0 rgba(92,70,50,0.15);
+    }
+    .btn-ghost:active { box-shadow: 0 0 0 transparent; }
+
+    .btn-icon {
+        @apply inline-flex items-center justify-center cursor-pointer select-none
+               bg-transparent border border-cream-dark text-soil
+               hover:bg-cream hover:border-soil-light hover:text-soil-dark
+               transition-colors duration-100;
+        width: 28px; height: 28px;
+        font-size: 12px;
+        border-radius: 4px;
+    }
+
+    /* ─── FILTER PILLS ─── */
+    .filter-btn {
+        @apply font-sans font-medium cursor-pointer select-none
+               bg-white text-soil-dark border border-cream-dark
+               hover:border-soil-light hover:bg-cream
+               transition-colors duration-100;
+        font-size: 11px;
+        padding: 5px 12px;
+        border-radius: 999px;
+    }
+    .filter-btn.is-active {
+        @apply bg-grass-dark text-white border-grass-dark;
+    }
+
+    /* ─── INPUTS ─── */
+    .input-pixel {
+        @apply bg-white border border-cream-dark text-soil-dark
+               font-sans text-sm w-full
+               placeholder:text-stone
+               focus:border-grass focus:outline-none focus:ring-2 focus:ring-grass/20;
+        padding: 9px 12px;
+        border-radius: 4px;
+        transition: border-color 100ms, box-shadow 100ms;
+    }
+    select.input-pixel { padding-right: 32px; }
+
+    /* ─── LABELS ─── */
+    .field-label {
+        @apply font-sans font-semibold text-soil block mb-1.5 uppercase;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+    }
+
+    /* ─── TAGS ─── */
+    .tag {
+        @apply font-sans font-medium inline-block border;
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        line-height: 1.5;
+    }
+    .tag-sky   { @apply tag bg-sky-light/40 text-sky-dark border-sky/40; }
+    .tag-grass { @apply tag bg-grass-light/40 text-grass-dark border-grass/40; }
+    .tag-corn  { @apply tag bg-corn-light/45 text-corn-dark border-corn/40; }
+    .tag-berry { @apply tag bg-berry-light/40 text-berry-dark border-berry/40; }
+    .tag-soil  { @apply tag bg-cream text-soil-dark border-soil-light/45; }
+    /* Compat aliases */
+    .tag-river   { @apply tag-sky; }
+    .badge-river { @apply tag-sky; }
+
+    /* ─── EMPTY STATE ─── */
+    .empty-state {
+        @apply py-14 text-center border-2 border-dashed border-cream-dark;
+        background: rgba(245,239,224,0.4);
+        border-radius: 6px;
+    }
+
+    /* ─── PROGRESS ─── */
+    .progress-quest {
+        @apply h-2.5 bg-cream border border-cream-dark overflow-hidden;
+        border-radius: 999px;
+    }
+    .progress-quest-fill {
+        @apply h-full bg-grass transition-all duration-500;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav.main-nav {
+        @apply bg-soil-dark sticky top-0 z-50;
+        box-shadow: 0 2px 12px rgba(92,70,50,0.20);
+    }
+
+    /* ─── PRIORITY ACCENT (left border) ─── */
+    .priority-easy      { border-left: 3px solid #6BA368; }
+    .priority-normal    { border-left: 3px solid #77AADD; }
+    .priority-hard      { border-left: 3px solid #E5B567; }
+    .priority-legendary { border-left: 3px solid #BE546E; }
+
+    /* ─── SECTION HEADING ─── */
+    .section-title {
+        @apply font-pixel text-soil-dark inline-flex items-center gap-2;
+        font-size: 10px;
+        letter-spacing: 0.05em;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+        @apply border-0 my-3;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #D4A373 50%, transparent);
+    }
+
+    /* ─── SUN / MOON GLOW for navbar clock ─── */
+    .sun-glow  { filter: drop-shadow(0 0 4px rgba(241,204,142,0.7)); }
+    .moon-glow { filter: drop-shadow(0 0 4px rgba(168,205,237,0.6)); }
+
+    /* ─── TIME-OF-DAY BANNER GRADIENTS ─── */
+    .sky-morning { background: linear-gradient(180deg, #FCD8B4 0%, #F8E6C9 35%, #DCE9CC 60%, #8FBC8A 85%, #6BA368 100%); }
+    .sky-day     { background: linear-gradient(180deg, #8DC8E8 0%, #B5D9EC 30%, #DBE7CF 60%, #8FBC8A 85%, #6BA368 100%); }
+    .sky-evening { background: linear-gradient(180deg, #E89B6C 0%, #F1B584 28%, #F4C99A 50%, #BDAA80 78%, #6BA368 100%); }
+    .sky-night   { background: linear-gradient(180deg, #1F2A4A 0%, #2E3D5E 30%, #3F4D70 55%, #4A5E48 82%, #3D5A3A 100%); }
+
+    /* ─── BANNER SCENE ANIMATIONS ─── */
+    @keyframes walk-across {
+        0%   { left: -50px; }
+        100% { left: calc(100% + 50px); }
+    }
+    @keyframes bob {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-3px); }
+    }
+    @keyframes drift {
+        0%   { left: -120px; }
+        100% { left: calc(100% + 120px); }
+    }
+    @keyframes drift-slow {
+        0%   { left: -80px; }
+        100% { left: calc(100% + 80px); }
+    }
+    @keyframes flutter {
+        0%   { transform: translate(0, 0) scale(1); }
+        25%  { transform: translate(30vw, -15px) scale(1.05); }
+        50%  { transform: translate(55vw, 8px) scale(0.95); }
+        75%  { transform: translate(80vw, -10px) scale(1.05); }
+        100% { transform: translate(110vw, 0) scale(1); }
+    }
+    @keyframes sway {
+        0%, 100% { transform: rotate(-3deg); }
+        50%      { transform: rotate(3deg); }
+    }
+    @keyframes smoke-rise {
+        0%   { transform: translate(0, 0) scale(1); opacity: 0.7; }
+        100% { transform: translate(-6px, -36px) scale(2.5); opacity: 0; }
+    }
+    @keyframes peck-down {
+        0%, 100% { transform: rotate(0); }
+        45%      { transform: rotate(0); }
+        50%      { transform: rotate(-22deg); }
+        55%      { transform: rotate(0); }
+    }
+    @keyframes firefly-float {
+        0%   { transform: translate(0, 0); opacity: 0.3; }
+        25%  { transform: translate(8px, -10px); opacity: 1; }
+        50%  { transform: translate(-5px, -18px); opacity: 0.6; }
+        75%  { transform: translate(6px, -8px); opacity: 1; }
+        100% { transform: translate(0, 0); opacity: 0.3; }
+    }
+    @keyframes shimmer {
+        0%, 100% { opacity: 0.3; transform: scale(0.8); }
+        50%      { opacity: 1;   transform: scale(1.2); }
+    }
+    @keyframes flag-wave {
+        0%, 100% { transform: skewX(0deg); }
+        50%      { transform: skewX(-8deg); }
+    }
+    @keyframes water-shine {
+        0%, 100% { opacity: 0.4; }
+        50%      { opacity: 0.8; }
+    }
+
+    .anim-walk        { animation: walk-across 18s linear infinite, bob 0.4s ease-in-out infinite; }
+    .anim-walk-slow   { animation: walk-across 28s linear infinite, bob 0.5s ease-in-out infinite; }
+    .anim-bob         { animation: bob 0.6s ease-in-out infinite; }
+    .anim-drift       { animation: drift 60s linear infinite; }
+    .anim-drift-slow  { animation: drift-slow 90s linear infinite; }
+    .anim-flutter     { animation: flutter 14s ease-in-out infinite; }
+    .anim-sway        { animation: sway 2.5s ease-in-out infinite; transform-origin: bottom center; }
+    .anim-smoke       { animation: smoke-rise 3s ease-out infinite; }
+    .anim-peck        { animation: peck-down 2s ease-in-out infinite; transform-origin: bottom right; }
+    .anim-firefly     { animation: firefly-float 4s ease-in-out infinite; }
+    .anim-shimmer     { animation: shimmer 2s ease-in-out infinite; }
+    .anim-flag        { animation: flag-wave 2s ease-in-out infinite; transform-origin: left center; }
+    .anim-water       { animation: water-shine 3s ease-in-out infinite; }
+}
