@@ -25,39 +25,41 @@ class TmdbService
      * Cari film/TV berdasarkan keyword
      * Cache selama 1 jam untuk mengurangi API call
      */
-    public function search(string $query, string $type = 'movie'): array
+    public function search(string $query, string $type = 'movie', int $page = 1): array
     {
-        // Cache key unik berdasarkan parameter
-        $cacheKey = "tmdb_search_{$type}_" . md5($query);
+        // Cache key unik per query + page (per-page cached)
+        $cacheKey = "tmdb_search_{$type}_p{$page}_" . md5($query);
 
-        return Cache::remember($cacheKey, now()->addHour(), function () use ($query, $type) {
+        return Cache::remember($cacheKey, now()->addHour(), function () use ($query, $type, $page) {
             try {
-                $response = Http::timeout(10)         // Timeout 10 detik
-                    ->retry(2, 500)                    // Retry 2x jika gagal, jeda 500ms
+                $response = Http::timeout(10)
+                    ->retry(2, 500)
                     ->get("{$this->baseUrl}/search/{$type}", [
                         'api_key'  => $this->apiKey,
                         'query'    => $query,
                         'language' => 'en-US',
-                        'page'     => 1,
+                        'page'     => max(1, $page),
                     ]);
 
-                // throw() otomatis lempar exception jika status 4xx/5xx
                 $response->throw();
+                $data = $response->json();
+                $results = $data['results'] ?? [];
 
-                $results = $response->json('results', []);
-
-                // Normalize data agar konsisten antara film dan TV
-                return array_map(fn($item) => $this->normalizeItem($item, $type), $results);
+                return [
+                    'items'         => array_map(fn($item) => $this->normalizeItem($item, $type), $results),
+                    'current_page'  => $data['page'] ?? $page,
+                    'total_pages'   => min(50, $data['total_pages'] ?? 1), // cap 50 supaya UI ga lebar
+                    'total_results' => $data['total_results'] ?? count($results),
+                ];
 
             } catch (RequestException $e) {
-                // Log error, return array kosong agar UI tidak crash
-                Log::error('TMDB API Error', [
+                Log::error('TMDB Search Error', [
                     'message' => $e->getMessage(),
                     'query'   => $query,
                     'type'    => $type,
+                    'page'    => $page,
                 ]);
-
-                return [];
+                return ['items' => [], 'current_page' => 1, 'total_pages' => 1, 'total_results' => 0];
             }
         });
     }
@@ -66,30 +68,34 @@ class TmdbService
      * Ambil daftar trending mingguan untuk default Library view.
      * Cache 6 jam supaya hemat API quota.
      */
-    public function trending(string $type = 'movie', int $limit = 12): array
+    public function trending(string $type = 'movie', int $page = 1): array
     {
-        $cacheKey = "tmdb_trending_{$type}_{$limit}";
+        $cacheKey = "tmdb_trending_{$type}_p{$page}";
 
-        return Cache::remember($cacheKey, now()->addHours(6), function () use ($type, $limit) {
+        return Cache::remember($cacheKey, now()->addHours(6), function () use ($type, $page) {
             try {
                 $response = Http::timeout(10)
                     ->retry(2, 500)
                     ->get("{$this->baseUrl}/trending/{$type}/week", [
                         'api_key'  => $this->apiKey,
                         'language' => 'en-US',
+                        'page'     => max(1, $page),
                     ]);
 
                 $response->throw();
-                $results = $response->json('results', []);
+                $data = $response->json();
+                $results = $data['results'] ?? [];
 
-                return array_map(
-                    fn($item) => $this->normalizeItem($item, $type),
-                    array_slice($results, 0, $limit)
-                );
+                return [
+                    'items'         => array_map(fn($item) => $this->normalizeItem($item, $type), $results),
+                    'current_page'  => $data['page'] ?? $page,
+                    'total_pages'   => min(50, $data['total_pages'] ?? 1),
+                    'total_results' => $data['total_results'] ?? count($results),
+                ];
 
             } catch (RequestException $e) {
-                Log::error('TMDB Trending Error', ['type' => $type, 'msg' => $e->getMessage()]);
-                return [];
+                Log::error('TMDB Trending Error', ['type' => $type, 'page' => $page, 'msg' => $e->getMessage()]);
+                return ['items' => [], 'current_page' => 1, 'total_pages' => 1, 'total_results' => 0];
             }
         });
     }

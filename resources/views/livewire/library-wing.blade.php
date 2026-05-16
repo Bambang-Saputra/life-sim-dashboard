@@ -39,7 +39,7 @@
          TAB: SEARCH
     ══════════════════════════ --}}
     @if($activeTab === 'search')
-        <form wire:submit.prevent="search" class="flex gap-2 mb-5">
+        <form wire:submit.prevent="submitSearch" class="flex gap-2 mb-5">
             <input
                 wire:model="searchQuery"
                 type="text"
@@ -104,10 +104,12 @@
                 @endif
             </div>
 
-            @if($isLoadingDefaults)
+            @if($isLoadingDefaults || $isSearching)
                 <div class="empty-state">
-                    <p class="font-pixel text-soil animate-blink" style="font-size: 9px;">LOADING TRENDING...</p>
-                    <p class="font-sans text-stone text-sm mt-2">Mengambil daftar populer dari API...</p>
+                    <p class="font-pixel text-soil animate-blink" style="font-size: 9px;">
+                        {{ $isSearching ? 'SEARCHING...' : 'LOADING...' }}
+                    </p>
+                    <p class="font-sans text-stone text-sm mt-2">Mengambil dari API...</p>
                 </div>
             @elseif(empty($items))
                 <div class="empty-state">
@@ -118,7 +120,11 @@
                     <p class="font-sans text-stone text-sm">Tidak bisa memuat daftar. Cek koneksi atau coba search manual.</p>
                 </div>
             @else
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                <div
+                    id="library-grid"
+                    @library-page-changed.window="document.getElementById('library-grid')?.scrollIntoView({behavior:'smooth', block:'start'})"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
+                >
                     @foreach($items as $item)
                         <div class="card-item p-2.5 flex flex-col gap-2 group">
                             <div class="relative">
@@ -164,6 +170,102 @@
                         </div>
                     @endforeach
                 </div>
+
+                {{-- ═══════ PAGINATION ═══════ --}}
+                @if($totalPages > 1)
+                    <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-3 p-3 bg-cream/50 border border-cream-dark"
+                         style="border-radius: 6px;">
+
+                        {{-- Info --}}
+                        <div class="font-sans text-soil text-xs flex items-center gap-2">
+                            <span>Halaman <span class="font-semibold text-soil-dark">{{ $currentPage }}</span> dari <span class="font-semibold text-soil-dark">{{ $totalPages }}</span></span>
+                            @if($totalResults > 0)
+                                <span class="text-stone">·</span>
+                                <span>{{ number_format($totalResults, 0, ',', '.') }} item total</span>
+                            @endif
+                        </div>
+
+                        {{-- Page buttons --}}
+                        <div class="flex items-center gap-1 flex-wrap">
+                            {{-- First --}}
+                            <button type="button" wire:click="goToPage(1)"
+                                    wire:loading.attr="disabled"
+                                    @disabled($currentPage <= 1)
+                                    class="btn-icon disabled:opacity-30 disabled:cursor-not-allowed"
+                                    title="First page">
+                                <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5">
+                                    <path d="M18 18l-6-6 6-6M12 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+
+                            {{-- Prev --}}
+                            <button type="button" wire:click="prevPage"
+                                    wire:loading.attr="disabled"
+                                    @disabled($currentPage <= 1)
+                                    class="btn-ghost py-1.5 px-3 disabled:opacity-30 disabled:cursor-not-allowed"
+                                    style="font-size: 11px;">
+                                <svg viewBox="0 0 24 24" fill="none" class="w-3 h-3"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                                Prev
+                            </button>
+
+                            {{-- Page numbers (smart range) --}}
+                            @php
+                                $start = max(1, $currentPage - 2);
+                                $end   = min($totalPages, $currentPage + 2);
+                                if ($end - $start < 4) {
+                                    if ($start === 1) $end = min($totalPages, $start + 4);
+                                    if ($end === $totalPages) $start = max(1, $end - 4);
+                                }
+                            @endphp
+
+                            @if($start > 1)
+                                <span class="font-sans text-stone text-xs px-1">…</span>
+                            @endif
+
+                            @for($p = $start; $p <= $end; $p++)
+                                <button type="button" wire:click="goToPage({{ $p }})"
+                                        wire:loading.attr="disabled"
+                                        class="font-sans font-semibold text-xs w-8 h-8 border transition-colors duration-100
+                                            {{ $p === $currentPage
+                                                ? 'bg-grass-dark text-white border-grass-dark'
+                                                : 'bg-white text-soil-dark border-cream-dark hover:bg-cream' }}"
+                                        style="border-radius: 4px;">{{ $p }}</button>
+                            @endfor
+
+                            @if($end < $totalPages)
+                                <span class="font-sans text-stone text-xs px-1">…</span>
+                            @endif
+
+                            {{-- Next --}}
+                            <button type="button" wire:click="nextPage"
+                                    wire:loading.attr="disabled"
+                                    @disabled($currentPage >= $totalPages)
+                                    class="btn-ghost py-1.5 px-3 disabled:opacity-30 disabled:cursor-not-allowed"
+                                    style="font-size: 11px;">
+                                Next
+                                <svg viewBox="0 0 24 24" fill="none" class="w-3 h-3"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            </button>
+
+                            {{-- Last --}}
+                            <button type="button" wire:click="goToPage({{ $totalPages }})"
+                                    wire:loading.attr="disabled"
+                                    @disabled($currentPage >= $totalPages)
+                                    class="btn-icon disabled:opacity-30 disabled:cursor-not-allowed"
+                                    title="Last page">
+                                <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5">
+                                    <path d="M6 18l6-6-6-6M12 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    {{-- Subtle loading indicator on page change --}}
+                    <div wire:loading wire:target="goToPage,nextPage,prevPage,submitSearch"
+                         class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-soil-dark text-cream-light font-sans text-sm px-4 py-2 border border-corn shadow-cozy-lg"
+                         style="border-radius: 999px;">
+                        <span class="animate-blink">⏳ Loading page {{ $currentPage }}...</span>
+                    </div>
+                @endif
             @endif
         @endif
     @endif

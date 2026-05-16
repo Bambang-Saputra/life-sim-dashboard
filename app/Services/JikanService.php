@@ -11,39 +11,56 @@ class JikanService
     private string $baseUrl = 'https://api.jikan.moe/v4';
 
     /**
-     * Top anime untuk default Library view.
-     * Cache 6 jam supaya hemat rate limit.
+     * Top anime per-page. Cache 6 jam supaya hemat rate limit.
      */
-    public function topAnime(int $limit = 12): array
+    public function topAnime(int $page = 1, int $limit = 24): array
     {
-        return Cache::remember("jikan_top_anime_{$limit}", now()->addHours(6), function () use ($limit) {
+        return Cache::remember("jikan_top_anime_p{$page}_l{$limit}", now()->addHours(6), function () use ($page, $limit) {
             $response = Http::timeout(15)->retry(2, 1000)
                 ->get("{$this->baseUrl}/top/anime", [
+                    'page'   => max(1, $page),
                     'limit'  => $limit,
                     'filter' => 'bypopularity',
                 ]);
 
-            if ($response->failed()) return [];
+            if ($response->failed()) {
+                return ['items' => [], 'current_page' => 1, 'total_pages' => 1, 'total_results' => 0];
+            }
 
-            return array_map(fn($item) => $this->normalizeAnime($item), $response->json('data', []));
+            $data = $response->json();
+            return [
+                'items'         => array_map(fn($item) => $this->normalizeAnime($item), $data['data'] ?? []),
+                'current_page'  => $data['pagination']['current_page'] ?? $page,
+                'total_pages'   => min(50, $data['pagination']['last_visible_page'] ?? 1),
+                'total_results' => $data['pagination']['items']['total'] ?? 0,
+            ];
         });
     }
 
     /**
-     * Top manga untuk default Library view.
+     * Top manga per-page.
      */
-    public function topManga(int $limit = 12): array
+    public function topManga(int $page = 1, int $limit = 24): array
     {
-        return Cache::remember("jikan_top_manga_{$limit}", now()->addHours(6), function () use ($limit) {
+        return Cache::remember("jikan_top_manga_p{$page}_l{$limit}", now()->addHours(6), function () use ($page, $limit) {
             $response = Http::timeout(15)->retry(2, 1000)
                 ->get("{$this->baseUrl}/top/manga", [
+                    'page'   => max(1, $page),
                     'limit'  => $limit,
                     'filter' => 'bypopularity',
                 ]);
 
-            if ($response->failed()) return [];
+            if ($response->failed()) {
+                return ['items' => [], 'current_page' => 1, 'total_pages' => 1, 'total_results' => 0];
+            }
 
-            return array_map(fn($item) => $this->normalizeManga($item), $response->json('data', []));
+            $data = $response->json();
+            return [
+                'items'         => array_map(fn($item) => $this->normalizeManga($item), $data['data'] ?? []),
+                'current_page'  => $data['pagination']['current_page'] ?? $page,
+                'total_pages'   => min(50, $data['pagination']['last_visible_page'] ?? 1),
+                'total_results' => $data['pagination']['items']['total'] ?? 0,
+            ];
         });
     }
 
@@ -93,43 +110,62 @@ class JikanService
     }
 
     /**
-     * Cari anime berdasarkan keyword
+     * Cari anime + pagination
      */
-    public function searchAnime(string $query): array
+    public function searchAnime(string $query, int $page = 1, int $limit = 24): array
     {
-        return Cache::remember("jikan_anime_" . md5($query), now()->addHour(), function () use ($query) {
-            // Jikan kadang lambat, beri timeout yang cukup
-            $response = Http::timeout(15)
-                ->retry(2, 1000) // Jeda 1 detik antar retry (respect rate limit)
+        $cacheKey = "jikan_anime_p{$page}_l{$limit}_" . md5($query);
+
+        return Cache::remember($cacheKey, now()->addHour(), function () use ($query, $page, $limit) {
+            $response = Http::timeout(15)->retry(2, 1000)
                 ->get("{$this->baseUrl}/anime", [
-                    'q'      => $query,
-                    'limit'  => 10,
-                    'sfw'    => true, // Filter konten dewasa
+                    'q'     => $query,
+                    'page'  => max(1, $page),
+                    'limit' => $limit,
+                    'sfw'   => true,
                 ]);
 
-            if ($response->failed()) return [];
+            if ($response->failed()) {
+                return ['items' => [], 'current_page' => 1, 'total_pages' => 1, 'total_results' => 0];
+            }
 
-            return array_map(fn($item) => $this->normalizeAnime($item), $response->json('data', []));
+            $data = $response->json();
+            return [
+                'items'         => array_map(fn($item) => $this->normalizeAnime($item), $data['data'] ?? []),
+                'current_page'  => $data['pagination']['current_page'] ?? $page,
+                'total_pages'   => min(50, $data['pagination']['last_visible_page'] ?? 1),
+                'total_results' => $data['pagination']['items']['total'] ?? 0,
+            ];
         });
     }
 
     /**
-     * Cari manga berdasarkan keyword
+     * Cari manga + pagination
      */
-    public function searchManga(string $query): array
+    public function searchManga(string $query, int $page = 1, int $limit = 24): array
     {
-        return Cache::remember("jikan_manga_" . md5($query), now()->addHour(), function () use ($query) {
-            $response = Http::timeout(15)
-                ->retry(2, 1000)
+        $cacheKey = "jikan_manga_p{$page}_l{$limit}_" . md5($query);
+
+        return Cache::remember($cacheKey, now()->addHour(), function () use ($query, $page, $limit) {
+            $response = Http::timeout(15)->retry(2, 1000)
                 ->get("{$this->baseUrl}/manga", [
                     'q'     => $query,
-                    'limit' => 10,
+                    'page'  => max(1, $page),
+                    'limit' => $limit,
                     'sfw'   => true,
                 ]);
 
-            if ($response->failed()) return [];
+            if ($response->failed()) {
+                return ['items' => [], 'current_page' => 1, 'total_pages' => 1, 'total_results' => 0];
+            }
 
-            return array_map(fn($item) => $this->normalizeManga($item), $response->json('data', []));
+            $data = $response->json();
+            return [
+                'items'         => array_map(fn($item) => $this->normalizeManga($item), $data['data'] ?? []),
+                'current_page'  => $data['pagination']['current_page'] ?? $page,
+                'total_pages'   => min(50, $data['pagination']['last_visible_page'] ?? 1),
+                'total_results' => $data['pagination']['items']['total'] ?? 0,
+            ];
         });
     }
 }
