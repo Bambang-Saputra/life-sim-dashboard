@@ -71,12 +71,42 @@
                 </div>
 
                 <div>
-                    <label class="field-label">Category *</label>
-                    <input wire:model="category" type="text" placeholder="food, salary, transport..." class="input-pixel" list="cat-list">
-                    <datalist id="cat-list">
-                        <option value="salary"><option value="food"><option value="transport">
-                        <option value="entertainment"><option value="utilities"><option value="health"><option value="shopping">
-                    </datalist>
+                    <label class="field-label">
+                        Category *
+                        <span class="text-stone font-normal normal-case">
+                            ({{ $type === 'in' ? '💰 income' : '💸 expense' }})
+                        </span>
+                    </label>
+                    <input wire:model="category" type="text"
+                        placeholder="{{ $type === 'in' ? 'Salary, Bonus, Freelance...' : 'Food, Transport, Shopping...' }}"
+                        class="input-pixel" list="cat-list">
+
+                    {{-- Datalist diganti sesuai type aktif --}}
+                    @if($type === 'in')
+                        <datalist id="cat-list">
+                            <option value="Salary">
+                            <option value="Bonus">
+                            <option value="Freelance">
+                            <option value="Investment">
+                            <option value="Side Hustle">
+                            <option value="Gift">
+                            <option value="Refund">
+                            <option value="Other Income">
+                        </datalist>
+                    @else
+                        <datalist id="cat-list">
+                            <option value="Food">
+                            <option value="Transport">
+                            <option value="Shopping">
+                            <option value="Entertainment">
+                            <option value="Utilities">
+                            <option value="Health">
+                            <option value="Subscription">
+                            <option value="Rent">
+                            <option value="Education">
+                            <option value="Other Expense">
+                        </datalist>
+                    @endif
                     @error('category') <p class="font-sans text-berry text-xs mt-1">⚠ {{ $message }}</p> @enderror
                 </div>
 

@@ -223,6 +223,77 @@ class LibraryWing extends Component
             ->get();
     }
 
+    /**
+     * Stats untuk tab Stats di My Collection.
+     * Cached selama 1 request.
+     */
+    public function getLibraryStatsProperty(): array
+    {
+        $items = LibraryItem::query()->get();
+
+        if ($items->isEmpty()) {
+            return ['total' => 0];
+        }
+
+        // ── 1. Genre breakdown (top 10) ──
+        $genreCounts = [];
+        foreach ($items as $item) {
+            if (empty($item->genre)) continue;
+            $genres = array_filter(array_map('trim', explode(',', $item->genre)));
+            foreach ($genres as $g) {
+                $genreCounts[$g] = ($genreCounts[$g] ?? 0) + 1;
+            }
+        }
+        arsort($genreCounts);
+        $topGenres = array_slice($genreCounts, 0, 10, true);
+
+        // ── 2. Type distribution ──
+        $typeDist = [
+            'movie' => $items->where('api_type', 'movie')->count(),
+            'tv'    => $items->where('api_type', 'tv')->count(),
+            'anime' => $items->where('api_type', 'anime')->count(),
+            'manga' => $items->where('api_type', 'manga')->count(),
+        ];
+
+        // ── 3. Status distribution ──
+        $statusDist = [
+            'plan_to'   => $items->where('status', 'plan_to')->count(),
+            'ongoing'   => $items->where('status', 'ongoing')->count(),
+            'completed' => $items->where('status', 'completed')->count(),
+            'dropped'   => $items->where('status', 'dropped')->count(),
+        ];
+
+        // ── 4. Rating distribution (tier counts) ──
+        $tierDist = ['S' => 0, 'A' => 0, 'B' => 0, 'C' => 0, 'D' => 0, 'Unrated' => 0];
+        foreach ($items as $item) {
+            $r = $item->personal_rating !== null ? (float) $item->personal_rating : null;
+            if ($r === null)        $tierDist['Unrated']++;
+            elseif ($r >= 9.0)      $tierDist['S']++;
+            elseif ($r >= 7.5)      $tierDist['A']++;
+            elseif ($r >= 6.0)      $tierDist['B']++;
+            elseif ($r >= 4.0)      $tierDist['C']++;
+            else                    $tierDist['D']++;
+        }
+
+        // ── 5. Avg rating + favorite genre summary ──
+        $rated         = $items->whereNotNull('personal_rating');
+        $avgRating     = $rated->isNotEmpty() ? round($rated->avg('personal_rating'), 2) : null;
+        $favGenre      = $topGenres ? array_key_first($topGenres) : null;
+        $favGenreCount = $favGenre ? $topGenres[$favGenre] : 0;
+
+        return [
+            'total'           => $items->count(),
+            'rated_count'     => $rated->count(),
+            'avg_rating'      => $avgRating,
+            'top_genres'      => $topGenres,
+            'type_dist'       => $typeDist,
+            'status_dist'     => $statusDist,
+            'tier_dist'       => $tierDist,
+            'fav_genre'       => $favGenre,
+            'fav_genre_count' => $favGenreCount,
+        ];
+    }
+
     /** Group library items by tier (S/A/B/C/D/Unrated) based on personal_rating */
     public function getLibraryByTierProperty(): array
     {

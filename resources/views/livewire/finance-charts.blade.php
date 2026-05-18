@@ -48,36 +48,72 @@
             </div>
         </div>
 
-        {{-- Category doughnut --}}
+        {{-- Expense pie chart with range toggle --}}
         @php
-            $cats = $this->categoryBreakdown;
-            $catLabels = array_column($cats, 'category');
-            $catTotals = array_column($cats, 'total');
-            $palette = ['#BE546E','#E5B567','#6BA368','#77AADD','#83644A','#A88B6E','#9A3F56','#C99845'];
+            $pie = $this->expensePie;
+            $pieLabels = array_map(fn($r) => $r['category'] . ' (' . $r['percent'] . '%)', $pie['rows']);
+            $pieTotals = array_column($pie['rows'], 'total');
+            $palette = ['#BE546E','#E5B567','#6BA368','#77AADD','#83644A','#A88B6E','#9A3F56','#C99845','#4E7D4C','#D4869A'];
         @endphp
         <div>
-            <p class="font-sans font-semibold text-soil text-xs uppercase tracking-wider mb-2">Top Expense Categories</p>
+            <div class="flex items-center justify-between mb-2 gap-2 flex-wrap">
+                <p class="font-sans font-semibold text-soil text-xs uppercase tracking-wider">
+                    Pengeluaran per Kategori
+                </p>
+                {{-- Range toggle --}}
+                <div class="flex gap-1">
+                    @foreach(['day' => 'Hari', 'month' => 'Bulan', 'year' => 'Tahun'] as $r => $label)
+                        <button type="button" wire:click="$set('pieRange', '{{ $r }}')"
+                            class="filter-btn px-2.5 {{ $pieRange === $r ? 'is-active' : '' }}"
+                            style="font-size: 9px;">{{ $label }}</button>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="bg-cream/30 border border-cream-dark p-3" style="border-radius: 6px; min-height: 240px;">
-                @if(empty($cats))
+                @if(empty($pie['rows']))
                     <div class="flex flex-col items-center justify-center h-full text-stone text-sm py-12">
-                        <p class="font-sans">Belum ada expense bulan ini</p>
+                        <p class="font-sans">Belum ada expense untuk periode <strong>{{ $pie['label'] }}</strong></p>
                     </div>
                 @else
+                    {{-- Pie label header --}}
+                    <p class="font-sans text-xs text-soil text-center mb-2">
+                        {{ $pie['label'] }}
+                        <span class="text-stone">·</span>
+                        Total <span class="font-semibold text-berry">Rp {{ number_format($pie['grand_total'], 0, ',', '.') }}</span>
+                    </p>
+
                     <div
                         wire:ignore
-                        wire:key="doughnut-{{ $viewYear }}-{{ $viewMonth }}"
+                        wire:key="pie-{{ $pieRange }}-{{ $viewYear }}-{{ $viewMonth }}"
                         x-data='doughnutChart({
                             data: {
-                                labels: @json($catLabels),
+                                labels: @json($pieLabels),
                                 datasets: [{
-                                    data: @json($catTotals),
-                                    backgroundColor: @json(array_slice($palette, 0, count($cats))),
+                                    data: @json($pieTotals),
+                                    backgroundColor: @json(array_slice($palette, 0, count($pie["rows"]))),
                                     borderColor: "#FBF7EC",
                                     borderWidth: 2
                                 }]
+                            },
+                            options: {
+                                plugins: {
+                                    legend: {
+                                        position: "bottom",
+                                        labels: { font: { family: "Inter", size: 10 }, color: "#5C4632", padding: 8, boxWidth: 12 }
+                                    },
+                                    tooltip: {
+                                        callbacks: {
+                                            label: (ctx) => {
+                                                const val = ctx.parsed;
+                                                return " Rp " + new Intl.NumberFormat("id-ID").format(val);
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         })'
-                        style="height: 220px;"
+                        style="height: 200px;"
                     >
                         <canvas x-ref="canvas"></canvas>
                     </div>

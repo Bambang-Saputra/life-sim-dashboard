@@ -11,6 +11,9 @@ class FinanceCharts extends Component
     public int $viewYear  = 0;
     public int $viewMonth = 0;
 
+    /** Range untuk pie chart pengeluaran kategori: 'day' | 'month' | 'year' */
+    public string $pieRange = 'month';
+
     public function mount(): void
     {
         $this->viewYear  = now()->year;
@@ -54,6 +57,46 @@ class FinanceCharts extends Component
             ->get()
             ->map(fn($r) => ['category' => $r->category, 'total' => (float) $r->total])
             ->toArray();
+    }
+
+    /**
+     * Pie chart pengeluaran by category dengan range fleksibel.
+     * Range: day (hari ini), month (bulan view), year (tahun view)
+     */
+    #[Computed]
+    public function expensePie(): array
+    {
+        $query = FinanceEntry::where('type', 'out');
+
+        match ($this->pieRange) {
+            'day'   => $query->whereDate('recorded_at', today()),
+            'year'  => $query->whereYear('recorded_at', $this->viewYear),
+            default => $query->whereYear('recorded_at', $this->viewYear)
+                             ->whereMonth('recorded_at', $this->viewMonth),
+        };
+
+        $rows = $query->selectRaw('category, SUM(amount) as total')
+            ->groupBy('category')
+            ->orderByDesc('total')
+            ->get();
+
+        $grand = (float) $rows->sum('total');
+
+        $rangeLabel = match ($this->pieRange) {
+            'day'  => 'Hari Ini · ' . today()->translatedFormat('d M Y'),
+            'year' => 'Tahun ' . $this->viewYear,
+            default => \Carbon\Carbon::create($this->viewYear, $this->viewMonth)->translatedFormat('F Y'),
+        };
+
+        return [
+            'rows' => $rows->map(fn($r) => [
+                'category' => $r->category,
+                'total'    => (float) $r->total,
+                'percent'  => $grand > 0 ? round(((float) $r->total / $grand) * 100, 1) : 0,
+            ])->toArray(),
+            'grand_total' => $grand,
+            'label'       => $rangeLabel,
+        ];
     }
 
     #[Computed]

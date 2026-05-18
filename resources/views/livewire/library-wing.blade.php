@@ -26,8 +26,12 @@
     </div>
 
     {{-- ── TABS ── --}}
-    <div class="flex gap-1.5 mb-5">
-        @foreach(['search' => ['🔍', 'Search'], 'collection' => ['📚', 'My Collection']] as $tab => $cfg)
+    <div class="flex gap-1.5 mb-5 flex-wrap">
+        @foreach([
+            'search'     => ['🔍', 'Search'],
+            'collection' => ['📚', 'My Collection'],
+            'stats'      => ['📊', 'Stats'],
+        ] as $tab => $cfg)
             <button
                 wire:click="$set('activeTab', '{{ $tab }}')"
                 class="filter-btn {{ $activeTab === $tab ? 'is-active' : '' }} px-4 py-2"
@@ -510,6 +514,227 @@
                         <button wire:click="$set('editingRatingId', null)" class="btn-ghost">Cancel</button>
                     </div>
                 </div>
+            </div>
+        @endif
+    @endif
+
+    {{-- ══════════════════════════
+         TAB: STATS
+    ══════════════════════════ --}}
+    @if($activeTab === 'stats')
+        @php $stats = $this->libraryStats; @endphp
+
+        @if(($stats['total'] ?? 0) === 0)
+            <div class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" class="w-10 h-10 text-cream-dark mx-auto mb-3">
+                    <path d="M3 3v18h18M7 12l4-4 4 4 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA DATA</p>
+                <p class="font-sans text-stone text-sm mt-2">Tambah minimal 1 item ke koleksimu dulu, baru stats muncul</p>
+            </div>
+        @else
+            {{-- ─── SUMMARY KARTUS ─── --}}
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+                <div class="px-4 py-3 bg-cream/50 border border-cream-dark" style="border-radius: 6px;">
+                    <p class="font-sans text-soil text-xs uppercase tracking-wider">Total Item</p>
+                    <p class="font-pixel text-soil-dark mt-1.5" style="font-size: 16px;">{{ $stats['total'] }}</p>
+                </div>
+                <div class="px-4 py-3 bg-corn-light/40 border border-corn/30" style="border-radius: 6px;">
+                    <p class="font-sans text-soil text-xs uppercase tracking-wider">Sudah Di-rate</p>
+                    <p class="font-pixel text-corn-dark mt-1.5" style="font-size: 16px;">
+                        {{ $stats['rated_count'] }}
+                        <span class="font-sans text-soil text-xs">/ {{ $stats['total'] }}</span>
+                    </p>
+                </div>
+                <div class="px-4 py-3 bg-grass-light/30 border border-grass/30" style="border-radius: 6px;">
+                    <p class="font-sans text-soil text-xs uppercase tracking-wider">Rating Rata-rata</p>
+                    <p class="font-pixel text-grass-dark mt-1.5" style="font-size: 16px;">
+                        @if($stats['avg_rating'] !== null)
+                            ★ {{ $stats['avg_rating'] }}
+                        @else
+                            —
+                        @endif
+                    </p>
+                </div>
+                <div class="px-4 py-3 bg-berry-light/30 border border-berry/30" style="border-radius: 6px;">
+                    <p class="font-sans text-soil text-xs uppercase tracking-wider">Genre Favorit</p>
+                    <p class="font-sans font-bold text-berry-dark mt-1.5 text-sm leading-tight">
+                        @if($stats['fav_genre'])
+                            {{ $stats['fav_genre'] }}
+                            <span class="font-sans font-normal text-soil text-xs block mt-0.5">{{ $stats['fav_genre_count'] }} items</span>
+                        @else
+                            —
+                        @endif
+                    </p>
+                </div>
+            </div>
+
+            {{-- ─── INSIGHT BANNER ─── --}}
+            @if($stats['fav_genre'])
+                <div class="mb-5 px-4 py-3 bg-corn-light/40 border-l-4 border-corn flex items-center gap-3" style="border-radius: 6px;">
+                    <span class="text-2xl">🎯</span>
+                    <p class="font-sans text-soil-dark text-sm">
+                        Kamu condong ke genre <strong class="text-corn-dark">{{ $stats['fav_genre'] }}</strong>
+                        — {{ $stats['fav_genre_count'] }} dari {{ $stats['total'] }} item ({{ round($stats['fav_genre_count'] / $stats['total'] * 100) }}%)
+                    </p>
+                </div>
+            @endif
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+                {{-- ─── GENRE BAR CHART ─── --}}
+                @if(!empty($stats['top_genres']))
+                    @php
+                        $genreLabels = array_keys($stats['top_genres']);
+                        $genreCounts = array_values($stats['top_genres']);
+                    @endphp
+                    <div class="bg-cream/30 border border-cream-dark p-4" style="border-radius: 6px;">
+                        <p class="font-sans font-semibold text-soil-dark text-sm mb-3 flex items-center gap-2">
+                            <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-grass-dark">
+                                <path d="M3 3v18h18M7 14l4-4 4 4 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Top Genre
+                        </p>
+                        <div
+                            wire:ignore
+                            wire:key="genre-bar"
+                            x-data='barChart({
+                                data: {
+                                    labels: @json($genreLabels),
+                                    datasets: [{
+                                        label: "Jumlah item",
+                                        data: @json($genreCounts),
+                                        backgroundColor: "#6BA368",
+                                        borderColor: "#4E7D4C",
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    indexAxis: "y",
+                                    plugins: { legend: { display: false } },
+                                    scales: {
+                                        x: { beginAtZero: true, ticks: { stepSize: 1, color: "#83644A", font: { family: "Inter", size: 10 } }, grid: { color: "rgba(212,163,115,0.15)" } },
+                                        y: { ticks: { color: "#5C4632", font: { family: "Inter", size: 11 } }, grid: { display: false } }
+                                    }
+                                }
+                            })'
+                            :style="`height: ${Math.max(180, {{ count($genreLabels) }} * 26)}px;`"
+                        >
+                            <canvas x-ref="canvas"></canvas>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- ─── TYPE DOUGHNUT ─── --}}
+                @php
+                    $typeLabels = ['🎬 Movie', '📺 TV', '⛩ Anime', '📖 Manga'];
+                    $typeCounts = array_values($stats['type_dist']);
+                    $typeColors = ['#BE546E', '#77AADD', '#6BA368', '#E5B567'];
+                @endphp
+                <div class="bg-cream/30 border border-cream-dark p-4" style="border-radius: 6px;">
+                    <p class="font-sans font-semibold text-soil-dark text-sm mb-3 flex items-center gap-2">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-sky-dark">
+                            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 3v9l8 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Distribusi Tipe Media
+                    </p>
+                    <div
+                        wire:ignore
+                        wire:key="type-doughnut"
+                        x-data='doughnutChart({
+                            data: {
+                                labels: @json($typeLabels),
+                                datasets: [{
+                                    data: @json($typeCounts),
+                                    backgroundColor: @json($typeColors),
+                                    borderColor: "#FBF7EC",
+                                    borderWidth: 2
+                                }]
+                            }
+                        })'
+                        style="height: 230px;"
+                    >
+                        <canvas x-ref="canvas"></canvas>
+                    </div>
+                </div>
+
+                {{-- ─── TIER DISTRIBUTION ─── --}}
+                @php
+                    $tierLabels = array_keys($stats['tier_dist']);
+                    $tierCounts = array_values($stats['tier_dist']);
+                    $tierColors = ['#C99845', '#4E7D4C', '#77AADD', '#83644A', '#BE546E', '#A9A39E'];
+                @endphp
+                <div class="bg-cream/30 border border-cream-dark p-4" style="border-radius: 6px;">
+                    <p class="font-sans font-semibold text-soil-dark text-sm mb-3 flex items-center gap-2">
+                        <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-corn-dark">
+                            <path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/>
+                        </svg>
+                        Sebaran Tier Rating
+                    </p>
+                    <div
+                        wire:ignore
+                        wire:key="tier-bar"
+                        x-data='barChart({
+                            data: {
+                                labels: @json($tierLabels),
+                                datasets: [{
+                                    label: "Jumlah item",
+                                    data: @json($tierCounts),
+                                    backgroundColor: @json($tierColors),
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    x: { ticks: { color: "#5C4632", font: { family: "Inter", size: 11, weight: "600" } }, grid: { display: false } },
+                                    y: { beginAtZero: true, ticks: { stepSize: 1, color: "#83644A", font: { family: "Inter", size: 10 } }, grid: { color: "rgba(212,163,115,0.15)" } }
+                                }
+                            }
+                        })'
+                        style="height: 200px;"
+                    >
+                        <canvas x-ref="canvas"></canvas>
+                    </div>
+                </div>
+
+                {{-- ─── STATUS PROGRESS ─── --}}
+                <div class="bg-cream/30 border border-cream-dark p-4" style="border-radius: 6px;">
+                    <p class="font-sans font-semibold text-soil-dark text-sm mb-4 flex items-center gap-2">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-grass-dark">
+                            <path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Status Tontonan
+                    </p>
+                    <div class="space-y-3">
+                        @php
+                            $statusMeta = [
+                                'plan_to'   => ['label' => 'Plan to Watch', 'color' => 'sky',   'fill' => 'bg-sky-dark'],
+                                'ongoing'   => ['label' => 'Sedang Berjalan', 'color' => 'grass', 'fill' => 'bg-grass-dark'],
+                                'completed' => ['label' => 'Selesai',       'color' => 'soil',  'fill' => 'bg-soil'],
+                                'dropped'   => ['label' => 'Drop',          'color' => 'berry', 'fill' => 'bg-berry-dark'],
+                            ];
+                        @endphp
+                        @foreach($statusMeta as $key => $meta)
+                            @php
+                                $count = $stats['status_dist'][$key] ?? 0;
+                                $pct   = $stats['total'] > 0 ? round($count / $stats['total'] * 100) : 0;
+                            @endphp
+                            <div>
+                                <div class="flex justify-between mb-1.5">
+                                    <span class="font-sans text-sm font-medium text-soil-dark">{{ $meta['label'] }}</span>
+                                    <span class="font-mono text-sm text-soil tabular-nums">{{ $count }} <span class="text-stone text-xs">({{ $pct }}%)</span></span>
+                                </div>
+                                <div class="h-2.5 bg-white border border-cream-dark overflow-hidden" style="border-radius: 999px;">
+                                    <div class="h-full {{ $meta['fill'] }} transition-all duration-500"
+                                         style="width: {{ $pct }}%;"></div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
             </div>
         @endif
     @endif
