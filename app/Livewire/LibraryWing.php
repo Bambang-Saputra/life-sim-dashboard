@@ -17,9 +17,11 @@ class LibraryWing extends Component
     public array  $defaultItems  = [];
     public bool   $isSearching   = false;
     public bool   $isLoadingDefaults = false;
-    public string $activeTab     = 'search';
-    public string $filterStatus  = 'all';
-    public string $filterType    = 'all';
+    public string $activeTab        = 'search';
+    public string $filterStatus     = 'all';
+    public string $filterType       = 'all';
+    public string $collectionView   = 'grid'; // grid | tier
+    public string $collectionSort   = 'rating_desc'; // rating_desc | rating_asc | title | latest
 
     // ── Pagination state ──
     public int $currentPage  = 1;
@@ -206,8 +208,51 @@ class LibraryWing extends Component
         return LibraryItem::query()
             ->when($this->filterStatus !== 'all', fn($q) => $q->byStatus($this->filterStatus))
             ->when($this->filterType !== 'all',   fn($q) => $q->byType($this->filterType))
-            ->latest()
+            ->when(
+                $this->collectionSort === 'rating_desc',
+                fn($q) => $q->orderByRaw('personal_rating IS NULL ASC')->orderByDesc('personal_rating')->latest('id'),
+                function ($q) {
+                    return match($this->collectionSort) {
+                        'rating_asc' => $q->orderByRaw('personal_rating IS NULL DESC')->orderBy('personal_rating')->latest('id'),
+                        'title'      => $q->orderBy('title'),
+                        'latest'     => $q->latest('id'),
+                        default      => $q->latest('id'),
+                    };
+                }
+            )
             ->get();
+    }
+
+    /** Group library items by tier (S/A/B/C/D/Unrated) based on personal_rating */
+    public function getLibraryByTierProperty(): array
+    {
+        $items = $this->library;
+
+        $tiers = [
+            'S' => ['min' => 9.0, 'max' => 10.0, 'label' => 'S · Masterpiece',    'color' => 'corn',  'items' => collect()],
+            'A' => ['min' => 7.5, 'max' => 8.99, 'label' => 'A · Excellent',      'color' => 'grass', 'items' => collect()],
+            'B' => ['min' => 6.0, 'max' => 7.49, 'label' => 'B · Good',           'color' => 'sky',   'items' => collect()],
+            'C' => ['min' => 4.0, 'max' => 5.99, 'label' => 'C · Mid',            'color' => 'soil',  'items' => collect()],
+            'D' => ['min' => 0.0, 'max' => 3.99, 'label' => 'D · Skip',           'color' => 'berry', 'items' => collect()],
+            'U' => ['min' => null,'max' => null, 'label' => '? · Belum di-rate',  'color' => 'stone', 'items' => collect()],
+        ];
+
+        foreach ($items as $item) {
+            $r = $item->personal_rating !== null ? (float) $item->personal_rating : null;
+            if ($r === null)               $tiers['U']['items']->push($item);
+            elseif ($r >= 9.0)             $tiers['S']['items']->push($item);
+            elseif ($r >= 7.5)             $tiers['A']['items']->push($item);
+            elseif ($r >= 6.0)             $tiers['B']['items']->push($item);
+            elseif ($r >= 4.0)             $tiers['C']['items']->push($item);
+            else                           $tiers['D']['items']->push($item);
+        }
+
+        // Sort items in each tier by rating desc
+        foreach ($tiers as $k => &$tier) {
+            $tier['items'] = $tier['items']->sortByDesc('personal_rating')->values();
+        }
+
+        return $tiers;
     }
 
     public function render()

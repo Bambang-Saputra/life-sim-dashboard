@@ -274,7 +274,7 @@
          TAB: MY COLLECTION
     ══════════════════════════ --}}
     @if($activeTab === 'collection')
-        {{-- Filters --}}
+        {{-- Toolbar: Filters + View Toggle + Sort --}}
         <div class="flex flex-wrap gap-2 mb-4 items-center">
             <div class="flex gap-1 flex-wrap">
                 @foreach(['all' => 'All', 'movie' => '🎬', 'tv' => '📺', 'anime' => '⛩', 'manga' => '📖'] as $val => $label)
@@ -291,6 +291,40 @@
                         class="filter-btn px-2.5 {{ $filterStatus === $val ? 'is-active' : '' }}">{{ $label }}</button>
                 @endforeach
             </div>
+
+            <div class="ml-auto flex gap-2 items-center">
+                {{-- Sort dropdown --}}
+                <select wire:model.live="collectionSort" class="input-pixel py-1.5 px-2.5" style="width: auto; font-size: 11px;">
+                    <option value="rating_desc">⭐ Rating: Tertinggi</option>
+                    <option value="rating_asc">⭐ Rating: Terendah</option>
+                    <option value="title">A→Z</option>
+                    <option value="latest">Terbaru</option>
+                </select>
+
+                {{-- View toggle --}}
+                <div class="flex border border-cream-dark bg-white" style="border-radius: 4px;">
+                    <button wire:click="$set('collectionView', 'grid')"
+                        class="font-sans text-xs px-2.5 py-1.5 transition-colors duration-100
+                            {{ $collectionView === 'grid' ? 'bg-grass-dark text-white' : 'text-soil-dark hover:bg-cream' }}"
+                        title="Grid view">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5 inline">
+                            <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                            <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                            <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                            <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+                    <button wire:click="$set('collectionView', 'tier')"
+                        class="font-sans text-xs px-2.5 py-1.5 transition-colors duration-100
+                            {{ $collectionView === 'tier' ? 'bg-grass-dark text-white' : 'text-soil-dark hover:bg-cream' }}"
+                        title="Tier list view">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5 inline">
+                            <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Tier
+                    </button>
+                </div>
+            </div>
         </div>
 
         @if($this->library->isEmpty())
@@ -301,42 +335,129 @@
                 <p class="font-pixel text-soil" style="font-size: 9px;">COLLECTION EMPTY</p>
                 <p class="font-sans text-stone text-sm mt-2">Go to <span class="font-semibold text-grass-dark">Search</span> to add your first title</p>
             </div>
+        @elseif($collectionView === 'tier')
+            {{-- ═══════ TIER LIST VIEW ═══════ --}}
+            @php
+                $tierColors = [
+                    'corn'  => ['bg' => 'bg-corn-light/55',  'border' => 'border-corn',     'label' => 'bg-corn-dark text-cream-light'],
+                    'grass' => ['bg' => 'bg-grass-light/45', 'border' => 'border-grass',    'label' => 'bg-grass-dark text-white'],
+                    'sky'   => ['bg' => 'bg-sky-light/45',   'border' => 'border-sky',      'label' => 'bg-sky-dark text-white'],
+                    'soil'  => ['bg' => 'bg-cream',          'border' => 'border-soil',     'label' => 'bg-soil text-cream-light'],
+                    'berry' => ['bg' => 'bg-berry-light/40', 'border' => 'border-berry',    'label' => 'bg-berry-dark text-cream-light'],
+                    'stone' => ['bg' => 'bg-stone-light/55', 'border' => 'border-stone',    'label' => 'bg-stone-dark text-cream-light'],
+                ];
+            @endphp
+
+            <div class="space-y-2.5">
+                @foreach($this->libraryByTier as $key => $tier)
+                    @if($tier['items']->isEmpty()) @continue @endif
+                    @php $c = $tierColors[$tier['color']]; @endphp
+
+                    <div class="border-2 {{ $c['border'] }} {{ $c['bg'] }} overflow-hidden" style="border-radius: 6px;">
+                        <div class="flex">
+                            {{-- Tier label (kiri, vertikal) --}}
+                            <div class="{{ $c['label'] }} flex flex-col items-center justify-center font-pixel py-3 flex-shrink-0"
+                                 style="width: 78px; font-size: 18px;">
+                                <span class="leading-none">{{ $key }}</span>
+                                <span class="text-[8px] mt-1 px-2 text-center leading-tight opacity-90">
+                                    {{ Str::after($tier['label'], '· ') }}
+                                </span>
+                            </div>
+
+                            {{-- Tier items (horizontal scroll) --}}
+                            <div class="flex-1 p-3 overflow-x-auto">
+                                <div class="flex gap-2.5">
+                                    @foreach($tier['items'] as $item)
+                                        <div class="flex-shrink-0 group relative" style="width: 88px;">
+                                            @if($item->cover_image)
+                                                <img src="{{ $item->cover_image }}" alt="{{ $item->title }}"
+                                                    class="w-full aspect-[2/3] object-cover border border-cream-dark"
+                                                    style="border-radius: 4px;" loading="lazy">
+                                            @else
+                                                <div class="w-full aspect-[2/3] flex items-center justify-center bg-cream border border-cream-dark"
+                                                     style="border-radius: 4px;">
+                                                    <span class="font-sans text-stone text-xs">No Img</span>
+                                                </div>
+                                            @endif
+
+                                            @if($item->personal_rating)
+                                                <span class="absolute top-1 right-1 bg-soil-dark/85 text-corn-light font-sans font-bold text-xs px-1.5 py-0.5"
+                                                      style="border-radius: 4px; font-size: 10px;">
+                                                    ★ {{ $item->personal_rating }}
+                                                </span>
+                                            @endif
+
+                                            <p class="font-sans font-medium text-soil-dark text-xs mt-1 leading-tight line-clamp-2">
+                                                {{ Str::limit($item->title, 30) }}
+                                            </p>
+
+                                            {{-- Hover actions overlay --}}
+                                            <div class="opacity-0 group-hover:opacity-100 absolute inset-x-0 bottom-12 flex gap-1 justify-center p-1 transition-opacity duration-150">
+                                                <button wire:click="startEditRating({{ $item->id }})"
+                                                    class="bg-soil-dark text-corn-light text-xs px-2 py-1 hover:bg-soil"
+                                                    style="border-radius: 4px;" title="Rate">★</button>
+                                                <button wire:click="removeFromLibrary({{ $item->id }})" wire:confirm="Remove?"
+                                                    class="bg-berry-dark text-white text-xs px-2 py-1 hover:bg-berry"
+                                                    style="border-radius: 4px;" title="Remove">✕</button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- Legend --}}
+            <p class="font-sans text-stone text-xs mt-4 text-center">
+                Tier dihitung otomatis dari rating personalmu: <strong>S</strong> 9-10 · <strong>A</strong> 7.5-8.9 · <strong>B</strong> 6-7.4 · <strong>C</strong> 4-5.9 · <strong>D</strong> 0-3.9
+            </p>
+
         @else
+            {{-- ═══════ GRID VIEW (default) ═══════ --}}
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 @foreach($this->library as $item)
-                    <div class="card-item p-2.5 flex flex-col gap-2">
-                        @if($item->cover_image)
-                            <img src="{{ $item->cover_image }}" alt="{{ $item->title }}"
-                                class="w-full aspect-[2/3] object-cover" loading="lazy" style="border-radius: 4px;">
-                        @else
-                            <div class="w-full aspect-[2/3] flex items-center justify-center bg-cream border border-cream-dark"
-                                 style="border-radius: 4px;">
-                                <span class="font-sans text-stone text-xs">No Image</span>
-                            </div>
-                        @endif
+                    <div class="card-item p-2.5 flex flex-col gap-2 relative">
+                        <div class="relative">
+                            @if($item->cover_image)
+                                <img src="{{ $item->cover_image }}" alt="{{ $item->title }}"
+                                    class="w-full aspect-[2/3] object-cover" loading="lazy" style="border-radius: 4px;">
+                            @else
+                                <div class="w-full aspect-[2/3] flex items-center justify-center bg-cream border border-cream-dark"
+                                     style="border-radius: 4px;">
+                                    <span class="font-sans text-stone text-xs">No Image</span>
+                                </div>
+                            @endif
+
+                            {{-- Rating tier badge on cover --}}
+                            @if($item->personal_rating)
+                                @php
+                                    $r = (float) $item->personal_rating;
+                                    $tierLetter = $r >= 9 ? 'S' : ($r >= 7.5 ? 'A' : ($r >= 6 ? 'B' : ($r >= 4 ? 'C' : 'D')));
+                                    $tierBg     = $r >= 9 ? 'bg-corn-dark' : ($r >= 7.5 ? 'bg-grass-dark' : ($r >= 6 ? 'bg-sky-dark' : ($r >= 4 ? 'bg-soil' : 'bg-berry-dark')));
+                                @endphp
+                                <span class="absolute top-1 left-1 {{ $tierBg }} text-white font-pixel px-1.5 py-0.5"
+                                      style="border-radius: 3px; font-size: 9px;">{{ $tierLetter }}</span>
+                                <span class="absolute top-1 right-1 bg-soil-dark/85 text-corn-light font-sans font-bold text-xs px-1.5 py-0.5"
+                                      style="border-radius: 3px; font-size: 10px;">★ {{ $item->personal_rating }}</span>
+                            @endif
+                        </div>
 
                         <p class="font-sans font-semibold text-soil-dark text-xs leading-tight line-clamp-2">
                             {{ $item->title }}
                         </p>
 
-                        <div class="flex items-center justify-between gap-1 text-xs">
-                            @php
-                                $statusTag = match($item->status) {
-                                    'plan_to'   => 'tag-sky',
-                                    'ongoing'   => 'tag-grass',
-                                    'completed' => 'tag-soil',
-                                    'dropped'   => 'tag-berry',
-                                    default     => 'tag-soil',
-                                };
-                            @endphp
-                            <span class="{{ $statusTag }}">{{ $item->status_label }}</span>
-                            @if($item->personal_rating)
-                                <span class="font-sans font-semibold text-corn-dark text-xs flex items-center gap-0.5">
-                                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
-                                    {{ $item->personal_rating }}
-                                </span>
-                            @endif
-                        </div>
+                        @php
+                            $statusTag = match($item->status) {
+                                'plan_to'   => 'tag-sky',
+                                'ongoing'   => 'tag-grass',
+                                'completed' => 'tag-soil',
+                                'dropped'   => 'tag-berry',
+                                default     => 'tag-soil',
+                            };
+                        @endphp
+                        <span class="{{ $statusTag }}">{{ $item->status_label }}</span>
 
                         <select wire:change="updateStatus({{ $item->id }}, $event.target.value)"
                             class="input-pixel py-1.5 text-xs">
