@@ -300,4 +300,27 @@
     .anim-shimmer     { animation: shimmer 2s ease-in-out infinite; }
     .anim-flag        { animation: flag-wave 2s ease-in-out infinite; transform-origin: left center; }
     .anim-water       { animation: water-shine 3s ease-in-out infinite; }
+
+    /* ─── NEW BANNER ANIMATIONS ─── */
+    @keyframes windmill-spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+    }
+    @keyframes lantern-glow {
+        0%, 100% { filter: brightness(1); box-shadow: 0 0 6px rgba(241,204,142,0.45), 0 0 12px rgba(241,204,142,0.25); }
+        50%      { filter: brightness(1.25); box-shadow: 0 0 10px rgba(241,204,142,0.75), 0 0 20px rgba(241,204,142,0.4); }
+    }
+    @keyframes pond-ripple {
+        0%, 100% { opacity: 0.45; transform: scaleX(1); }
+        50%      { opacity: 0.85; transform: scaleX(1.08); }
+    }
+    @keyframes leaf-fall {
+        0%   { transform: translate(0, -10px) rotate(0deg);   opacity: 0; }
+        20%  { opacity: 1; }
+        100% { transform: translate(25px, 60px) rotate(180deg); opacity: 0; }
+    }
+    .anim-windmill { animation: windmill-spin 6s linear infinite; transform-origin: center; }
+    .anim-lantern  { animation: lantern-glow 2s ease-in-out infinite; }
+    .anim-pond     { animation: pond-ripple 3s ease-in-out infinite; transform-origin: center; }
+    .anim-leaf     { animation: leaf-fall 8s ease-in infinite; }
 }
