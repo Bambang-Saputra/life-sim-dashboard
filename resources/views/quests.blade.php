@@ -1,20 +1,50 @@
 <x-app-layout>
-    <x-slot name="title">Quest Board · Life-Sim Dashboard</x-slot>
+    <x-slot name="title">Quest Board - Life-Sim Dashboard</x-slot>
 
-    {{-- Page Header --}}
-    <div class="mb-6">
-        <div class="flex items-center gap-2 mb-1">
-            <a href="{{ route('dashboard') }}" class="font-sans text-xs text-soil hover:text-grass-dark no-underline">← Dashboard</a>
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <div>
+                <a href="{{ route('dashboard') }}" class="page-kicker no-underline">
+                    <span>Back to Dashboard</span>
+                </a>
+                <h1 class="page-title">Quest Board</h1>
+                <p class="page-description">
+                    Ruang kerja utama untuk mengelola tugas hidup harian: prioritas, progress, deadline,
+                    alarm, catatan dampak, dan history setiap quest.
+                </p>
+            </div>
+            <div class="page-actions">
+                <a href="{{ route('finance.index') }}" class="btn-ghost">Open Finance</a>
+                <a href="{{ route('library.index') }}" class="btn-ghost">Open Library</a>
+            </div>
         </div>
-        <h1 class="font-pixel text-soil-dark flex items-center gap-3" style="font-size: 14px; letter-spacing: 0.05em;">
-            <svg viewBox="0 0 24 24" fill="none" class="w-6 h-6 text-grass-dark">
-                <path d="M14.7 6.3L7 14l-2 5 5-2 7.7-7.7-3-3z M11 21h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            QUEST BOARD
-        </h1>
-        <p class="font-sans text-soil text-sm mt-2">Kelola semua tugas, history, prioritas, dan progress dengan detail lengkap.</p>
-    </div>
+    </section>
+
+    @php
+        $questTotal = \App\Models\Quest::count();
+        $questActive = \App\Models\Quest::where('is_completed', false)->count();
+        $questImportant = \App\Models\Quest::where('is_important', true)->count();
+        $questProgress = $questTotal > 0 ? round(\App\Models\Quest::avg('progress') ?? 0) : 0;
+    @endphp
+
+    <section class="metric-strip">
+        <div class="metric-tile">
+            <p class="metric-label">Total Quests</p>
+            <p class="metric-value">{{ $questTotal }}</p>
+        </div>
+        <div class="metric-tile">
+            <p class="metric-label">Active</p>
+            <p class="metric-value text-grass-dark">{{ $questActive }}</p>
+        </div>
+        <div class="metric-tile">
+            <p class="metric-label">Important</p>
+            <p class="metric-value text-corn-dark">{{ $questImportant }}</p>
+        </div>
+        <div class="metric-tile">
+            <p class="metric-label">Avg Progress</p>
+            <p class="metric-value">{{ $questProgress }}%</p>
+        </div>
+    </section>
 
     @livewire('quest-board')
-
 </x-app-layout>

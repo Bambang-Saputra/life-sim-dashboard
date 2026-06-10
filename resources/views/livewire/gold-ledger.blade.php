@@ -48,13 +48,28 @@
     {{-- ── FORM ── --}}
     <div x-show="showForm" x-collapse>
         <form wire:submit.prevent="save"
-              class="mb-5 p-4 bg-cream/50 border border-cream-dark"
-              style="border-radius: 6px;">
-            <p class="section-title mb-4" style="font-size: 9px;">
+              class="form-shell">
+            <div class="form-shell-header">
+                <div>
+                    <p class="form-shell-title">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-corn-dark">
+                            <path d="M12 6v12M7 10h7a3 3 0 0 1 0 6H8m8 2H7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        {{ $editingId ? 'Edit Transaction' : 'Add Transaction' }}
+                    </p>
+                    <p class="form-shell-subtitle">
+                        Catat pemasukan atau pengeluaran dengan kategori yang sesuai agar chart tetap akurat.
+                    </p>
+                </div>
+                <span class="{{ $type === 'in' ? 'tag-grass' : 'tag-berry' }}">
+                    {{ $type === 'in' ? 'Income' : 'Expense' }}
+                </span>
+            </div>
+            <p class="hidden" style="font-size: 9px;">
                 {{ $editingId ? '✏ EDIT ENTRY' : '✚ NEW ENTRY' }}
             </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="form-shell-body grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                     <label class="field-label">Type *</label>
                     <select wire:model.live="type" class="input-pixel">

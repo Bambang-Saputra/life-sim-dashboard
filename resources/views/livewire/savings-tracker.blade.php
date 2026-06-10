@@ -57,13 +57,24 @@
     {{-- Saving form --}}
     <div x-show="showSavingForm" x-collapse>
         <form wire:submit.prevent="saveSaving"
-              class="mb-5 p-4 bg-cream/50 border border-cream-dark"
-              style="border-radius: 6px;">
-            <p class="section-title mb-4" style="font-size: 9px;">
+              class="form-shell">
+            <div class="form-shell-header">
+                <div>
+                    <p class="form-shell-title">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-corn-dark">
+                            <path d="M3 7h18l-2 13H5L3 7zm3 0V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2M9 11v6M15 11v6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        {{ $editingSavingId ? 'Edit Saving Goal' : 'Create Saving Goal' }}
+                    </p>
+                    <p class="form-shell-subtitle">Pisahkan target tabungan agar progress bulanan lebih mudah dipantau.</p>
+                </div>
+                <span class="tag-corn">Goal</span>
+            </div>
+            <p class="hidden" style="font-size: 9px;">
                 {{ $editingSavingId ? '✏ EDIT TABUNGAN' : '✚ TABUNGAN BARU' }}
             </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="form-shell-body grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div class="md:col-span-2">
                     <label class="field-label">Nama Tabungan *</label>
                     <input wire:model="name" type="text" placeholder="e.g. Liburan Bali, Beli motor..." class="input-pixel">

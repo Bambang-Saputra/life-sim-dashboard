@@ -43,7 +43,21 @@
          TAB: SEARCH
     ══════════════════════════ --}}
     @if($activeTab === 'search')
-        <form wire:submit.prevent="submitSearch" class="flex gap-2 mb-5">
+        <form wire:submit.prevent="submitSearch" class="form-shell">
+            <div class="form-shell-header">
+                <div>
+                    <p class="form-shell-title">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-sky-dark">
+                            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                            <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Discover Media
+                    </p>
+                    <p class="form-shell-subtitle">Browse trending content atau cari judul spesifik dari TMDB dan Jikan.</p>
+                </div>
+                <span class="tag-sky">{{ ucfirst($searchType) }}</span>
+            </div>
+            <div class="form-shell-body flex flex-col lg:flex-row gap-2">
             <input
                 wire:model="searchQuery"
                 type="text"
@@ -68,6 +82,7 @@
                 </span>
                 <span wire:loading wire:target="search" class="animate-blink">...</span>
             </button>
+            </div>
         </form>
 
         @error('searchQuery')

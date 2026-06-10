@@ -47,18 +47,32 @@
     {{-- ── FORM (real <form> with wire:submit) ── --}}
     <div x-show="showForm" x-collapse>
         <form wire:submit.prevent="save"
-              class="mb-5 p-4 bg-cream/50 border border-cream-dark"
-              style="border-radius: 6px;">
+              class="form-shell">
 
-            <p class="section-title mb-4" style="font-size: 9px;">
+            <div class="form-shell-header">
+                <div>
+                    <p class="form-shell-title">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4 text-grass-dark">
+                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        {{ $editingId ? 'Edit Quest' : 'Create New Quest' }}
+                    </p>
+                    <p class="form-shell-subtitle">
+                        Atur prioritas, deadline, progress, dan catatan dampak dalam satu form.
+                    </p>
+                </div>
+                <span class="tag-grass">{{ $editingId ? 'Update mode' : 'New entry' }}</span>
+            </div>
+
+            <p class="hidden" style="font-size: 9px;">
                 {{ $editingId ? '✏ EDIT QUEST' : '✚ NEW QUEST' }}
             </p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="form-shell-body grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div class="md:col-span-2">
                     <label class="field-label">Quest Name *</label>
                     <input wire:model="title" type="text"
-                        placeholder="e.g., Water all the crops..." class="input-pixel" required>
+                        placeholder="Contoh: Review pengeluaran minggu ini" class="input-pixel" required>
                     @error('title') <p class="font-sans text-berry text-xs mt-1">⚠ {{ $message }}</p> @enderror
                 </div>
 
@@ -75,7 +89,7 @@
                 <div>
                     <label class="field-label">Category</label>
                     <input wire:model="category" type="text"
-                        placeholder="farming, social, crafting..." class="input-pixel">
+                        placeholder="work, health, finance, learning..." class="input-pixel">
                 </div>
 
                 <div>
@@ -91,13 +105,13 @@
                 <div class="md:col-span-2">
                     <label class="field-label">Description</label>
                     <textarea wire:model="description" rows="2"
-                        placeholder="Catatan utama..." class="input-pixel"></textarea>
+                        placeholder="Ringkasan tugas yang harus dilakukan..." class="input-pixel"></textarea>
                 </div>
 
                 <div class="md:col-span-2">
                     <label class="field-label">History / Notes</label>
                     <textarea wire:model="history" rows="3"
-                        placeholder="Catatan history, progress, dampak..." class="input-pixel"></textarea>
+                        placeholder="Catatan progress, keputusan, hasil, atau dampak dari tugas ini..." class="input-pixel"></textarea>
                 </div>
 
                 <div>
