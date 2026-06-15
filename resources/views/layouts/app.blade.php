@@ -111,7 +111,7 @@
         {{ $slot }}
     </main>
 
-    @livewireScripts
+    @livewireScriptConfig
 
     <script>
     function appTheme() {
