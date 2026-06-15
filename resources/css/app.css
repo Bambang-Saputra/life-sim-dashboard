@@ -300,7 +300,18 @@
     }
 
     .page-hero-content {
-        @apply relative p-5 sm:p-6 flex flex-col xl:flex-row xl:items-end xl:justify-between gap-4;
+        @apply relative p-5 sm:p-6 flex flex-col lg:flex-row lg:items-center gap-5;
+    }
+
+    .page-hero-text {
+        @apply flex-1 min-w-0;
+    }
+
+    /* Decorative pixel-art scene on the right of each page hero */
+    .page-hero-art {
+        @apply hidden lg:block shrink-0 relative pointer-events-none select-none;
+        width: 300px;
+        height: 156px;
     }
 
     .page-kicker {
