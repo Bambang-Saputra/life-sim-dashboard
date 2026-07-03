@@ -10,6 +10,17 @@
         <a href="{{ route('finance.index') }}" class="font-sans text-xs text-grass-dark hover:text-grass font-semibold no-underline">View Detail →</a>
     </div>
 
+    {{-- Chip status budget bulan ini (klik menuju Budget Board) --}}
+    @if($this->budgetAlert)
+        <a href="{{ route('finance.index') }}"
+           class="insight-card insight-{{ $this->budgetAlert['tone'] }} block mb-4 no-underline hover:brightness-105 transition">
+            <p class="font-sans text-sm text-soil-dark flex items-center gap-2">
+                <span>{{ ['danger' => '🚨', 'warning' => '⏳', 'success' => '🛡️'][$this->budgetAlert['tone']] }}</span>
+                <span class="font-semibold">{{ $this->budgetAlert['text'] }}</span>
+            </p>
+        </a>
+    @endif
+
     {{-- Balance + Savings --}}
     <div class="grid grid-cols-2 gap-2 mb-4">
         <div class="px-3 py-3 border border-cream-dark bg-cream/40" style="border-radius: 6px;">

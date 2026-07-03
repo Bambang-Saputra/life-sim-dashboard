@@ -128,7 +128,9 @@
         <form wire:submit.prevent="saveDeposit"
               class="mb-5 p-4 bg-grass-light/30 border border-grass/40"
               style="border-radius: 6px;">
-            <p class="section-title mb-4 text-grass-dark" style="font-size: 9px;">💸 SETOR / TARIK</p>
+            <p class="section-title mb-4 text-grass-dark" style="font-size: 9px;">
+                {{ $editingDepositId ? '✏ EDIT SETORAN' : '💸 SETOR / TARIK' }}
+            </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
@@ -230,4 +232,52 @@
             </div>
         @endforelse
     </div>
+
+    {{-- ── RIWAYAT SETORAN (edit / hapus) ── --}}
+    @if($this->recentDeposits->isNotEmpty())
+        <div class="mt-5 pt-4 border-t border-cream-dark">
+            <button type="button" wire:click="$toggle('showHistory')"
+                    class="font-sans font-semibold text-soil text-xs uppercase tracking-wider flex items-center gap-1.5 hover:text-soil-dark transition-colors">
+                <span>{{ $showHistory ? '▼' : '▶' }}</span>
+                Riwayat Setoran ({{ $this->recentDeposits->count() }} terbaru)
+            </button>
+
+            @if($showHistory)
+                <div class="space-y-1.5 mt-3">
+                    @foreach($this->recentDeposits as $d)
+                        <div class="card-item flex items-center gap-2.5 px-3 py-2
+                            {{ $d->amount >= 0 ? 'border-l-2 !border-l-grass' : 'border-l-2 !border-l-berry/60' }}">
+                            <span class="flex-shrink-0 text-base">{{ $d->goal?->icon ?? '💰' }}</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="font-sans font-medium text-soil-dark text-sm truncate">{{ $d->goal?->name ?? '(goal terhapus)' }}</span>
+                                    <span class="tag-sky">{{ $d->deposited_at->format('d M Y') }}</span>
+                                </div>
+                                @if($d->note)
+                                    <p class="font-sans text-stone text-xs mt-0.5 truncate">{{ $d->note }}</p>
+                                @endif
+                            </div>
+                            <span class="font-mono font-semibold text-sm flex-shrink-0 {{ $d->amount >= 0 ? 'text-grass-dark' : 'text-berry-dark' }}">
+                                {{ $d->amount >= 0 ? '+' : '-' }}Rp {{ number_format(abs($d->amount), 0, ',', '.') }}
+                            </span>
+                            <div class="flex gap-1 flex-shrink-0">
+                                <button type="button" wire:click="startEditDeposit({{ $d->id }})" class="btn-icon text-sky-dark" title="Edit setoran">
+                                    <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5">
+                                        <path d="M11 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6m-9-2l9-9 3 3-9 9h-3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button type="button" wire:click="deleteDeposit({{ $d->id }})"
+                                        wire:confirm="Hapus setoran ini? Saldo goal akan berkurang."
+                                        class="btn-icon text-berry" title="Hapus setoran">
+                                    <svg viewBox="0 0 24 24" fill="none" class="w-3.5 h-3.5">
+                                        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+        </div>
+    @endif
 </div>

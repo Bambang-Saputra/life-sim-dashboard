@@ -46,10 +46,23 @@ class SavingsTracker extends Component
     public string $depositNote = '';
 
     public bool $showDepositForm = false;
+    public ?int $editingDepositId = null;
+    public bool $showHistory = false;
 
     public function mount(): void
     {
         $this->depositDate = now()->format('Y-m-d');
+    }
+
+    /** Riwayat setoran terbaru lintas semua goal (untuk edit/hapus). */
+    #[Computed]
+    public function recentDeposits()
+    {
+        return SavingDeposit::with('goal:id,name,icon')
+            ->orderByDesc('deposited_at')
+            ->orderByDesc('id')
+            ->limit(10)
+            ->get();
     }
 
     #[Computed]
@@ -142,17 +155,37 @@ class SavingsTracker extends Component
             'depositNote'     => 'nullable|string|max:200',
         ]);
 
-        SavingDeposit::create([
+        $data = [
             'saving_id'    => $this->depositSavingId,
             'amount'       => $this->depositAmount,
             'deposited_at' => $this->depositDate,
             'note'         => $this->depositNote ?: null,
-        ]);
+        ];
 
-        $this->showDepositForm = false;
-        $this->depositSavingId = null;
-        $this->depositAmount   = '';
-        $this->depositNote     = '';
+        if ($this->editingDepositId) {
+            SavingDeposit::findOrFail($this->editingDepositId)->update($data);
+        } else {
+            SavingDeposit::create($data);
+        }
+
+        $this->cancelDepositForm();
+    }
+
+    public function startEditDeposit(int $id): void
+    {
+        $d = SavingDeposit::findOrFail($id);
+        $this->editingDepositId = $id;
+        $this->depositSavingId  = $d->saving_id;
+        $this->depositAmount    = (string) $d->amount;
+        $this->depositDate      = $d->deposited_at->format('Y-m-d');
+        $this->depositNote      = $d->note ?? '';
+        $this->showDepositForm  = true;
+        $this->showHistory      = true;
+    }
+
+    public function deleteDeposit(int $id): void
+    {
+        SavingDeposit::findOrFail($id)->delete();
     }
 
     public function cancelSavingForm(): void
@@ -162,8 +195,12 @@ class SavingsTracker extends Component
 
     public function cancelDepositForm(): void
     {
-        $this->showDepositForm = false;
-        $this->depositSavingId = null;
+        $this->showDepositForm  = false;
+        $this->depositSavingId  = null;
+        $this->editingDepositId = null;
+        $this->depositAmount    = '';
+        $this->depositNote      = '';
+        $this->depositDate      = now()->format('Y-m-d');
     }
 
     private function resetSavingForm(): void

@@ -177,6 +177,7 @@
         <div>@livewire('gold-ledger')</div>
         <div class="space-y-5">
             @livewire('budget-board')
+            @livewire('recurring-manager')
             @livewire('savings-tracker')
         </div>
     </div>

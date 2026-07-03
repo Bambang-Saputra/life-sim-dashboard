@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Log;
 use App\Models\Quest;
+use App\Models\RecurringTemplate;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -17,6 +18,19 @@ Artisan::command('inspire', function () {
 | Run cron every minute (in Laragon: php artisan schedule:work),
 | atau di server: * * * * * cd /path && php artisan schedule:run
 */
+
+// Recurring transactions — posting harian pukul 00:10 WIB
+// (idempotent; halaman Finance juga memanggil postDue sebagai safety net)
+Schedule::call(function () {
+    $posted = RecurringTemplate::postDue();
+    if ($posted > 0) {
+        Log::info('💫 Recurring transactions posted', ['count' => $posted]);
+    }
+})
+->dailyAt('00:10')
+->timezone('Asia/Jakarta')
+->name('finance:post-recurring')
+->withoutOverlapping();
 
 // Morning notification — log overdue quests at 07:00 Asia/Jakarta
 Schedule::call(function () {
