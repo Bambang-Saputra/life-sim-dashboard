@@ -124,5 +124,33 @@ Alpine.data('doughnutChart', (config) => ({
     destroy() { if (this.chart) this.chart.destroy(); },
 }));
 
+// ─── Pixel Scene Component ───
+// Interaktivitas bersama untuk scene pixel-art di page hero:
+// - Parallax mouse: set --px/--py (-1..1) di root scene, layer CSS
+//   .par-far/.par-mid/.par-near translate dengan depth berbeda.
+// - pop(): state "burst" sekali jalan untuk reaksi klik
+//   (trofi meledak sparkle, brankas goyang + koin, TV menyala).
+// Menghormati prefers-reduced-motion (parallax dimatikan).
+Alpine.data('pixelScene', () => ({
+    px: 0,
+    py: 0,
+    burst: false,
+    _reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    onMove(event) {
+        if (this._reduced) return;
+        const rect = this.$el.getBoundingClientRect();
+        this.px = +(((event.clientX - rect.left) / rect.width - 0.5) * 2).toFixed(3);
+        this.py = +(((event.clientY - rect.top) / rect.height - 0.5) * 2).toFixed(3);
+    },
+    resetPointer() {
+        this.px = 0;
+        this.py = 0;
+    },
+    pop() {
+        this.burst = true;
+        setTimeout(() => (this.burst = false), 900);
+    },
+}));
+
 // ── Boot ── (registrasi di atas dijamin selesai sebelum Alpine men-walk DOM)
 Livewire.start();

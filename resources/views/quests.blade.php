@@ -19,56 +19,70 @@
             </div>
 
             {{-- ⚔ Pixel scene: adventurer leveling up --}}
-            <div class="page-hero-art" aria-hidden="true">
-                {{-- soft glow --}}
-                <div class="anim-shimmer" style="position:absolute; top:18px; left:120px; width:90px; height:90px; background:radial-gradient(circle,rgba(241,204,142,0.55),transparent 68%);"></div>
+            @php
+                $earnedXp = (int) \App\Models\Quest::where('is_completed', true)->sum('xp_reward');
+                $heroLevel = intdiv($earnedXp, 100) + 1;
+                $heroLevelProgress = $earnedXp % 100;
+            @endphp
+            <div class="page-hero-art is-live" aria-hidden="false">
+                <div class="pxs"
+                     x-data="pixelScene"
+                     :class="burst && 'is-burst'"
+                     @mousemove="onMove($event)"
+                     @mouseleave="resetPointer"
+                     :style="`--px:${px};--py:${py}`">
+                    {{-- langit senja: 4 pita + dither --}}
+                    <div class="absolute inset-x-0" style="top:0; height:40px; background:#5E4168;"></div>
+                    <div class="absolute inset-x-0" style="top:40px; height:36px; background:#8A5570;"></div>
+                    <div class="absolute inset-x-0" style="top:76px; height:30px; background:#C97A5E;"></div>
+                    <div class="absolute inset-x-0" style="top:106px; height:22px; background:#EFAF7E;"></div>
+                    <div class="px-dither" style="top:36px; --da:#8A5570; --db:#5E4168;"></div>
+                    <div class="px-dither" style="top:72px; --da:#C97A5E; --db:#8A5570;"></div>
+                    <div class="px-dither" style="top:102px; --da:#EFAF7E; --db:#C97A5E;"></div>
 
-                {{-- LEVEL UP! tag --}}
-                <div style="position:absolute; top:6px; left:96px; background:#9A3F56; border:2px solid #5C4632; padding:2px 7px; box-shadow:0 2px 0 #5C4632;">
-                    <span class="font-pixel" style="font-size:7px; color:#FBF7EC; letter-spacing:0.08em; white-space:nowrap;">LEVEL UP!</span>
-                </div>
-
-                {{-- floating XP stars --}}
-                <div class="anim-sway" style="position:absolute; top:40px; left:72px;  color:#E5B567; font-size:14px;">★</div>
-                <div class="anim-sway" style="position:absolute; top:30px; left:212px; color:#F1CC8E; font-size:10px; animation-delay:.5s;">★</div>
-                <div class="anim-sway" style="position:absolute; top:64px; left:236px; color:#E5B567; font-size:12px; animation-delay:.9s;">✦</div>
-
-                {{-- grass platform --}}
-                <div style="position:absolute; bottom:20px; left:78px;  width:150px; height:16px; background:#4E7D4C; border-radius:50% 50% 0 0; opacity:.85;"></div>
-                <div style="position:absolute; bottom:20px; left:104px; width:96px;  height:22px; background:#5C8F58; border-radius:50% 50% 0 0;"></div>
-
-                {{-- raised sword (above hero) --}}
-                <div style="position:absolute; bottom:96px; left:150px;">
-                    <div style="width:5px; height:30px; background:linear-gradient(180deg,#FBF7EC,#C9C4C0); border:1px solid #7B7672; margin:0 auto;"></div>
-                    <div style="width:16px; height:4px; background:#C99845; border:1px solid #5C4632; margin:-1px auto 0;"></div>
-                    <div style="width:5px; height:5px; background:#E5B567; border:1px solid #5C4632; margin:0 auto; border-radius:50%;"></div>
-                </div>
-
-                {{-- hero --}}
-                <div style="position:absolute; bottom:30px; left:138px; width:28px; height:40px;">
-                    {{-- raised arm --}}
-                    <div style="position:absolute; top:6px; left:19px; width:5px; height:13px; background:#E8C7A0; border:1px solid #5C4632; transform:rotate(18deg);"></div>
-                    {{-- head + hair --}}
-                    <div style="position:absolute; top:2px; left:7px; width:14px; height:13px; background:#E8C7A0; border:1px solid #5C4632;"></div>
-                    <div style="position:absolute; top:0;  left:6px; width:16px; height:6px;  background:#5C4632;"></div>
-                    {{-- body --}}
-                    <div style="position:absolute; top:14px; left:5px; width:18px; height:16px; background:#4E7D4C; border:1px solid #3D5A3A;"></div>
-                    <div style="position:absolute; top:24px; left:5px; width:18px; height:3px;  background:#C99845;"></div>
-                    {{-- legs --}}
-                    <div style="position:absolute; top:30px; left:7px;  width:6px; height:10px; background:#5C4632;"></div>
-                    <div style="position:absolute; top:30px; left:15px; width:6px; height:10px; background:#5C4632;"></div>
-                    {{-- shield arm --}}
-                    <div style="position:absolute; top:16px; left:0; width:7px; height:10px; background:#77AADD; border:1px solid #4E7AA8; border-radius:2px;"></div>
-                </div>
-
-                {{-- XP progress bar --}}
-                <div style="position:absolute; bottom:4px; left:84px; width:138px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
-                        <span class="font-pixel" style="font-size:6px; color:#83644A;">XP</span>
-                        <span class="font-pixel" style="font-size:6px; color:#83644A;">LV.7</span>
+                    <div class="par par-far">
+                        {{-- matahari terbenam stepped --}}
+                        <div class="px-halfsun" style="left:118px; top:104px; width:64px; height:24px; background:#F1CC8E; filter:drop-shadow(0 0 14px rgba(241,204,142,0.55));"></div>
+                        {{-- gunung stair-stepped --}}
+                        <div class="px-mtn" style="left:-24px; top:64px; width:120px; height:64px; background:#4A3557;"></div>
+                        <div class="px-mtn" style="right:-20px; top:52px; width:140px; height:76px; background:#4A3557;"></div>
                     </div>
-                    <div style="height:8px; background:#E8DEC4; border:1px solid #C99845; border-radius:4px; overflow:hidden;">
-                        <div style="width:68%; height:100%; background:linear-gradient(90deg,#6BA368,#5C8F58);"></div>
+
+                    {{-- tanah --}}
+                    <div class="absolute inset-x-0" style="top:128px; height:4px; background:#8FBC8A;"></div>
+                    <div class="absolute inset-x-0" style="top:132px; height:12px; background:#6BA368;"></div>
+                    <div class="absolute inset-x-0" style="top:144px; height:2px; background:#5C4632;"></div>
+                    <div class="absolute inset-x-0" style="top:146px; height:10px; background:#83644A;"></div>
+
+                    <div class="par par-mid">
+                        {{-- bendera --}}
+                        <div class="absolute" style="right:34px; top:58px; width:4px; height:74px; background:#5C4632;">
+                            <span class="qx-flagcloth"></span>
+                        </div>
+                        {{-- sparkles --}}
+                        <div class="px-spark" style="left:56px; top:44px;"></div>
+                        <div class="px-spark" style="left:230px; top:30px; animation-delay:.6s;"></div>
+                        <div class="px-spark" style="left:96px; top:20px; animation-delay:1.1s;"></div>
+                    </div>
+
+                    <div class="par par-near">
+                        {{-- trofi interaktif: klik = burst sparkle --}}
+                        <button type="button" @click="pop"
+                                style="left:50%; top:26px; transform:translateX(-50%); width:90px; height:104px;"
+                                title="Level {{ $heroLevel }} — {{ number_format($earnedXp) }} XP"
+                                aria-label="Trofi level {{ $heroLevel }}, klik untuk merayakan">
+                            <span class="qx-plate">LV.{{ $heroLevel }}</span>
+                            <span class="qx-trophy-cup"></span>
+                            <span class="qx-star"></span>
+                            <span class="qx-taper"></span>
+                            <span class="qx-stem"></span>
+                            <span class="qx-base"></span>
+                        </button>
+                        <div class="px-burst" style="left:50%; top:80px;"><i></i><i></i><i></i><i></i><i></i></div>
+                        {{-- progress XP menuju level berikutnya --}}
+                        <div class="absolute" style="left:50%; top:136px; transform:translateX(-50%); width:110px; height:8px; background:#5C4632; border:2px solid #3E2F22; overflow:hidden;">
+                            <div style="width: {{ $heroLevelProgress }}%; height:100%; background:#E5B567; box-shadow: inset 0 2px 0 #F1CC8E;"></div>
+                        </div>
                     </div>
                 </div>
             </div>

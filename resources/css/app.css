@@ -508,4 +508,303 @@
     .anim-lantern  { animation: lantern-glow 2s ease-in-out infinite; }
     .anim-pond     { animation: pond-ripple 3s ease-in-out infinite; transform-origin: center; }
     .anim-leaf     { animation: leaf-fall 8s ease-in infinite; }
+
+    /* ══════════════════════════════════════════
+       PIXEL SCENES v2 — sinkron dengan Figma
+       Teknik: banded ramp (tanpa gradient halus),
+       dither checkerboard, stair-stepped silhouettes,
+       parallax 3-layer + click reactions.
+    ══════════════════════════════════════════ */
+
+    .page-hero-art.is-live {
+        pointer-events: auto;
+    }
+
+    .pxs {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        image-rendering: pixelated;
+        --px: 0;
+        --py: 0;
+        border: 2px solid #5C4632;
+        border-radius: 6px;
+    }
+    .pxs * { border-radius: 0; }
+    .pxs .par {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+    }
+    .pxs .par-far  { transform: translate(calc(var(--px) * 3px),  calc(var(--py) * 2px)); transition: transform 300ms ease-out; }
+    .pxs .par-mid  { transform: translate(calc(var(--px) * 6px),  calc(var(--py) * 4px)); transition: transform 220ms ease-out; }
+    .pxs .par-near { transform: translate(calc(var(--px) * 10px), calc(var(--py) * 6px)); transition: transform 160ms ease-out; }
+    .pxs button {
+        position: absolute;
+        pointer-events: auto;
+        cursor: pointer;
+        background: none;
+        border: 0;
+        padding: 0;
+        transition: filter 140ms ease;
+    }
+    .pxs button:hover { filter: brightness(1.12) drop-shadow(0 0 8px rgba(241,204,142,0.5)); }
+
+    /* Dither row: checkerboard 8px antara dua pita warna */
+    .px-dither {
+        position: absolute;
+        left: 0; right: 0;
+        height: 8px;
+        background: repeating-conic-gradient(var(--da) 0% 25%, var(--db) 0% 50%) 0 0 / 16px 16px;
+    }
+
+    /* Siluet stair-stepped (gunung & bukit) */
+    .px-mtn {
+        position: absolute;
+        clip-path: polygon(
+            0% 100%, 0% 78%, 10% 78%, 10% 56%, 20% 56%, 20% 34%, 30% 34%, 30% 12%,
+            42% 12%, 42% 0%, 58% 0%, 58% 12%, 70% 12%, 70% 34%, 80% 34%, 80% 56%,
+            90% 56%, 90% 78%, 100% 78%, 100% 100%
+        );
+    }
+    .px-halfsun {
+        position: absolute;
+        clip-path: polygon(
+            10% 100%, 10% 62%, 24% 62%, 24% 30%, 40% 30%, 40% 0%,
+            60% 0%, 60% 30%, 76% 30%, 76% 62%, 90% 62%, 90% 100%
+        );
+    }
+
+    /* Sparkle plus-shape */
+    .px-spark {
+        position: absolute;
+        width: 12px; height: 12px;
+        pointer-events: none;
+        animation: shimmer 1.8s ease-in-out infinite;
+    }
+    .px-spark::before,
+    .px-spark::after {
+        content: '';
+        position: absolute;
+        background: #F1CC8E;
+    }
+    .px-spark::before { left: 4px; top: 0; width: 4px; height: 12px; }
+    .px-spark::after  { left: 0; top: 4px; width: 12px; height: 4px; }
+
+    /* Burst partikel saat klik */
+    .px-burst { position: absolute; pointer-events: none; }
+    .px-burst i {
+        position: absolute;
+        width: 8px; height: 8px;
+        background: #F1CC8E;
+        border: 2px solid #5C4632;
+        transform: rotate(45deg);
+        opacity: 0;
+    }
+    .pxs.is-burst .px-burst i { animation: px-burst-fly 0.8s ease-out forwards; }
+    .px-burst i:nth-child(1) { --bx: -38px; --by: -34px; }
+    .px-burst i:nth-child(2) { --bx: 36px;  --by: -40px; animation-delay: 0.05s; }
+    .px-burst i:nth-child(3) { --bx: -18px; --by: -52px; animation-delay: 0.1s; }
+    .px-burst i:nth-child(4) { --bx: 22px;  --by: -18px; animation-delay: 0.15s; }
+    .px-burst i:nth-child(5) { --bx: 0px;   --by: -60px; animation-delay: 0.2s; }
+
+    /* ─── QUEST: halaman trofi senja ─── */
+    .qx-trophy-cup {
+        position: absolute;
+        left: 50%; top: 26px;
+        transform: translateX(-50%);
+        width: 44px; height: 26px;
+        background: #E5B567;
+        box-shadow:
+            inset 4px 0 0 #F1CC8E,
+            inset -6px -4px 0 #C99845,
+            0 0 16px rgba(241, 204, 142, 0.35);
+        animation: qx-glow 2.6s ease-in-out infinite;
+    }
+    .qx-trophy-cup::before,
+    .qx-trophy-cup::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        width: 10px; height: 14px;
+        border: 3px solid #C99845;
+    }
+    .qx-trophy-cup::before { left: -12px; border-right: 0; }
+    .qx-trophy-cup::after  { right: -12px; border-left: 0; }
+    .qx-star {
+        position: absolute;
+        left: 50%; top: 32px;
+        transform: translateX(-50%);
+        width: 14px; height: 14px;
+        background: #BE546E;
+        clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+    .qx-taper {
+        position: absolute;
+        left: 50%; top: 52px;
+        transform: translateX(-50%);
+        width: 26px; height: 6px;
+        background: #C99845;
+    }
+    .qx-stem {
+        position: absolute;
+        left: 50%; top: 58px;
+        transform: translateX(-50%);
+        width: 8px; height: 10px;
+        background: #C99845;
+    }
+    .qx-base {
+        position: absolute;
+        left: 50%; top: 68px;
+        transform: translateX(-50%);
+        width: 36px; height: 10px;
+        background: #83644A;
+        box-shadow: inset 0 -4px 0 #5C4632;
+    }
+    .qx-plate {
+        position: absolute;
+        left: 50%; top: 0;
+        transform: translateX(-50%);
+        padding: 3px 7px;
+        background: #9A3F56;
+        border: 2px solid #5C4632;
+        box-shadow: 0 2px 0 #5C4632;
+        font-family: 'Press Start 2P', monospace;
+        font-size: 8px;
+        color: #FBF7EC;
+        white-space: nowrap;
+    }
+    .qx-flagcloth {
+        position: absolute;
+        top: 0; left: 4px;
+        width: 22px; height: 13px;
+        background: #BE546E;
+        border: 2px solid #5C4632;
+        transform-origin: left center;
+        animation: flag-wave 2.2s ease-in-out infinite;
+    }
+
+    /* ─── FINANCE: ruang akunting ─── */
+    .fx-dial {
+        position: absolute;
+        left: 50%; top: 16px;
+        transform: translateX(-50%);
+        width: 18px; height: 18px;
+        border-radius: 50% !important;
+        background: #7B7672;
+        border: 3px solid #5C4632;
+    }
+    .fx-dial::before {
+        content: '';
+        position: absolute;
+        left: 50%; top: 1px;
+        width: 3px; height: 7px;
+        margin-left: -1.5px;
+        background: #FBF7EC;
+        transform-origin: center 8px;
+        animation: fx-dial-turn 7s linear infinite;
+    }
+    .fx-vault.is-shake { animation: fx-vault-shake 0.5s ease; }
+    .fx-coin {
+        position: absolute;
+        width: 18px; height: 6px;
+        background: #E5B567;
+        border: 2px solid #C99845;
+        overflow: hidden;
+    }
+    .fx-coin::after {
+        content: '';
+        position: absolute;
+        top: 0; bottom: 0; left: -30%;
+        width: 30%;
+        background: rgba(255,255,255,0.55);
+        transform: skewX(-24deg);
+        animation: fx-coin-glint 3.4s ease-in-out infinite;
+    }
+    .fx-burst-coin {
+        position: absolute;
+        width: 14px; height: 14px;
+        border-radius: 50% !important;
+        background: #F1CC8E;
+        border: 3px solid #C99845;
+        opacity: 0;
+        pointer-events: none;
+    }
+    .pxs.is-burst .fx-burst-coin { animation: fx-coin-pop 0.8s ease-out; }
+    .fx-piggy:hover { animation: sway 0.6s ease-in-out; }
+
+    /* ─── LIBRARY: pojok baca ─── */
+    .lx-screen {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 38px;
+        background: #2E3D50;
+        border: 3px solid #5C4632;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 200ms ease, box-shadow 200ms ease;
+        animation: lx-flicker 4s ease-in-out infinite;
+    }
+    .pxs.is-burst .lx-screen {
+        background: #77AADD;
+        box-shadow: 0 0 22px rgba(119, 170, 221, 0.8);
+        animation: none;
+    }
+    .lx-play {
+        width: 0; height: 0;
+        border-style: solid;
+        border-width: 7px 0 7px 12px;
+        border-color: transparent transparent transparent #FBF7EC;
+    }
+    .pxs.is-burst .lx-play { display: none; }
+    .lx-book {
+        position: absolute;
+        bottom: 0;
+        width: 10px;
+        background: var(--bc, #6BA368);
+        border: 2px solid #5C4632;
+        transition: transform 140ms ease;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+    .lx-book:hover { transform: translateY(-5px); }
+
+    /* ─── Keyframes scene v2 ─── */
+    @keyframes px-burst-fly {
+        0%   { opacity: 1; transform: translate(0, 0) rotate(45deg) scale(1); }
+        100% { opacity: 0; transform: translate(var(--bx), var(--by)) rotate(225deg) scale(0.4); }
+    }
+    @keyframes qx-glow {
+        0%, 100% { filter: brightness(1); }
+        50%      { filter: brightness(1.18) drop-shadow(0 0 10px rgba(241,204,142,0.6)); }
+    }
+    @keyframes fx-vault-shake {
+        0%, 100% { transform: translateX(0) rotate(0); }
+        20% { transform: translateX(-4px) rotate(-2deg); }
+        40% { transform: translateX(4px) rotate(2deg); }
+        60% { transform: translateX(-3px) rotate(-1deg); }
+        80% { transform: translateX(2px) rotate(1deg); }
+    }
+    @keyframes fx-dial-turn {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+    }
+    @keyframes fx-coin-glint {
+        0%, 60%, 100% { left: -30%; }
+        30% { left: 110%; }
+    }
+    @keyframes fx-coin-pop {
+        0%   { opacity: 1; transform: translateY(0) scale(0.6); }
+        60%  { opacity: 1; transform: translateY(-38px) scale(1.1); }
+        100% { opacity: 0; transform: translateY(-54px) scale(0.8); }
+    }
+    @keyframes lx-flicker {
+        0%, 100% { box-shadow: 0 0 6px rgba(119, 170, 221, 0.18); }
+        50%      { box-shadow: 0 0 14px rgba(119, 170, 221, 0.32); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .pxs *, .pxs .par { animation: none !important; transition: none !important; }
+    }
 }

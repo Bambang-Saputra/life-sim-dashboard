@@ -19,64 +19,81 @@
             </div>
 
             {{-- 💰 Pixel scene: ledger book + gold --}}
-            <div class="page-hero-art" aria-hidden="true">
-                {{-- warm glow --}}
-                <div class="anim-shimmer" style="position:absolute; top:24px; left:150px; width:96px; height:96px; background:radial-gradient(circle,rgba(229,181,103,0.5),transparent 68%);"></div>
+            <div class="page-hero-art is-live" aria-hidden="false">
+                <div class="pxs"
+                     x-data="pixelScene"
+                     :class="burst && 'is-burst'"
+                     @mousemove="onMove($event)"
+                     @mouseleave="resetPointer"
+                     :style="`--px:${px};--py:${py}`">
+                    {{-- dinding: 2 pita + dither --}}
+                    <div class="absolute inset-x-0" style="top:0; height:60px; background:#EED9BB;"></div>
+                    <div class="absolute inset-x-0" style="top:60px; height:38px; background:#E4CBA6;"></div>
+                    <div class="px-dither" style="top:56px; --da:#E4CBA6; --db:#EED9BB;"></div>
+                    {{-- wainscot + lantai papan --}}
+                    <div class="absolute inset-x-0" style="top:98px; height:4px; background:#5C4632;"></div>
+                    <div class="absolute inset-x-0" style="top:102px; height:12px; background:#83644A;"></div>
+                    <div class="absolute inset-x-0" style="top:114px; height:2px; background:#5C4632;"></div>
+                    <div class="absolute inset-x-0" style="top:116px; height:40px; background:#B8804A; background-image:repeating-linear-gradient(90deg, transparent 0 46px, #9A6A3D 46px 49px);"></div>
 
-                {{-- desk line --}}
-                <div style="position:absolute; bottom:24px; left:18px; right:14px; height:4px; background:#C99845; opacity:.45; border-radius:2px;"></div>
-
-                {{-- floating coins with Rp --}}
-                <div class="anim-sway" style="position:absolute; top:14px; left:120px; width:22px; height:22px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#F1CC8E,#C99845); border:2px solid #A8761F; display:flex; align-items:center; justify-content:center;">
-                    <span class="font-pixel" style="font-size:7px; color:#7A5512;">Rp</span>
-                </div>
-                <div class="anim-sway" style="position:absolute; top:6px; left:196px; width:16px; height:16px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#F1CC8E,#C99845); border:2px solid #A8761F; animation-delay:.6s;"></div>
-
-                {{-- up-trend arrow --}}
-                <div style="position:absolute; top:30px; left:228px;">
-                    <div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:9px solid #6BA368;margin:0 auto;"></div>
-                    <div style="width:4px;height:14px;background:#6BA368;margin:0 auto;"></div>
-                </div>
-
-                {{-- OPEN LEDGER BOOK --}}
-                <div style="position:absolute; bottom:26px; left:30px;">
-                    {{-- spine shadow --}}
-                    <div style="position:absolute; bottom:-4px; left:-4px; width:150px; height:10px; background:#5C4632; opacity:.25; border-radius:50%;"></div>
-                    {{-- left page --}}
-                    <div style="position:absolute; bottom:0; left:0; width:70px; height:54px; background:#FBF7EC; border:2px solid #C9A86A; transform:perspective(120px) rotateY(16deg); transform-origin:right;">
-                        <div style="margin:8px 7px;">
-                            <div style="height:2px;background:#D9CBA6;margin-bottom:5px;"></div>
-                            <div style="height:2px;background:#D9CBA6;margin-bottom:5px;width:80%;"></div>
-                            <div style="height:2px;background:#D9CBA6;margin-bottom:5px;"></div>
-                            <div style="height:2px;background:#9DBE8C;margin-bottom:5px;width:60%;"></div>
+                    <div class="par par-far">
+                        {{-- jendela + matahari --}}
+                        <div class="absolute" style="right:16px; top:10px; width:76px; height:58px; background:#5C4632;">
+                            <span class="absolute" style="inset:5px; background:#77AADD;"></span>
+                            <span class="absolute" style="left:5px; right:5px; bottom:5px; height:14px; background:#A8CDED;"></span>
+                            <span class="absolute anim-shimmer" style="right:14px; top:12px; width:12px; height:12px; background:#F1CC8E; box-shadow:0 0 10px rgba(249,217,75,0.8);"></span>
+                            <span class="absolute" style="left:50%; top:5px; bottom:5px; width:4px; margin-left:-2px; background:#5C4632;"></span>
+                            <span class="absolute" style="left:5px; right:5px; top:50%; height:4px; margin-top:-2px; background:#5C4632;"></span>
+                        </div>
+                        {{-- lukisan mini chart --}}
+                        <div class="absolute" style="left:18px; top:16px; width:44px; height:34px; background:#5C4632;">
+                            <span class="absolute" style="inset:4px; background:#FBF7EC;"></span>
+                            <span class="absolute" style="left:8px; bottom:6px; width:6px; height:10px; background:#BE546E;"></span>
+                            <span class="absolute" style="left:18px; bottom:6px; width:6px; height:15px; background:#E5B567;"></span>
+                            <span class="absolute" style="left:28px; bottom:6px; width:6px; height:20px; background:#6BA368;"></span>
                         </div>
                     </div>
-                    {{-- right page --}}
-                    <div style="position:absolute; bottom:0; left:68px; width:70px; height:54px; background:#FBF7EC; border:2px solid #C9A86A; transform:perspective(120px) rotateY(-16deg); transform-origin:left;">
-                        <div style="margin:8px 7px;">
-                            <div style="height:2px;background:#D9CBA6;margin-bottom:5px;"></div>
-                            <div style="height:2px;background:#C98AA0;margin-bottom:5px;width:70%;"></div>
-                            <div style="height:2px;background:#D9CBA6;margin-bottom:5px;"></div>
-                            <div style="height:2px;background:#9DBE8C;margin-bottom:5px;width:85%;"></div>
+
+                    <div class="par par-mid">
+                        {{-- brankas interaktif: klik = goyang + koin --}}
+                        <button type="button" @click="pop" class="fx-vault"
+                                :class="burst && 'is-shake'"
+                                style="right:26px; top:62px; width:64px; height:60px; background:#A9A39E; box-shadow: inset 0 4px 0 #C9C4C0, inset 4px 0 0 #C9C4C0, inset 0 -4px 0 #7B7672;"
+                                title="Brankas tabungan — klik!"
+                                aria-label="Brankas, klik untuk animasi koin">
+                            <span class="absolute" style="inset:8px 10px; background:#8D8781;"></span>
+                            <span class="fx-dial"></span>
+                            <span class="absolute" style="right:7px; top:22px; width:5px; height:18px; background:#5C4632;"></span>
+                        </button>
+                        <div class="fx-burst-coin" style="right:50px; top:48px;"></div>
+                    </div>
+
+                    <div class="par par-near">
+                        {{-- meja + buku besar + kertas --}}
+                        <div class="absolute" style="left:16px; top:92px; width:104px; height:8px; background:#8A5B33; box-shadow: 0 3px 0 #6E4728;"></div>
+                        <div class="absolute" style="left:22px; top:103px; width:9px; height:26px; background:#5C4632;"></div>
+                        <div class="absolute" style="left:104px; top:103px; width:9px; height:26px; background:#5C4632;"></div>
+                        <div class="absolute" style="left:28px; top:78px; width:38px; height:6px; background:#FBF7EC;"></div>
+                        <div class="absolute" style="left:28px; top:84px; width:38px; height:8px; background:#9A3F56;"></div>
+                        <div class="absolute" style="left:74px; top:84px; width:26px; height:4px; background:#FBF7EC;"></div>
+                        <div class="absolute" style="left:78px; top:88px; width:26px; height:4px; background:#E8DEC4;"></div>
+                        {{-- koin glint --}}
+                        <div class="fx-coin" style="left:102px; top:78px;"></div>
+                        <div class="fx-coin" style="left:102px; top:84px; animation-delay:.8s;"></div>
+                        {{-- celengan (fitur savings) --}}
+                        <div class="fx-piggy absolute" style="left:150px; top:96px; width:48px; height:26px;" title="Savings goals">
+                            <span class="absolute" style="inset:0 6px; background:#D4869A; box-shadow: inset 0 4px 0 #E3A7B5;"></span>
+                            <span class="absolute" style="left:10px; top:-5px; width:5px; height:5px; background:#D4869A;"></span>
+                            <span class="absolute" style="right:8px; top:-5px; width:5px; height:5px; background:#D4869A;"></span>
+                            <span class="absolute" style="left:50%; top:-4px; width:10px; height:4px; margin-left:-5px; background:#5C4632;"></span>
+                            <span class="absolute" style="right:-2px; top:8px; width:10px; height:10px; background:#BE546E;"></span>
+                            <span class="absolute" style="right:0; top:11px; width:3px; height:3px; background:#9A3F56;"></span>
+                            <span class="absolute" style="right:14px; top:7px; width:4px; height:4px; background:#5C4632;"></span>
+                            <span class="absolute" style="left:12px; bottom:-5px; width:5px; height:5px; background:#BE546E;"></span>
+                            <span class="absolute" style="right:12px; bottom:-5px; width:5px; height:5px; background:#BE546E;"></span>
                         </div>
                     </div>
-                    {{-- center binding --}}
-                    <div style="position:absolute; bottom:0; left:66px; width:6px; height:54px; background:#9A3F56; border:1px solid #5C4632;"></div>
                 </div>
-
-                {{-- gold coin stacks --}}
-                <div style="position:absolute; bottom:26px; left:182px;">
-                    @for($c=0;$c<5;$c++)
-                        <div style="width:26px;height:6px;border-radius:50%;background:linear-gradient(180deg,#F1CC8E,#D4A95C);border:1px solid #A8761F;margin-top:-1px;"></div>
-                    @endfor
-                </div>
-                <div style="position:absolute; bottom:26px; left:214px;">
-                    @for($c=0;$c<3;$c++)
-                        <div style="width:24px;height:6px;border-radius:50%;background:linear-gradient(180deg,#F1CC8E,#D4A95C);border:1px solid #A8761F;margin-top:-1px;"></div>
-                    @endfor
-                </div>
-                {{-- single coin --}}
-                <div style="position:absolute; bottom:26px; left:248px; width:18px; height:18px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#F1CC8E,#C99845); border:2px solid #A8761F;"></div>
             </div>
         </div>
     </section>
