@@ -4,12 +4,29 @@
         showToast(msg, variant = 'success') {
             this.toastMsg = msg; this.toastVariant = variant; this.toast = true;
             setTimeout(() => this.toast = false, 3000);
+        },
+        confetti() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const layer = this.$refs.confetti;
+            const colors = ['#E5B567', '#BE546E', '#6BA368', '#77AADD', '#F1CC8E'];
+            for (let i = 0; i < 28; i++) {
+                const p = document.createElement('i');
+                p.style.left = (Math.random() * 100) + '%';
+                p.style.background = colors[i % colors.length];
+                p.style.animationDuration = (0.9 + Math.random() * 0.9) + 's';
+                p.style.animationDelay = (Math.random() * 0.3) + 's';
+                layer.appendChild(p);
+                setTimeout(() => p.remove(), 2400);
+            }
         }
     }"
     @library-item-added.window="showToast($event.detail.title, 'success')"
     @search-failed.window="showToast($event.detail.message || 'Pencarian gagal', 'error')"
+    @rating-stier.window="confetti(); showToast('MASTERPIECE! Masuk S-Tier ⭐', 'success')"
     class="panel"
 >
+    {{-- Lapisan confetti (fixed, tidak menghalangi klik) --}}
+    <div class="confetti-layer" x-ref="confetti" aria-hidden="true"></div>
 
     {{-- ── HEADER ── --}}
     <div class="flex items-center justify-between mb-5">
@@ -43,6 +60,7 @@
          TAB: SEARCH
     ══════════════════════════ --}}
     @if($activeTab === 'search')
+    <div class="tab-pane" wire:key="pane-search">
         <form wire:submit.prevent="submitSearch" class="form-shell">
             <div class="form-shell-header">
                 <div>
@@ -124,11 +142,15 @@
             </div>
 
             @if($isLoadingDefaults || $isSearching)
-                <div class="empty-state">
-                    <p class="font-pixel text-soil animate-blink" style="font-size: 9px;">
-                        {{ $isSearching ? 'SEARCHING...' : 'LOADING...' }}
-                    </p>
-                    <p class="font-sans text-stone text-sm mt-2">Mengambil dari API...</p>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    @for($i = 0; $i < 10; $i++)
+                        <div class="skel-card" style="animation-delay: {{ $i * 60 }}ms;">
+                            <div class="skel skel-cover"></div>
+                            <div class="skel skel-line"></div>
+                            <div class="skel skel-line short"></div>
+                            <div class="skel skel-btn"></div>
+                        </div>
+                    @endfor
                 </div>
             @elseif(empty($items))
                 <div class="empty-state">
@@ -139,12 +161,25 @@
                     <p class="font-sans text-stone text-sm">Tidak bisa memuat daftar. Cek koneksi atau coba search manual.</p>
                 </div>
             @else
+                {{-- Skeleton shimmer selama request API --}}
+                <div wire:loading wire:target="goToPage,nextPage,prevPage,submitSearch,search,searchType"
+                     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                    @for($i = 0; $i < 10; $i++)
+                        <div class="skel-card" style="animation-delay: {{ $i * 60 }}ms;">
+                            <div class="skel skel-cover"></div>
+                            <div class="skel skel-line"></div>
+                            <div class="skel skel-line short"></div>
+                            <div class="skel skel-btn"></div>
+                        </div>
+                    @endfor
+                </div>
+
                 <div
                     id="library-grid"
                     @library-page-changed.window="document.getElementById('library-grid')?.scrollIntoView({behavior:'smooth', block:'start'})"
-                    wire:loading.class="opacity-40"
-                    wire:target="goToPage,nextPage,prevPage,submitSearch,search"
-                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 transition-opacity duration-200"
+                    wire:loading.remove
+                    wire:target="goToPage,nextPage,prevPage,submitSearch,search,searchType"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
                 >
                     @php $owned = $this->ownedKeys; @endphp
                     @foreach($items as $item)
@@ -305,12 +340,14 @@
                 @endif
             @endif
         @endif
+    </div>
     @endif
 
     {{-- ══════════════════════════
          TAB: MY COLLECTION
     ══════════════════════════ --}}
     @if($activeTab === 'collection')
+    <div class="tab-pane" wire:key="pane-collection">
         {{-- Toolbar: Filters + View Toggle + Sort --}}
         <div class="flex flex-wrap gap-2 mb-4 items-center">
             <div class="flex gap-1 flex-wrap">
@@ -550,12 +587,14 @@
                 </div>
             </div>
         @endif
+    </div>
     @endif
 
     {{-- ══════════════════════════
          TAB: STATS
     ══════════════════════════ --}}
     @if($activeTab === 'stats')
+    <div class="tab-pane" wire:key="pane-stats">
         @php $stats = $this->libraryStats; @endphp
 
         @if(($stats['total'] ?? 0) === 0)
@@ -771,6 +810,7 @@
 
             </div>
         @endif
+    </div>
     @endif
 
     {{-- ── TOAST (success / error) ── --}}

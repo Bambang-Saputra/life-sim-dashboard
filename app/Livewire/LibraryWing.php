@@ -187,10 +187,17 @@ class LibraryWing extends Component
             'status'          => 'completed',
         ]);
 
+        $isSTier = (float) $this->ratingInput >= 9.0;
+
         $this->editingRatingId = null;
         $this->ratingInput     = 0;
         $this->reviewInput     = '';
         $this->dispatch('rating-saved');
+
+        // Rating 9.0+ = S-Tier → rayakan dengan confetti di frontend
+        if ($isSTier) {
+            $this->dispatch('rating-stier');
+        }
     }
 
     public function updateStatus(int $libraryItemId, string $status): void

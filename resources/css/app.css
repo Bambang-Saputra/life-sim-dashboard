@@ -880,4 +880,78 @@
         .lw-card:hover { transform: none; }
         .lw-card:hover .lw-cover img { transform: none; }
     }
+
+    /* ══════════════════════════════════════════
+       SKELETON SHIMMER — pengganti teks "LOADING"
+    ══════════════════════════════════════════ */
+
+    .skel-card {
+        @apply bg-white border border-cream-dark p-2.5 flex flex-col gap-2;
+        border-radius: 4px;
+        animation: lw-pop-in 0.3s ease-out both;
+    }
+    .skel {
+        position: relative;
+        overflow: hidden;
+        background: #EFE8D8;
+        border-radius: 4px;
+    }
+    .skel::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        transform: translateX(-100%);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent);
+        animation: skel-sweep 1.3s ease-in-out infinite;
+    }
+    .skel-cover { aspect-ratio: 2 / 3; width: 100%; }
+    .skel-line  { height: 10px; width: 85%; }
+    .skel-line.short { width: 55%; }
+    .skel-btn   { height: 26px; width: 100%; margin-top: auto; }
+    @keyframes skel-sweep {
+        100% { transform: translateX(100%); }
+    }
+
+    /* ══════════════════════════════════════════
+       TAB PANE TRANSITION — konten tab masuk halus
+    ══════════════════════════════════════════ */
+
+    .tab-pane {
+        animation: tab-in 0.28s ease-out both;
+    }
+    @keyframes tab-in {
+        0%   { opacity: 0; transform: translateY(8px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════════════════
+       CONFETTI — perayaan rating S-Tier
+    ══════════════════════════════════════════ */
+
+    .confetti-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 70;
+        overflow: hidden;
+    }
+    .confetti-layer i {
+        position: absolute;
+        top: -14px;
+        width: 9px;
+        height: 9px;
+        border: 2px solid #5C4632;
+        animation: confetti-fall linear both;
+    }
+    .confetti-layer i:nth-child(2n)  { width: 7px; height: 7px; }
+    .confetti-layer i:nth-child(3n)  { border-radius: 50%; }
+    @keyframes confetti-fall {
+        0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+        85%  { opacity: 1; }
+        100% { transform: translateY(105vh) rotate(560deg); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .skel::after, .tab-pane, .confetti-layer i { animation: none !important; }
+    }
 }
