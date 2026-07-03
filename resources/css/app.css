@@ -842,4 +842,42 @@
     .insight-warning { border-left-color: #C99845; background: linear-gradient(90deg, rgba(229,181,103,0.13), transparent 55%), #fff; }
     .insight-danger  { border-left-color: #9A3F56; background: linear-gradient(90deg, rgba(190,84,110,0.11), transparent 55%), #fff; }
     .insight-calm    { border-left-color: #5588BB; background: linear-gradient(90deg, rgba(119,170,221,0.10), transparent 55%), #fff; }
+
+    /* ══════════════════════════════════════════
+       LIBRARY CARD ANIMATIONS
+       - lw-pop: kartu muncul berurutan (stagger via
+         animation-delay inline per index)
+       - lw-card: hover lift + shadow
+       - lw-cover img: zoom halus saat hover kartu
+    ══════════════════════════════════════════ */
+
+    .lw-pop {
+        animation: lw-pop-in 0.4s ease-out both;
+    }
+    @keyframes lw-pop-in {
+        0%   { opacity: 0; transform: translateY(10px) scale(0.97); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .lw-card {
+        transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+    .lw-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 18px rgba(92, 70, 50, 0.16), 0 2px 4px rgba(92, 70, 50, 0.08);
+    }
+
+    .lw-cover img {
+        transition: transform 300ms ease;
+    }
+    .lw-card:hover .lw-cover img {
+        transform: scale(1.05);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .lw-pop { animation: none; }
+        .lw-card, .lw-cover img { transition: none; }
+        .lw-card:hover { transform: none; }
+        .lw-card:hover .lw-cover img { transform: none; }
+    }
 }

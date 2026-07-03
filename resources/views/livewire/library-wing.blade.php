@@ -142,11 +142,16 @@
                 <div
                     id="library-grid"
                     @library-page-changed.window="document.getElementById('library-grid')?.scrollIntoView({behavior:'smooth', block:'start'})"
-                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
+                    wire:loading.class="opacity-40"
+                    wire:target="goToPage,nextPage,prevPage,submitSearch,search"
+                    class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 transition-opacity duration-200"
                 >
+                    @php $owned = $this->ownedKeys; @endphp
                     @foreach($items as $item)
-                        <div class="card-item p-2.5 flex flex-col gap-2 group">
-                            <div class="relative">
+                        @php $isOwned = isset($owned[($item['api_type'] ?? '').':'.($item['external_id'] ?? '')]); @endphp
+                        <div class="card-item lw-card lw-pop p-2.5 flex flex-col gap-2 group"
+                             style="animation-delay: {{ min($loop->index * 35, 420) }}ms;">
+                            <div class="relative lw-cover" style="border-radius: 4px; overflow: hidden;">
                                 @if(!empty($item['cover_image']))
                                     <img src="{{ $item['cover_image'] }}" alt="{{ $item['title'] }}"
                                         class="w-full aspect-[2/3] object-cover" loading="lazy" style="border-radius: 4px;">
@@ -155,6 +160,12 @@
                                          style="border-radius: 4px;">
                                         <span class="font-sans text-stone text-xs">No Image</span>
                                     </div>
+                                @endif
+
+                                {{-- Badge sudah di koleksi --}}
+                                @if($isOwned)
+                                    <span class="absolute top-1 left-1 bg-grass-dark text-white font-sans font-bold text-xs px-1.5 py-0.5"
+                                          style="border-radius: 4px; font-size: 10px;">✓ Koleksi</span>
                                 @endif
 
                                 {{-- Rating badge --}}
@@ -180,12 +191,19 @@
                                 @endif
                             </div>
 
-                            <button wire:click="addToLibrary({{ json_encode($item) }})"
-                                wire:loading.attr="disabled"
-                                wire:target="addToLibrary"
-                                class="btn-primary w-full mt-auto py-1.5 text-xs">
-                                + Add to Library
-                            </button>
+                            @if($isOwned)
+                                <button type="button" disabled
+                                    class="btn-ghost w-full mt-auto py-1.5 text-xs opacity-60 cursor-default">
+                                    ✓ Sudah di koleksi
+                                </button>
+                            @else
+                                <button wire:click="addToLibrary({{ json_encode($item) }})"
+                                    wire:loading.attr="disabled"
+                                    wire:target="addToLibrary"
+                                    class="btn-primary w-full mt-auto py-1.5 text-xs">
+                                    + Add to Library
+                                </button>
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -437,8 +455,9 @@
             {{-- ═══════ GRID VIEW (default) ═══════ --}}
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 @foreach($this->library as $item)
-                    <div class="card-item p-2.5 flex flex-col gap-2 relative">
-                        <div class="relative">
+                    <div class="card-item lw-card lw-pop p-2.5 flex flex-col gap-2 relative"
+                         style="animation-delay: {{ min($loop->index * 35, 420) }}ms;">
+                        <div class="relative lw-cover" style="border-radius: 4px; overflow: hidden;">
                             @if($item->cover_image)
                                 <img src="{{ $item->cover_image }}" alt="{{ $item->title }}"
                                     class="w-full aspect-[2/3] object-cover" loading="lazy" style="border-radius: 4px;">

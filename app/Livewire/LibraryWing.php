@@ -203,6 +203,19 @@ class LibraryWing extends Component
         LibraryItem::findOrFail($libraryItemId)->delete();
     }
 
+    /**
+     * Kunci "api_type:external_id" semua item koleksi — untuk menandai
+     * item trending/search yang sudah dimiliki (cegah bingung dobel-add).
+     */
+    public function getOwnedKeysProperty(): array
+    {
+        return LibraryItem::query()
+            ->get(['api_type', 'external_id'])
+            ->map(fn ($i) => $i->api_type.':'.$i->external_id)
+            ->flip()
+            ->all();
+    }
+
     public function getLibraryProperty()
     {
         return LibraryItem::query()
