@@ -166,12 +166,18 @@
     }
     </script>
 
+    {{-- Insight otomatis: bulan ini vs bulan lalu, proyeksi, status budget --}}
+    @livewire('finance-insights')
+
     <div class="mb-5">
         @livewire('finance-charts')
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-5 mb-5">
         <div>@livewire('gold-ledger')</div>
-        <div>@livewire('savings-tracker')</div>
+        <div class="space-y-5">
+            @livewire('budget-board')
+            @livewire('savings-tracker')
+        </div>
     </div>
 </x-app-layout>
