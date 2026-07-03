@@ -16,10 +16,26 @@ use Illuminate\View\View;
 class RegisteredUserController extends Controller
 {
     /**
+     * Aplikasi ini personal & datanya global (tanpa user_id per baris):
+     * akun kedua akan bisa melihat dan mengubah seluruh data pemilik.
+     * Karena itu registrasi otomatis TERKUNCI setelah akun pertama dibuat.
+     */
+    private function registrationLocked(): bool
+    {
+        return User::query()->exists();
+    }
+
+    /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        if ($this->registrationLocked()) {
+            return redirect()
+                ->route('login')
+                ->with('status', 'Registrasi ditutup — dashboard ini milik pribadi. Silakan login.');
+        }
+
         return view('auth.register');
     }
 
@@ -30,6 +46,12 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        if ($this->registrationLocked()) {
+            throw ValidationException::withMessages([
+                'email' => 'Registrasi ditutup — dashboard ini milik pribadi.',
+            ]);
+        }
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],

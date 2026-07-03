@@ -30,6 +30,11 @@ class GoldLedger extends Component
     public int   $viewMonth   = 0;
     public string $filterType = 'all';
 
+    // Pencarian & rentang tanggal bebas (mengalahkan navigasi bulan bila diisi)
+    public string $search   = '';
+    public string $dateFrom = '';
+    public string $dateTo   = '';
+
     public function mount(): void
     {
         $this->viewYear  = now()->year;
@@ -37,14 +42,41 @@ class GoldLedger extends Component
         $this->recorded_at = now()->format('Y-m-d');
     }
 
+    /** Apakah filter lanjutan (search / rentang tanggal) sedang aktif? */
+    #[Computed]
+    public function isFiltering(): bool
+    {
+        return trim($this->search) !== '' || $this->dateFrom !== '' || $this->dateTo !== '';
+    }
+
     #[Computed]
     public function entries()
     {
-        return FinanceEntry::inMonth($this->viewYear, $this->viewMonth)
-            ->when($this->filterType !== 'all', fn($q) => $q->where('type', $this->filterType))
+        $term = trim($this->search);
+        $usingRange = $this->dateFrom !== '' || $this->dateTo !== '';
+
+        return FinanceEntry::query()
+            // Rentang tanggal bebas mengalahkan navigasi bulan
+            ->when(! $usingRange, fn ($q) => $q->inMonth($this->viewYear, $this->viewMonth))
+            ->when($this->dateFrom !== '', fn ($q) => $q->whereDate('recorded_at', '>=', $this->dateFrom))
+            ->when($this->dateTo !== '', fn ($q) => $q->whereDate('recorded_at', '<=', $this->dateTo))
+            ->when($term !== '', function ($q) use ($term) {
+                $like = '%'.str_replace(['%', '_'], ['\\%', '\\_'], $term).'%';
+                $q->where(fn ($w) => $w->where('category', 'like', $like)
+                    ->orWhere('description', 'like', $like));
+            })
+            ->when($this->filterType !== 'all', fn ($q) => $q->where('type', $this->filterType))
             ->orderByDesc('recorded_at')
             ->orderByDesc('created_at')
+            ->limit(200)
             ->get();
+    }
+
+    public function resetFilters(): void
+    {
+        $this->search = '';
+        $this->dateFrom = '';
+        $this->dateTo = '';
     }
 
     #[Computed]

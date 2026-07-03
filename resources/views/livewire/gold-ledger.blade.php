@@ -147,8 +147,37 @@
         </form>
     </div>
 
+    {{-- ── SEARCH + RENTANG TANGGAL ── --}}
+    <div class="mb-3 p-3 bg-cream/40 border border-cream-dark" style="border-radius: 6px;">
+        <div class="flex flex-wrap items-end gap-2">
+            <div class="flex-1 min-w-[140px]">
+                <label class="field-label">Cari</label>
+                <input wire:model.live.debounce.400ms="search" type="search"
+                       placeholder="kategori atau deskripsi..." class="input-pixel">
+            </div>
+            <div>
+                <label class="field-label">Dari</label>
+                <input wire:model.live="dateFrom" type="date" class="input-pixel" style="width: 140px;">
+            </div>
+            <div>
+                <label class="field-label">Sampai</label>
+                <input wire:model.live="dateTo" type="date" class="input-pixel" style="width: 140px;">
+            </div>
+            @if($this->isFiltering)
+                <button type="button" wire:click="resetFilters" class="btn-ghost" style="padding: 9px 12px;">
+                    ✕ Reset
+                </button>
+            @endif
+        </div>
+        @if($this->isFiltering)
+            <p class="font-sans text-stone text-xs mt-2">
+                Mode filter aktif — navigasi bulan diabaikan{{ $dateFrom || $dateTo ? '' : ' untuk pencarian lintas periode gunakan rentang tanggal' }}. Menampilkan maks 200 hasil.
+            </p>
+        @endif
+    </div>
+
     {{-- ── MONTH NAVIGATOR ── --}}
-    <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center justify-between mb-3 {{ $this->isFiltering ? 'opacity-40 pointer-events-none' : '' }}">
         <button type="button" wire:click="prevMonth" class="btn-icon" title="Prev month">
             <svg viewBox="0 0 24 24" fill="none" class="w-4 h-4"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
