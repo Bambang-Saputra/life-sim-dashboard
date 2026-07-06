@@ -18,10 +18,22 @@
                 </svg>
                 QUEST BOARD
             </h2>
-            <div class="font-sans font-semibold text-grass-dark bg-grass-light/40 border border-grass/30 px-2.5 py-0.5 text-xs flex items-center gap-1"
-                 style="border-radius: 999px;">
-                <svg viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
-                <span x-text="totalXP">0</span> XP
+            @php $ps = $this->playerStats; @endphp
+            <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-pixel bg-corn-dark text-white px-2 py-1" style="border-radius: 4px; font-size: 8px;"
+                      title="{{ $ps['xp_into_level'] }}/100 XP menuju level berikutnya">LV.{{ $ps['level'] }}</span>
+                <span class="font-sans font-semibold text-grass-dark bg-grass-light/40 border border-grass/30 px-2.5 py-0.5 text-xs flex items-center gap-1"
+                      style="border-radius: 999px;">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-3 h-3"><path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/></svg>
+                    {{ number_format($ps['xp']) }} XP
+                </span>
+                @if($ps['streak'] > 0)
+                    <span class="font-sans font-semibold text-berry-dark bg-berry-light/30 border border-berry/30 px-2.5 py-0.5 text-xs"
+                          style="border-radius: 999px;"
+                          title="Rekor terpanjang: {{ $ps['longest_streak'] }} hari">
+                        🔥 {{ $ps['streak'] }} hari
+                    </span>
+                @endif
             </div>
         </div>
         <button type="button" @click="showForm = !showForm" class="btn-primary">

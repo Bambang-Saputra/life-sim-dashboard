@@ -115,5 +115,35 @@
         </div>
     </section>
 
-    @livewire('quest-board')
+    <div class="grid grid-cols-1 xl:grid-cols-[2fr,1fr] gap-5 mb-5">
+        <div>@livewire('quest-board')</div>
+        <div class="space-y-5">
+            @livewire('habit-manager')
+
+            {{-- ── RAK ACHIEVEMENT ── --}}
+            @php $achievements = \App\Support\Achievements::all(); @endphp
+            <div class="panel">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="section-title">
+                        <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-corn-dark">
+                            <path d="M12 2l3 7h7l-5.5 4.5L18 21l-6-4-6 4 1.5-7.5L2 9h7z"/>
+                        </svg>
+                        ACHIEVEMENTS
+                    </h2>
+                    <span class="font-sans text-soil text-xs">
+                        {{ collect($achievements)->where('unlocked', true)->count() }}/{{ count($achievements) }}
+                    </span>
+                </div>
+                <div class="grid grid-cols-4 gap-2">
+                    @foreach($achievements as $a)
+                        <div class="ach-tile {{ $a['unlocked'] ? 'is-unlocked' : '' }}"
+                             title="{{ $a['title'] }} — {{ $a['desc'] }}{{ $a['unlocked'] ? '' : ' (terkunci)' }}">
+                            <span class="ach-icon">{{ $a['unlocked'] ? $a['icon'] : '❓' }}</span>
+                            <span class="ach-label">{{ $a['unlocked'] ? $a['title'] : '???' }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
 </x-app-layout>

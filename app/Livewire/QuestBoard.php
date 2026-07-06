@@ -3,6 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Quest;
+use App\Models\RecurringQuest;
+use App\Support\Achievements;
+use App\Support\PlayerProgress;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Rule;
@@ -40,6 +43,19 @@ class QuestBoard extends Component
     public bool   $showForm  = false;
     public ?int   $editingId = null;
 
+    public function mount(): void
+    {
+        // Safety net habit harian: spawn saat halaman dibuka
+        // (scheduler 00:05 adalah jalur utama)
+        RecurringQuest::spawnDue();
+    }
+
+    /** XP, level, dan streak — diturunkan dari database, bukan localStorage. */
+    public function getPlayerStatsProperty(): array
+    {
+        return PlayerProgress::stats();
+    }
+
     public function getQuestsProperty()
     {
         return Quest::query()
@@ -70,6 +86,10 @@ class QuestBoard extends Component
                 'title'    => $quest->title,
                 'xpReward' => $quest->xp_reward,
             ]);
+
+            foreach (Achievements::evaluate() as $a) {
+                $this->dispatch('achievement-unlocked', icon: $a['icon'], title: $a['title'], desc: $a['desc']);
+            }
         }
     }
 

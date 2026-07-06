@@ -194,6 +194,10 @@ class LibraryWing extends Component
         $this->reviewInput     = '';
         $this->dispatch('rating-saved');
 
+        foreach (\App\Support\Achievements::evaluate() as $a) {
+            $this->dispatch('achievement-unlocked', icon: $a['icon'], title: $a['title'], desc: $a['desc']);
+        }
+
         // Rating 9.0+ = S-Tier → rayakan dengan confetti di frontend
         if ($isSTier) {
             $this->dispatch('rating-stier');

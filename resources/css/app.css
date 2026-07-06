@@ -954,4 +954,58 @@
     @media (prefers-reduced-motion: reduce) {
         .skel::after, .tab-pane, .confetti-layer i { animation: none !important; }
     }
+
+    /* ══════════════════════════════════════════
+       ACHIEVEMENTS — rak trofi + banner unlock
+    ══════════════════════════════════════════ */
+
+    .ach-tile {
+        @apply flex flex-col items-center justify-center text-center border border-cream-dark bg-cream/40 px-1 py-2.5 select-none;
+        border-radius: 6px;
+        min-height: 68px;
+        filter: grayscale(1);
+        opacity: 0.55;
+        transition: transform 150ms ease, filter 150ms ease, opacity 150ms ease;
+    }
+    .ach-tile.is-unlocked {
+        @apply bg-corn-light/30 border-corn/40;
+        filter: none;
+        opacity: 1;
+    }
+    .ach-tile.is-unlocked:hover {
+        transform: translateY(-3px) scale(1.04);
+        box-shadow: 0 6px 14px rgba(201, 152, 69, 0.25);
+    }
+    .ach-icon { font-size: 20px; line-height: 1; }
+    .ach-label {
+        @apply font-sans font-semibold text-soil-dark mt-1.5 leading-tight;
+        font-size: 9px;
+    }
+
+    .ach-banner {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 80;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 22px;
+        background: #5C4632;
+        border: 2px solid #E5B567;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 30px rgba(229, 181, 103, 0.25);
+        max-width: min(92vw, 420px);
+    }
+    .ach-banner-icon {
+        font-size: 30px;
+        line-height: 1;
+        animation: ach-icon-pop 0.6s ease;
+    }
+    @keyframes ach-icon-pop {
+        0%   { transform: scale(0) rotate(-20deg); }
+        60%  { transform: scale(1.3) rotate(8deg); }
+        100% { transform: scale(1) rotate(0); }
+    }
 }

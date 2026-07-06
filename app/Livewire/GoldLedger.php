@@ -111,6 +111,11 @@ class GoldLedger extends Component
 
         $this->resetForm();
         $this->dispatch('finance-entry-saved');
+
+        foreach (\App\Support\Achievements::evaluate() as $a) {
+            $this->dispatch('achievement-unlocked', icon: $a['icon'], title: $a['title'], desc: $a['desc']);
+        }
+
     }
 
     public function startEdit(int $id): void

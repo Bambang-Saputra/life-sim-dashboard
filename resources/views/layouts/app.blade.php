@@ -69,6 +69,19 @@
 
             <div class="flex-1"></div>
 
+            {{-- Mute toggle sound FX --}}
+            <button type="button" @click="toggleMute()"
+                    class="hidden sm:flex items-center justify-center w-8 h-8 text-cream-light/70 hover:text-cream-light hover:bg-white/10 transition-colors"
+                    style="border-radius: 6px;"
+                    :title="muted ? 'Nyalakan suara' : 'Matikan suara'">
+                <svg x-show="!muted" viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                    <path d="M11 5L6 9H3v6h3l5 4V5zM15 9a4 4 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <svg x-show="muted" viewBox="0 0 24 24" fill="none" class="w-4 h-4">
+                    <path d="M11 5L6 9H3v6h3l5 4V5zM22 9l-6 6M16 9l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
             <div class="hidden lg:flex items-center gap-2.5 px-3 py-1.5 bg-white/10 border border-white/15 rounded-full">
                 <svg x-show="isDaytime" class="w-4 h-4 text-corn sun-glow animate-sun-shine" viewBox="0 0 24 24" fill="currentColor">
                     <circle cx="12" cy="12" r="4"/>
@@ -111,18 +124,104 @@
         {{ $slot }}
     </main>
 
+    {{-- ── Banner unlock achievement (global) ── --}}
+    <div x-show="achBanner"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 translate-y-4 scale-95"
+         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+         x-transition:leave="transition ease-in duration-300"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0 translate-y-2"
+         class="ach-banner"
+         style="display: none;">
+        <span class="ach-banner-icon" x-text="achBanner?.icon"></span>
+        <span>
+            <span class="font-pixel block text-corn-light" style="font-size: 8px;">ACHIEVEMENT UNLOCKED!</span>
+            <span class="font-sans font-bold text-cream-light text-sm block mt-1" x-text="achBanner?.title"></span>
+            <span class="font-sans text-cream-light/70 text-xs block" x-text="achBanner?.desc"></span>
+        </span>
+    </div>
+    <div class="confetti-layer" x-ref="globalConfetti" aria-hidden="true"></div>
+
     @livewireScriptConfig
 
     <script>
     function appTheme() {
         return {
             time: '--:--', period: '--', isDaytime: true, todClass: 'tod-day', hour: 0,
+            muted: localStorage.getItem('lifesim_muted') === '1',
+            achBanner: null,
+            _achQueue: [],
+            _audioCtx: null,
             init() {
                 this.update();
                 setInterval(() => this.update(), 30000);
                 setInterval(() => {
                     this.time = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
                 }, 1000);
+
+                // ── Sound FX hooks (event Livewire menggelembung ke window) ──
+                window.addEventListener('quest-completed', () => this.playSfx('complete'));
+                window.addEventListener('finance-entry-saved', () => this.playSfx('coin'));
+                window.addEventListener('rating-stier', () => this.playSfx('fanfare'));
+                window.addEventListener('achievement-unlocked', (e) => {
+                    const d = e.detail || {};
+                    this._achQueue.push({ icon: d.icon || '🏆', title: d.title || 'Achievement', desc: d.desc || '' });
+                    this.drainAchQueue();
+                });
+            },
+            toggleMute() {
+                this.muted = !this.muted;
+                localStorage.setItem('lifesim_muted', this.muted ? '1' : '0');
+                if (!this.muted) this.playSfx('coin');
+            },
+            drainAchQueue() {
+                if (this.achBanner || this._achQueue.length === 0) return;
+                this.achBanner = this._achQueue.shift();
+                this.playSfx('unlock');
+                this.dropConfetti();
+                setTimeout(() => { this.achBanner = null; setTimeout(() => this.drainAchQueue(), 350); }, 3800);
+            },
+            dropConfetti() {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                const layer = this.$refs.globalConfetti;
+                if (!layer) return;
+                const colors = ['#E5B567', '#BE546E', '#6BA368', '#77AADD', '#F1CC8E'];
+                for (let i = 0; i < 24; i++) {
+                    const p = document.createElement('i');
+                    p.style.left = (Math.random() * 100) + '%';
+                    p.style.background = colors[i % colors.length];
+                    p.style.animationDuration = (0.9 + Math.random() * 0.9) + 's';
+                    p.style.animationDelay = (Math.random() * 0.3) + 's';
+                    layer.appendChild(p);
+                    setTimeout(() => p.remove(), 2400);
+                }
+            },
+            // ── Synth chiptune mini via Web Audio (tanpa file audio) ──
+            playSfx(name) {
+                if (this.muted) return;
+                try {
+                    this._audioCtx = this._audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+                    const ctx = this._audioCtx;
+                    if (ctx.state === 'suspended') ctx.resume();
+                    const SONGS = {
+                        coin:     [[988, 0, 0.07], [1319, 0.07, 0.18]],
+                        complete: [[659, 0, 0.09], [784, 0.09, 0.09], [1047, 0.18, 0.22]],
+                        fanfare:  [[523, 0, 0.11], [659, 0.11, 0.11], [784, 0.22, 0.11], [1047, 0.33, 0.3]],
+                        unlock:   [[784, 0, 0.08], [988, 0.08, 0.08], [1175, 0.16, 0.08], [1568, 0.24, 0.26]],
+                    };
+                    (SONGS[name] || SONGS.coin).forEach(([freq, at, dur]) => {
+                        const osc = ctx.createOscillator();
+                        const gain = ctx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.value = freq;
+                        gain.gain.setValueAtTime(0.06, ctx.currentTime + at);
+                        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + at + dur);
+                        osc.connect(gain).connect(ctx.destination);
+                        osc.start(ctx.currentTime + at);
+                        osc.stop(ctx.currentTime + at + dur + 0.02);
+                    });
+                } catch (e) { /* audio tidak tersedia — abaikan */ }
             },
             update() {
                 const now = new Date();

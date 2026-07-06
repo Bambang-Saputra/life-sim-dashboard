@@ -169,6 +169,10 @@ class SavingsTracker extends Component
         }
 
         $this->cancelDepositForm();
+
+        foreach (\App\Support\Achievements::evaluate() as $a) {
+            $this->dispatch('achievement-unlocked', icon: $a['icon'], title: $a['title'], desc: $a['desc']);
+        }
     }
 
     public function startEditDeposit(int $id): void

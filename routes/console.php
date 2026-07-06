@@ -19,6 +19,18 @@ Artisan::command('inspire', function () {
 | atau di server: * * * * * cd /path && php artisan schedule:run
 */
 
+// Habit harian — spawn quest baru pukul 00:05 WIB
+Schedule::call(function () {
+    $spawned = \App\Models\RecurringQuest::spawnDue();
+    if ($spawned > 0) {
+        Log::info('🌅 Daily habits spawned', ['count' => $spawned]);
+    }
+})
+->dailyAt('00:05')
+->timezone('Asia/Jakarta')
+->name('quests:spawn-habits')
+->withoutOverlapping();
+
 // Recurring transactions — posting harian pukul 00:10 WIB
 // (idempotent; halaman Finance juga memanggil postDue sebagai safety net)
 Schedule::call(function () {
