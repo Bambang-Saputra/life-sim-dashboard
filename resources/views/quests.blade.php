@@ -32,20 +32,20 @@
                      @mouseleave="resetPointer"
                      :style="`--px:${px};--py:${py}`">
                     {{-- langit senja: 4 pita + dither --}}
-                    <div class="absolute inset-x-0" style="top:0; height:40px; background:#5E4168;"></div>
-                    <div class="absolute inset-x-0" style="top:40px; height:36px; background:#8A5570;"></div>
-                    <div class="absolute inset-x-0" style="top:76px; height:30px; background:#C97A5E;"></div>
-                    <div class="absolute inset-x-0" style="top:106px; height:22px; background:#EFAF7E;"></div>
-                    <div class="px-dither" style="top:36px; --da:#8A5570; --db:#5E4168;"></div>
-                    <div class="px-dither" style="top:72px; --da:#C97A5E; --db:#8A5570;"></div>
-                    <div class="px-dither" style="top:102px; --da:#EFAF7E; --db:#C97A5E;"></div>
+                    <div class="absolute inset-x-0" style="top:0; height:40px; background:#574B6B;"></div>
+                    <div class="absolute inset-x-0" style="top:40px; height:36px; background:#8A6478;"></div>
+                    <div class="absolute inset-x-0" style="top:76px; height:30px; background:#C08A6E;"></div>
+                    <div class="absolute inset-x-0" style="top:106px; height:22px; background:#EBBE94;"></div>
+                    <div class="px-dither" style="top:36px; --da:#8A6478; --db:#574B6B;"></div>
+                    <div class="px-dither" style="top:72px; --da:#C08A6E; --db:#8A6478;"></div>
+                    <div class="px-dither" style="top:102px; --da:#EBBE94; --db:#C08A6E;"></div>
 
                     <div class="par par-far">
                         {{-- matahari terbenam stepped --}}
                         <div class="px-halfsun" style="left:118px; top:104px; width:64px; height:24px; background:#F1CC8E; filter:drop-shadow(0 0 14px rgba(241,204,142,0.55));"></div>
                         {{-- gunung stair-stepped --}}
-                        <div class="px-mtn" style="left:-24px; top:64px; width:120px; height:64px; background:#4A3557;"></div>
-                        <div class="px-mtn" style="right:-20px; top:52px; width:140px; height:76px; background:#4A3557;"></div>
+                        <div class="px-mtn" style="left:-24px; top:64px; width:120px; height:64px; background:#4C4160;"></div>
+                        <div class="px-mtn" style="right:-20px; top:52px; width:140px; height:76px; background:#4C4160;"></div>
                     </div>
 
                     {{-- tanah --}}

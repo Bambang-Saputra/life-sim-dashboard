@@ -37,9 +37,9 @@
                     <div class="par par-far">
                         {{-- jendela senja + matahari --}}
                         <div class="absolute" style="left:104px; top:8px; width:88px; height:62px; background:#5C4632;">
-                            <span class="absolute" style="left:6px; right:6px; top:6px; height:18px; background:#F1B584;"></span>
-                            <span class="absolute" style="left:6px; right:6px; top:24px; height:18px; background:#E58A66;"></span>
-                            <span class="absolute" style="left:6px; right:6px; top:42px; bottom:6px; background:#C96F5B;"></span>
+                            <span class="absolute" style="left:6px; right:6px; top:6px; height:18px; background:#EDBA92;"></span>
+                            <span class="absolute" style="left:6px; right:6px; top:24px; height:18px; background:#D98F72;"></span>
+                            <span class="absolute" style="left:6px; right:6px; top:42px; bottom:6px; background:#B97862;"></span>
                             <span class="absolute anim-shimmer" style="left:50%; top:24px; width:14px; height:14px; margin-left:-7px; background:#F1CC8E; box-shadow:0 0 12px rgba(241,204,142,0.85);"></span>
                             <span class="absolute" style="left:50%; top:6px; bottom:6px; width:4px; margin-left:-2px; background:#5C4632;"></span>
                             <span class="absolute" style="left:6px; right:6px; top:50%; height:4px; margin-top:-2px; background:#5C4632;"></span>
@@ -93,7 +93,7 @@
                         {{-- tanaman --}}
                         <div class="absolute" style="left:88px; top:88px; width:20px; height:36px;">
                             <span class="absolute anim-sway" style="left:4px; top:0; width:12px; height:18px; background:#4E7D4C; clip-path: polygon(50% 0, 100% 55%, 78% 100%, 22% 100%, 0 55%);"></span>
-                            <span class="absolute" style="left:2px; bottom:0; width:16px; height:12px; background:#C96F5B; clip-path: polygon(6% 0, 94% 0, 80% 100%, 20% 100%);"></span>
+                            <span class="absolute" style="left:2px; bottom:0; width:16px; height:12px; background:#B97862; clip-path: polygon(6% 0, 94% 0, 80% 100%, 20% 100%);"></span>
                         </div>
                     </div>
                 </div>

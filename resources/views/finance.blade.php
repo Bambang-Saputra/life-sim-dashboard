@@ -39,8 +39,8 @@
                     <div class="par par-far">
                         {{-- jendela + matahari --}}
                         <div class="absolute" style="right:16px; top:10px; width:76px; height:58px; background:#5C4632;">
-                            <span class="absolute" style="inset:5px; background:#77AADD;"></span>
-                            <span class="absolute" style="left:5px; right:5px; bottom:5px; height:14px; background:#A8CDED;"></span>
+                            <span class="absolute" style="inset:5px; background:#8CB8DE;"></span>
+                            <span class="absolute" style="left:5px; right:5px; bottom:5px; height:14px; background:#A9CBE7;"></span>
                             <span class="absolute anim-shimmer" style="right:14px; top:12px; width:12px; height:12px; background:#F1CC8E; box-shadow:0 0 10px rgba(249,217,75,0.8);"></span>
                             <span class="absolute" style="left:50%; top:5px; bottom:5px; width:4px; margin-left:-2px; background:#5C4632;"></span>
                             <span class="absolute" style="left:5px; right:5px; top:50%; height:4px; margin-top:-2px; background:#5C4632;"></span>
