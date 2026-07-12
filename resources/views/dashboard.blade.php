@@ -1,7 +1,7 @@
 <x-app-layout>
 
     {{-- ══════════════════════════════════════════
-         LIVING FARM BANNER v2 — Full Width Scene
+         LIVING FARM BANNER v2 - Full Width Scene
     ══════════════════════════════════════════ --}}
     <div
         x-data="bannerScene()"
@@ -9,7 +9,7 @@
         class="relative w-full overflow-hidden mb-6 border-2 border-soil-dark shadow-cozy-lg"
         style="height: 200px; border-radius: 8px;"
     >
-        {{-- ░░░ LAYER 1 — SKY ░░░ --}}
+        {{-- ░░░ LAYER 1 - SKY ░░░ --}}
         <div class="absolute inset-0 transition-colors duration-1000" :class="skyClass"></div>
 
         {{-- ✨ Stars (night only) --}}
@@ -28,7 +28,7 @@
             </div>
         </template>
 
-        {{-- ░░░ LAYER 2 — Mountain Range (far back, parallax effect) ░░░ --}}
+        {{-- ░░░ LAYER 2 - Mountain Range (far back, parallax effect) ░░░ --}}
         <div class="absolute pointer-events-none" style="bottom: 56px; left:0; right:0; height: 50px;">
             <div class="absolute" style="bottom:0; left:-3%;  width:0; height:0;
                  border-left: 70px solid transparent; border-right: 70px solid transparent;
@@ -50,14 +50,14 @@
             <div class="absolute" style="bottom:51px; right:26%; width:11px; height:5px; background:#FBF7EC; opacity:0.65; clip-path: polygon(0 100%, 50% 0, 100% 100%);"></div>
         </div>
 
-        {{-- ░░░ LAYER 3 — Distant rolling hills ░░░ --}}
+        {{-- ░░░ LAYER 3 - Distant rolling hills ░░░ --}}
         <div class="absolute bottom-10 left-0 right-0 pointer-events-none">
             <div class="absolute" style="bottom:0; left:-5%;  width:200px; height:50px; background:#4E7D4C; border-radius:50% 50% 0 0; opacity:0.55;"></div>
             <div class="absolute" style="bottom:0; left:30%;  width:260px; height:65px; background:#3D5A3A; border-radius:50% 50% 0 0; opacity:0.65;"></div>
             <div class="absolute" style="bottom:0; right:-5%; width:180px; height:48px; background:#4E7D4C; border-radius:50% 50% 0 0; opacity:0.55;"></div>
         </div>
 
-        {{-- ░░░ LAYER 4 — Near hills ░░░ --}}
+        {{-- ░░░ LAYER 4 - Near hills ░░░ --}}
         <div class="absolute bottom-6 left-0 right-0 pointer-events-none">
             <div class="absolute" style="bottom:0; left:8%;   width:130px; height:38px; background:#5C8F58; border-radius:50% 50% 0 0;"></div>
             <div class="absolute" style="bottom:0; left:55%;  width:160px; height:44px; background:#4E7D4C; border-radius:50% 50% 0 0;"></div>
@@ -207,7 +207,7 @@
             </div>
         </template>
 
-        {{-- ░░░ LAYER 5 — Picket Fence ░░░ --}}
+        {{-- ░░░ LAYER 5 - Picket Fence ░░░ --}}
         <div class="absolute" style="bottom: 18px; left: 0; right: 0; height: 10px; pointer-events:none;">
             <div style="height: 100%; background: repeating-linear-gradient(
                 90deg,
@@ -222,7 +222,7 @@
             <div style="position:absolute; top:7px; left:0; right:0; height:2px; background:#5C4632;"></div>
         </div>
 
-        {{-- ░░░ LAYER 6 — Stone path crossing the dirt ░░░ --}}
+        {{-- ░░░ LAYER 6 - Stone path crossing the dirt ░░░ --}}
         <div class="absolute bottom-0 left-0 right-0 pointer-events-none" style="height: 18px;">
             <div style="position:absolute; bottom:4px; left:12%;  width:6px; height:5px; background:#C9C4C0; border:1px solid #7B7672;"></div>
             <div style="position:absolute; bottom:8px; left:22%;  width:7px; height:5px; background:#C9C4C0; border:1px solid #7B7672;"></div>
@@ -233,7 +233,7 @@
             <div style="position:absolute; bottom:3px; left:84%;  width:6px; height:5px; background:#C9C4C0; border:1px solid #7B7672;"></div>
         </div>
 
-        {{-- ░░░ LAYER 7 — Ground stripes (dirt) ░░░ --}}
+        {{-- ░░░ LAYER 7 - Ground stripes (dirt) ░░░ --}}
         <div class="absolute bottom-0 left-0 right-0" style="height: 18px;
              background: repeating-linear-gradient(90deg, #6B4E32 0, #6B4E32 14px, #5C4632 14px, #5C4632 28px);
              border-top: 3px solid #4E7D4C;"></div>

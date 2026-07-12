@@ -69,7 +69,7 @@
                         {{-- trofi interaktif: klik = burst sparkle --}}
                         <button type="button" @click="pop"
                                 style="left:50%; top:26px; transform:translateX(-50%); width:90px; height:104px;"
-                                title="Level {{ $heroLevel }} — {{ number_format($earnedXp) }} XP"
+                                title="Level {{ $heroLevel }} · {{ number_format($earnedXp) }} XP"
                                 aria-label="Trofi level {{ $heroLevel }}, klik untuk merayakan">
                             <span class="qx-plate">LV.{{ $heroLevel }}</span>
                             <span class="qx-trophy-cup"></span>
@@ -137,7 +137,7 @@
                 <div class="grid grid-cols-4 gap-2">
                     @foreach($achievements as $a)
                         <div class="ach-tile {{ $a['unlocked'] ? 'is-unlocked' : '' }}"
-                             title="{{ $a['title'] }} — {{ $a['desc'] }}{{ $a['unlocked'] ? '' : ' (terkunci)' }}">
+                             title="{{ $a['title'] }}: {{ $a['desc'] }}{{ $a['unlocked'] ? '' : ' (terkunci)' }}">
                             <span class="ach-icon">{{ $a['unlocked'] ? $a['icon'] : '❓' }}</span>
                             <span class="ach-label">{{ $a['unlocked'] ? $a['title'] : '???' }}</span>
                         </div>

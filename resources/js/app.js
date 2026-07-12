@@ -1,6 +1,6 @@
 import './bootstrap';
 
-// ⚠️ JANGAN import Alpine dari 'alpinejs' — Livewire 4 sudah bundle Alpine sendiri.
+// ⚠️ JANGAN import Alpine dari 'alpinejs' - Livewire 4 sudah bundle Alpine sendiri.
 // Import lagi = 2 instance = wire:click & @entangle rusak.
 //
 // Mode "manual bundle": import Livewire + Alpine-nya Livewire, daftarkan plugin &

@@ -64,7 +64,7 @@ class JikanService
         });
     }
 
-    /** Internal — normalize 1 item anime */
+    /** Internal - normalize 1 item anime */
     private function normalizeAnime(array $item): array
     {
         return [
@@ -87,7 +87,7 @@ class JikanService
         ];
     }
 
-    /** Internal — normalize 1 item manga */
+    /** Internal - normalize 1 item manga */
     private function normalizeManga(array $item): array
     {
         return [

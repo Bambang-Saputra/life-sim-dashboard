@@ -31,7 +31,7 @@ class FinanceExportController extends Controller
             $out = fopen('php://output', 'w');
 
             // ─── SECTION 1: Transaction Entries ───
-            fputcsv($out, ['LIFE-SIM DASHBOARD — Finance Export']);
+            fputcsv($out, ['LIFE-SIM DASHBOARD - Finance Export']);
             fputcsv($out, ['Generated', now()->format('Y-m-d H:i')]);
             fputcsv($out, []);
             fputcsv($out, ['=== TRANSAKSI ===']);

@@ -46,7 +46,7 @@ class FinanceInsights extends Component
                     'icon' => '📈',
                     'title' => 'Pengeluaran naik '.round($delta).'%',
                     'body' => 'Sampai tanggal '.$now->day.', kamu sudah keluar Rp '.number_format($expenseMtd, 0, ',', '.').
-                        ' — bulan lalu di titik yang sama baru Rp '.number_format($expenseLastMtd, 0, ',', '.').'.',
+                        '. Bulan lalu di titik yang sama baru Rp '.number_format($expenseLastMtd, 0, ',', '.').'.',
                 ];
             } elseif ($delta <= -15) {
                 $items[] = [
@@ -104,7 +104,7 @@ class FinanceInsights extends Component
                     ($tone === 'danger'
                         ? ' Awas: proyeksi MELEBIHI income bulan ini (Rp '.number_format($incomeMonth, 0, ',', '.').').'
                         : ($incomeMonth > 0
-                            ? ' Masih di bawah income bulan ini — aman.'
+                            ? ' Masih di bawah income bulan ini, aman.'
                             : '')),
             ];
         }

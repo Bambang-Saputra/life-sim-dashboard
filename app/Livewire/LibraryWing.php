@@ -99,7 +99,7 @@ class LibraryWing extends Component
         }
     }
 
-    /** Trigger saat user submit search baru — reset ke page 1 dulu */
+    /** Trigger saat user submit search baru - reset ke page 1 dulu */
     public function submitSearch(TmdbService $tmdb, JikanService $jikan): void
     {
         $this->currentPage = 1;
@@ -114,7 +114,7 @@ class LibraryWing extends Component
         $this->loadDefaults($tmdb, $jikan);
     }
 
-    /** Next page — context-aware (search atau default) */
+    /** Next page - context-aware (search atau default) */
     public function nextPage(TmdbService $tmdb, JikanService $jikan): void
     {
         if ($this->currentPage >= $this->totalPages) return;
@@ -215,7 +215,7 @@ class LibraryWing extends Component
     }
 
     /**
-     * Kunci "api_type:external_id" semua item koleksi — untuk menandai
+     * Kunci "api_type:external_id" semua item koleksi - untuk menandai
      * item trending/search yang sudah dimiliki (cegah bingung dobel-add).
      */
     public function getOwnedKeysProperty(): array

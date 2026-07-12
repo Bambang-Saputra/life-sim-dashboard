@@ -12,7 +12,7 @@
                 </svg>
                 LANGGANAN RUTIN
             </h2>
-            <p class="font-sans text-soil text-xs">Transaksi bulanan otomatis — kos, internet, Netflix, gaji.</p>
+            <p class="font-sans text-soil text-xs">Transaksi bulanan otomatis: kos, internet, Netflix, gaji.</p>
         </div>
         <button type="button" @click="showForm = !showForm" class="btn-primary flex-shrink-0">
             <span x-show="!showForm">+ Rutin Baru</span>
@@ -133,7 +133,7 @@
             <div class="empty-state">
                 <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA LANGGANAN</p>
                 <p class="font-sans text-stone text-sm mt-2">
-                    Daftarkan tagihan bulanan sekali — tiap bulan otomatis tercatat di ledger.
+                    Daftarkan tagihan bulanan sekali, tiap bulan otomatis tercatat di ledger.
                 </p>
             </div>
         @endforelse

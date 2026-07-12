@@ -13,7 +13,7 @@
                 </svg>
                 BUDGET BOARD
             </h2>
-            <p class="font-sans text-soil text-xs">Limit bulanan per kategori — HP bar keuanganmu untuk {{ now()->translatedFormat('F Y') }}.</p>
+            <p class="font-sans text-soil text-xs">Limit bulanan per kategori: HP bar keuanganmu untuk {{ now()->translatedFormat('F Y') }}.</p>
         </div>
         <button type="button" @click="showForm = !showForm" class="btn-primary flex-shrink-0">
             <span x-show="!showForm">+ Budget Baru</span>
@@ -113,7 +113,7 @@
             <div class="empty-state">
                 <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA BUDGET</p>
                 <p class="font-sans text-stone text-sm mt-2">
-                    Pasang limit per kategori — pengeluaranmu jadi HP bar yang kelihatan menipis.
+                    Pasang limit per kategori supaya pengeluaranmu jadi HP bar yang kelihatan menipis.
                 </p>
                 @if(count($this->unbudgetedCategories))
                     <p class="font-sans text-stone text-xs mt-2">

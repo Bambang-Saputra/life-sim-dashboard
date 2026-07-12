@@ -30,7 +30,7 @@ class Quest extends Model
 
     // ── SCOPES ──
 
-    // scopeForCurrentUser DIHAPUS — tidak relevan di personal app.
+    // scopeForCurrentUser DIHAPUS - tidak relevan di personal app.
     // Ganti semua Quest::forCurrentUser() menjadi Quest::query()
 
     /** Filter quest yang belum selesai */

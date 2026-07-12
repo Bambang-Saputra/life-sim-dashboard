@@ -221,7 +221,7 @@
                         osc.start(ctx.currentTime + at);
                         osc.stop(ctx.currentTime + at + dur + 0.02);
                     });
-                } catch (e) { /* audio tidak tersedia — abaikan */ }
+                } catch (e) { /* audio tidak tersedia - abaikan */ }
             },
             update() {
                 const now = new Date();

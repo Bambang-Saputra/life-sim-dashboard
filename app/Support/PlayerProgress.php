@@ -5,7 +5,7 @@ namespace App\Support;
 use App\Models\Quest;
 
 /**
- * Statistik pemain diturunkan langsung dari data quest di database —
+ * Statistik pemain diturunkan langsung dari data quest di database -
  * tidak ada state duplikat yang bisa out-of-sync (localStorage dsb).
  *
  * Level: flat 100 XP per level (konsisten dengan hero Quest page).

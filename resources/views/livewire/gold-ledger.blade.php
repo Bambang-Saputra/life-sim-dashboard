@@ -171,7 +171,7 @@
         </div>
         @if($this->isFiltering)
             <p class="font-sans text-stone text-xs mt-2">
-                Mode filter aktif — navigasi bulan diabaikan{{ $dateFrom || $dateTo ? '' : ' untuk pencarian lintas periode gunakan rentang tanggal' }}. Menampilkan maks 200 hasil.
+                Mode filter aktif: navigasi bulan diabaikan{{ $dateFrom || $dateTo ? '' : ' untuk pencarian lintas periode gunakan rentang tanggal' }}. Menampilkan maks 200 hasil.
             </p>
         @endif
     </div>

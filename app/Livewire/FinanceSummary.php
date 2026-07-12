@@ -58,10 +58,10 @@ class FinanceSummary extends Component
         }
 
         if ($over > 0) {
-            return ['tone' => 'danger', 'text' => $over.' budget jebol — '.ucfirst($worst).' '.round($worstPct).'%'];
+            return ['tone' => 'danger', 'text' => $over.' budget jebol: '.ucfirst($worst).' '.round($worstPct).'%'];
         }
         if ($warn > 0) {
-            return ['tone' => 'warning', 'text' => $warn.' budget hampir habis — '.ucfirst($worst).' '.round($worstPct).'%'];
+            return ['tone' => 'warning', 'text' => $warn.' budget hampir habis: '.ucfirst($worst).' '.round($worstPct).'%'];
         }
 
         return ['tone' => 'success', 'text' => 'Semua budget aman ('.$budgets->count().' kategori)'];

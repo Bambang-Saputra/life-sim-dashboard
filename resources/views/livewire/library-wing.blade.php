@@ -625,7 +625,7 @@
                         @if($stats['avg_rating'] !== null)
                             ★ {{ $stats['avg_rating'] }}
                         @else
-                            —
+                            -
                         @endif
                     </p>
                 </div>
@@ -636,7 +636,7 @@
                             {{ $stats['fav_genre'] }}
                             <span class="font-sans font-normal text-soil text-xs block mt-0.5">{{ $stats['fav_genre_count'] }} items</span>
                         @else
-                            —
+                            -
                         @endif
                     </p>
                 </div>
@@ -648,7 +648,7 @@
                     <span class="text-2xl">🎯</span>
                     <p class="font-sans text-soil-dark text-sm">
                         Kamu condong ke genre <strong class="text-corn-dark">{{ $stats['fav_genre'] }}</strong>
-                        — {{ $stats['fav_genre_count'] }} dari {{ $stats['total'] }} item ({{ round($stats['fav_genre_count'] / $stats['total'] * 100) }}%)
+                        {{ $stats['fav_genre_count'] }} dari {{ $stats['total'] }} item ({{ round($stats['fav_genre_count'] / $stats['total'] * 100) }}%)
                     </p>
                 </div>
             @endif

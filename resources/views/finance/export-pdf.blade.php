@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Finance Report — {{ $rangeLabel }}</title>
+    <title>Finance Report · {{ $rangeLabel }}</title>
     <style>
         @page {
             size: A4;
@@ -205,10 +205,10 @@
 <body>
 
 <div class="print-bar">
-    <h2>📊 Finance Report — {{ $rangeLabel }}</h2>
+    <h2>Finance Report · {{ $rangeLabel }}</h2>
     <div>
         <a href="javascript:history.back()">← Kembali</a>
-        <button onclick="window.print()">🖨 Print / Save as PDF</button>
+        <button onclick="window.print()">Print / Save as PDF</button>
     </div>
 </div>
 
@@ -242,7 +242,7 @@
         </div>
     </div>
 
-    <h2>📋 Transaksi ({{ $entries->count() }})</h2>
+    <h2>Transaksi ({{ $entries->count() }})</h2>
 
     @if($entries->isEmpty())
         <div class="empty">Belum ada transaksi pada periode ini.</div>
@@ -267,7 +267,7 @@
                             </span>
                         </td>
                         <td>{{ ucfirst($e->category) }}</td>
-                        <td>{{ $e->description ?? '—' }}</td>
+                        <td>{{ $e->description ?? '-' }}</td>
                         <td class="num {{ $e->type === 'in' ? 'v-in' : 'v-out' }}">
                             {{ $e->type === 'in' ? '+' : '-' }}Rp {{ number_format($e->amount, 0, ',', '.') }}
                         </td>
@@ -286,7 +286,7 @@
     @endif
 
     @if($savings->isNotEmpty())
-        <h2>🏖 Tabungan ({{ $savings->count() }})</h2>
+        <h2>Tabungan ({{ $savings->count() }})</h2>
         <table>
             <thead>
                 <tr>
@@ -307,9 +307,9 @@
                     <tr>
                         <td>{{ $s->icon }} <strong>{{ $s->name }}</strong></td>
                         <td class="num v-saved">Rp {{ number_format($current, 0, ',', '.') }}</td>
-                        <td class="num">{{ $target > 0 ? 'Rp ' . number_format($target, 0, ',', '.') : '—' }}</td>
-                        <td>{{ $percent !== null ? $percent . '%' : '—' }}</td>
-                        <td>{{ $s->target_date?->format('d M Y') ?? '—' }}</td>
+                        <td class="num">{{ $target > 0 ? 'Rp ' . number_format($target, 0, ',', '.') : '-' }}</td>
+                        <td>{{ $percent !== null ? $percent . '%' : '-' }}</td>
+                        <td>{{ $s->target_date?->format('d M Y') ?? '-' }}</td>
                     </tr>
                 @endforeach
             </tbody>

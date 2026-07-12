@@ -33,7 +33,7 @@ class RegisteredUserController extends Controller
         if ($this->registrationLocked()) {
             return redirect()
                 ->route('login')
-                ->with('status', 'Registrasi ditutup — dashboard ini milik pribadi. Silakan login.');
+                ->with('status', 'Registrasi ditutup: dashboard ini milik pribadi. Silakan login.');
         }
 
         return view('auth.register');
@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
     {
         if ($this->registrationLocked()) {
             throw ValidationException::withMessages([
-                'email' => 'Registrasi ditutup — dashboard ini milik pribadi.',
+                'email' => 'Registrasi ditutup: dashboard ini milik pribadi.',
             ]);
         }
 

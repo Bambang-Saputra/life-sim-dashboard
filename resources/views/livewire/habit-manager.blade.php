@@ -12,7 +12,7 @@
                 </svg>
                 HABIT HARIAN
             </h2>
-            <p class="font-sans text-soil text-xs">Quest yang otomatis muncul kembali setiap hari — mesin streak-mu.</p>
+            <p class="font-sans text-soil text-xs">Quest yang otomatis muncul kembali setiap hari, mesin streak-mu.</p>
         </div>
         <button type="button" @click="showForm = !showForm" class="btn-primary flex-shrink-0">
             <span x-show="!showForm">+ Habit Baru</span>
@@ -105,7 +105,7 @@
             <div class="empty-state">
                 <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA HABIT</p>
                 <p class="font-sans text-stone text-sm mt-2">
-                    Buat kebiasaan harian — tiap pagi otomatis jadi quest baru, selesaikan untuk menjaga streak 🔥
+                    Buat kebiasaan harian: tiap pagi otomatis jadi quest baru, selesaikan untuk menjaga streak 🔥
                 </p>
             </div>
         @endforelse

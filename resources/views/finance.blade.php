@@ -59,7 +59,7 @@
                         <button type="button" @click="pop" class="fx-vault"
                                 :class="burst && 'is-shake'"
                                 style="right:26px; top:62px; width:64px; height:60px; background:#A9A39E; box-shadow: inset 0 4px 0 #C9C4C0, inset 4px 0 0 #C9C4C0, inset 0 -4px 0 #7B7672;"
-                                title="Brankas tabungan — klik!"
+                                title="Brankas tabungan (klik!)"
                                 aria-label="Brankas, klik untuk animasi koin">
                             <span class="absolute" style="inset:8px 10px; background:#8D8781;"></span>
                             <span class="fx-dial"></span>

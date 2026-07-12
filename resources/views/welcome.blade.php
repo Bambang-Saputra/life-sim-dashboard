@@ -82,7 +82,7 @@
         <p class="font-sans text-soil-dark text-base sm:text-lg max-w-xl mx-auto mb-8 leading-relaxed">
             Kelola hidupmu seperti main game pertanian.
             <span class="font-semibold">Quest harian</span>, <span class="font-semibold">catatan keuangan</span>,
-            dan <span class="font-semibold">koleksi film/anime</span> — semua dalam satu dashboard hangat.
+            dan <span class="font-semibold">koleksi film/anime</span>. Semua dalam satu dashboard hangat.
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -92,7 +92,7 @@
                 </a>
             @else
                 <a href="{{ route('register') }}" class="btn-primary px-6 py-3 text-sm">
-                    Mulai Sekarang — Gratis
+                    Mulai Gratis Sekarang
                 </a>
                 <a href="{{ route('login') }}" class="btn-ghost px-6 py-3 text-sm">
                     Sudah punya akun? Login

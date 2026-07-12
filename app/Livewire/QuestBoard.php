@@ -50,7 +50,7 @@ class QuestBoard extends Component
         RecurringQuest::spawnDue();
     }
 
-    /** XP, level, dan streak — diturunkan dari database, bukan localStorage. */
+    /** XP, level, dan streak - diturunkan dari database, bukan localStorage. */
     public function getPlayerStatsProperty(): array
     {
         return PlayerProgress::stats();
