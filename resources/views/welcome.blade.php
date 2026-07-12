@@ -8,40 +8,49 @@
 </head>
 <body class="font-sans text-soil-dark min-h-screen overflow-x-hidden">
 
-    {{-- ─── DECORATIVE SKY BACKGROUND ─── --}}
-    <div class="fixed inset-0 -z-10 pointer-events-none">
-        <div class="absolute inset-0"
-             style="background: linear-gradient(180deg, #B5D9EC 0%, #DCE9CC 50%, #C9DDB6 75%, #8FBC8A 100%);"></div>
+    {{-- ─── LATAR PIXEL: langit berpita + gunung stair-stepped + tanah ─── --}}
+    <div class="fixed inset-0 -z-10 pointer-events-none" aria-hidden="true">
+        {{-- langit: 3 pita + dither di tiap sambungan --}}
+        <div class="absolute inset-x-0" style="top:0; height:34vh; background:#8CB8DE;"></div>
+        <div class="absolute inset-x-0" style="top:34vh; height:24vh; background:#A9CBE7;"></div>
+        <div class="absolute inset-x-0" style="top:58vh; bottom:0; background:#C7DFF0;"></div>
+        <div class="px-dither" style="top:calc(34vh - 4px); --da:#A9CBE7; --db:#8CB8DE;"></div>
+        <div class="px-dither" style="top:calc(58vh - 4px); --da:#C7DFF0; --db:#A9CBE7;"></div>
 
-        {{-- Hills --}}
-        <div class="absolute bottom-20 left-0 right-0">
-            <div class="absolute" style="bottom: 0; left: 3%;  width: 280px; height: 100px; background: #4E7D4C; border-radius: 50% 50% 0 0; opacity: 0.85;"></div>
-            <div class="absolute" style="bottom: 0; left: 35%; width: 360px; height: 130px; background: #5C8F58; border-radius: 50% 50% 0 0; opacity: 0.85;"></div>
-            <div class="absolute" style="bottom: 0; right: 5%; width: 220px; height: 80px; background: #4E7D4C; border-radius: 50% 50% 0 0; opacity: 0.85;"></div>
+        {{-- gunung stair-stepped di garis horizon --}}
+        <div class="px-mtn" style="left:-40px; bottom:122px; width:240px; height:110px; background:#77A874; opacity:.75;"></div>
+        <div class="px-mtn" style="left:22%; bottom:122px; width:320px; height:150px; background:#5C8F58; opacity:.8;"></div>
+        <div class="px-mtn" style="right:16%; bottom:122px; width:200px; height:92px; background:#4E7D4C; opacity:.85;"></div>
+        <div class="px-mtn" style="right:-40px; bottom:122px; width:280px; height:124px; background:#77A874; opacity:.75;"></div>
+
+        {{-- rumput: 2 pita + dither --}}
+        <div class="absolute inset-x-0" style="bottom:96px; height:26px; background:#8FBC8A;"></div>
+        <div class="absolute inset-x-0" style="bottom:56px; height:40px; background:#6BA368;"></div>
+        <div class="px-dither" style="bottom:92px; --da:#6BA368; --db:#8FBC8A;"></div>
+
+        {{-- pohon pixel (batang + tajuk kotak berundak) --}}
+        <div class="absolute" style="bottom:112px; left:10%;">
+            <div style="width:10px; height:26px; background:#5C4632; margin:0 auto;"></div>
+            <div style="width:44px; height:30px; background:#4E7D4C; margin-top:-4px;
+                        box-shadow: 0 -10px 0 -6px #4E7D4C, 8px 6px 0 -4px #5C8F58, -8px 6px 0 -5px #5C8F58;"></div>
+        </div>
+        <div class="absolute" style="bottom:108px; right:12%;">
+            <div style="width:8px; height:20px; background:#5C4632; margin:0 auto;"></div>
+            <div style="width:34px; height:24px; background:#4E7D4C; margin-top:-3px;
+                        box-shadow: 0 -8px 0 -5px #4E7D4C, 6px 5px 0 -4px #5C8F58;"></div>
         </div>
 
-        {{-- Trees --}}
-        <div class="absolute" style="bottom: 78px; left: 12%;">
-            <div style="width: 12px; height: 32px; background: #5C4632; margin: 0 auto;"></div>
-            <div style="width: 54px; height: 38px; background: #4E7D4C; margin-top: -4px;
-                        box-shadow: 0 -8px 0 #4E7D4C, 8px 8px 0 -3px #5C8F58;"></div>
-        </div>
-        <div class="absolute" style="bottom: 75px; right: 14%;">
-            <div style="width: 10px; height: 28px; background: #5C4632; margin: 0 auto;"></div>
-            <div style="width: 44px; height: 32px; background: #4E7D4C; margin-top: -3px;"></div>
-        </div>
-
-        {{-- Ground --}}
-        <div class="absolute bottom-0 left-0 right-0" style="height: 80px;
-             background: repeating-linear-gradient(90deg, #6B4E32 0, #6B4E32 24px, #5C4632 24px, #5C4632 48px);
-             border-top: 4px solid #4E7D4C;"></div>
+        {{-- tanah papan --}}
+        <div class="absolute inset-x-0" style="bottom:54px; height:2px; background:#5C4632;"></div>
+        <div class="absolute inset-x-0 bottom-0" style="height:54px; background:#83644A;
+             background-image:repeating-linear-gradient(90deg, transparent 0 46px, #6E5138 46px 49px);"></div>
     </div>
 
     {{-- ─── NAV ─── --}}
     <nav class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-5 flex items-center justify-between">
         <a href="/" class="flex items-center gap-3 no-underline">
             <div class="w-10 h-10 bg-grass-dark border-2 border-soil-dark flex items-center justify-center shadow-cozy"
-                 style="border-radius: 8px;">
+                 style="border-radius: 4px;">
                 <svg viewBox="0 0 24 24" fill="none" class="w-6 h-6 text-corn-light">
                     <path d="M12 3v18M8 7c2 0 3 1 4 3-1 0-3-1-4-3zM16 7c-2 0-3 1-4 3 1 0 3-1 4-3zM8 11c2 0 3 1 4 3-1 0-3-1-4-3zM16 11c-2 0-3 1-4 3 1 0 3-1 4-3zM8 15c2 0 3 1 4 3-1 0-3-1-4-3zM16 15c-2 0-3 1-4 3 1 0 3-1 4-3z"
                           stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
@@ -67,11 +76,10 @@
     {{-- ─── HERO ─── --}}
     <section class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-12 text-center">
 
-        <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/80 border border-cream-dark mb-6"
-             style="border-radius: 999px;">
+        <span class="page-kicker mb-6">
             <span class="w-2 h-2 bg-grass rounded-full animate-pulse"></span>
-            <span class="font-sans text-xs font-medium text-soil-dark">Cozy life management, made for you</span>
-        </div>
+            Cozy life management, made for you
+        </span>
 
         <h1 class="font-pixel text-soil-dark leading-relaxed mb-4"
             style="font-size: clamp(20px, 5vw, 36px); text-shadow: 3px 3px 0 rgba(255,255,255,0.6); letter-spacing: 0.05em;">
@@ -102,12 +110,12 @@
     </section>
 
     {{-- ─── FEATURES ─── --}}
-    <section class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pb-32">
+    <section class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 pb-40">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-            <div class="bg-white/95 border-2 border-cream-dark p-5 shadow-cozy" style="border-radius: 8px;">
+            <div class="panel">
                 <div class="w-10 h-10 bg-grass-light/40 border border-grass/40 flex items-center justify-center mb-3"
-                     style="border-radius: 6px;">
+                     style="border-radius: 4px;">
                     <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-grass-dark">
                         <path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
                               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -117,9 +125,9 @@
                 <p class="font-sans text-soil text-sm">To-do list dengan sistem XP. Naik level setiap selesai tugas, dengan notifikasi alarm dan prioritas.</p>
             </div>
 
-            <div class="bg-white/95 border-2 border-cream-dark p-5 shadow-cozy" style="border-radius: 8px;">
+            <div class="panel">
                 <div class="w-10 h-10 bg-corn-light/45 border border-corn/40 flex items-center justify-center mb-3"
-                     style="border-radius: 6px;">
+                     style="border-radius: 4px;">
                     <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-corn-dark">
                         <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
                         <path d="M12 6v12M9 9h4.5a2.5 2.5 0 0 1 0 5h-3a2.5 2.5 0 0 0 0 5H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -129,9 +137,9 @@
                 <p class="font-sans text-soil text-sm">Catat income & expense harian. Lihat saldo per bulan dengan kategori yang mudah dilacak.</p>
             </div>
 
-            <div class="bg-white/95 border-2 border-cream-dark p-5 shadow-cozy" style="border-radius: 8px;">
+            <div class="panel">
                 <div class="w-10 h-10 bg-sky-light/40 border border-sky/40 flex items-center justify-center mb-3"
-                     style="border-radius: 6px;">
+                     style="border-radius: 4px;">
                     <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5 text-sky-dark">
                         <path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v13M4 19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M4 19V8h16v11M9 4v6M15 4v6"
                               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
