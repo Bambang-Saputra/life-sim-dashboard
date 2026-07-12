@@ -1,7 +1,7 @@
 <x-app-layout>
 
     {{-- ══════════════════════════════════════════
-         🌾 LIVING FARM BANNER v2 — Full Width Scene
+         LIVING FARM BANNER v2 — Full Width Scene
     ══════════════════════════════════════════ --}}
     <div
         x-data="bannerScene()"
@@ -26,44 +26,6 @@
                 <div class="absolute anim-shimmer bg-white" style="top:22px; left:88%; width:3px; height:3px; animation-delay:1.4s;"></div>
                 <div class="absolute anim-shimmer bg-white" style="top:46px; left:96%; width:2px; height:2px; animation-delay:0.3s;"></div>
             </div>
-        </template>
-
-        {{-- ☁ Drifting Clouds (daytime) --}}
-        <template x-if="isDaytime">
-            <div class="absolute inset-0 pointer-events-none">
-                <div class="absolute anim-drift" style="top: 14px;">
-                    <div style="position:relative; width:32px; height:10px; background:#fff; opacity:0.9;
-                                box-shadow: 10px 0 0 4px #fff, 22px 0 0 3px #fff, 4px -5px 0 5px #fff, 16px -5px 0 4px #fff;"></div>
-                </div>
-                <div class="absolute anim-drift-slow" style="top: 38px;">
-                    <div style="position:relative; width:26px; height:9px; background:#fff; opacity:0.7;
-                                box-shadow: 8px 0 0 3px #fff, 18px 0 0 3px #fff, 6px -4px 0 4px #fff;"></div>
-                </div>
-                <div class="absolute anim-drift" style="top: 60px; animation-duration:75s;">
-                    <div style="position:relative; width:22px; height:8px; background:#fff; opacity:0.6;
-                                box-shadow: 6px 0 0 3px #fff, 14px 0 0 2px #fff;"></div>
-                </div>
-                <div class="absolute anim-drift-slow" style="top: 82px; animation-duration:100s;">
-                    <div style="position:relative; width:18px; height:7px; background:#fff; opacity:0.5;
-                                box-shadow: 5px 0 0 3px #fff, 11px 0 0 2px #fff;"></div>
-                </div>
-            </div>
-        </template>
-
-        {{-- ☀ Sun --}}
-        <template x-if="isDaytime">
-            <div class="absolute anim-sun-shine"
-                 :style="sunPosition + '; width:28px; height:28px; background:#F1CC8E;
-                         box-shadow: 0 -7px 0 3px #F1CC8E, 0 7px 0 3px #F1CC8E,
-                                     -7px 0 0 3px #F1CC8E, 7px 0 0 3px #F1CC8E,
-                                     -5px -5px 0 3px #F1CC8E, 5px -5px 0 3px #F1CC8E,
-                                     -5px 5px 0 3px #F1CC8E, 5px 5px 0 3px #F1CC8E,
-                                     0 0 24px rgba(241,204,142,0.6);'"></div>
-        </template>
-        {{-- 🌙 Moon --}}
-        <template x-if="!isDaytime">
-            <div class="absolute" style="top:18px; right:12%; width:22px; height:22px; background:#E8DEC4; border-radius:50%;
-                 box-shadow: 0 0 18px rgba(232,222,196,0.55), inset -5px 0 0 #B5AFA8;"></div>
         </template>
 
         {{-- ░░░ LAYER 2 — Mountain Range (far back, parallax effect) ░░░ --}}
@@ -161,20 +123,6 @@
         <div class="absolute" style="bottom: 20px; left: 38%; width: 4px; height: 3px; background:#A9A39E; border:1px solid #7B7672;"></div>
         <div class="absolute" style="bottom: 19px; left: 46%; width: 5px; height: 3px; background:#A9A39E; border:1px solid #7B7672;"></div>
 
-        {{-- 🌻 Sunflower row center-left --}}
-        <div class="absolute" style="bottom: 22px; left: 49%; font-size: 14px;">
-            <span class="inline-block anim-sway" style="animation-delay: 0.4s">🌻</span>
-        </div>
-
-        {{-- 🌾 Wheat rows (spread across center) --}}
-        <div class="absolute" style="bottom: 22px; left: 52%; font-size: 12px; display:flex; gap:2px;">
-            <span class="inline-block anim-sway" style="animation-delay: 0s">🌾</span>
-            <span class="inline-block anim-sway" style="animation-delay: 0.2s">🌾</span>
-            <span class="inline-block anim-sway" style="animation-delay: 0.4s">🌾</span>
-            <span class="inline-block anim-sway" style="animation-delay: 0.6s">🌾</span>
-            <span class="inline-block anim-sway" style="animation-delay: 0.8s">🌾</span>
-        </div>
-
         {{-- 🪵 Wooden Sign with greeting (center pinned in grass) --}}
         <div class="absolute" style="bottom: 26px; left: 50%; transform: translateX(-50%); z-index: 6;">
             {{-- Posts --}}
@@ -183,7 +131,7 @@
             {{-- Sign board --}}
             <div style="position:relative; padding:3px 8px; background:#D4A373; border:2px solid #5C4632; box-shadow: 0 1px 0 #5C4632;">
                 <p class="font-pixel" style="font-size: 7px; color:#5C4632; letter-spacing:0.05em; white-space:nowrap;"
-                   x-text="`☀ ${greeting.toUpperCase()}!`"></p>
+                   x-text="`SELAMAT ${greeting.toUpperCase()}!`"></p>
             </div>
         </div>
 
@@ -301,7 +249,7 @@
                     </h1>
                     <p class="font-sans text-xs mt-1.5 inline-block px-2.5 py-1 bg-black/25 backdrop-blur-sm"
                        style="color: #FBF7EC; border-radius: 999px; letter-spacing: 0.03em;">
-                        🌾 {{ Auth::user()->name }}'s Farm
+                        {{ Auth::user()->name }}'s Farm
                     </p>
                 </div>
 
@@ -330,17 +278,17 @@
         return {
             hour: new Date().getHours(),
             skyClass: 'sky-day', isDaytime: true,
-            sunPosition: 'top:18px; right:14%', greeting: 'datang',
+            greeting: 'datang',
             init() { this.update(); setInterval(() => this.update(), 60000); },
             update() {
                 this.hour = new Date().getHours();
                 this.isDaytime = this.hour >= 6 && this.hour < 18;
                 if (this.hour >= 5 && this.hour < 10) {
-                    this.skyClass = 'sky-morning'; this.sunPosition = 'top:50px; right:18%'; this.greeting = 'pagi';
+                    this.skyClass = 'sky-morning'; this.greeting = 'pagi';
                 } else if (this.hour >= 10 && this.hour < 16) {
-                    this.skyClass = 'sky-day'; this.sunPosition = 'top:18px; right:14%'; this.greeting = 'siang';
+                    this.skyClass = 'sky-day'; this.greeting = 'siang';
                 } else if (this.hour >= 16 && this.hour < 19) {
-                    this.skyClass = 'sky-evening'; this.sunPosition = 'top:60px; right:10%'; this.greeting = 'sore';
+                    this.skyClass = 'sky-evening'; this.greeting = 'sore';
                 } else {
                     this.skyClass = 'sky-night'; this.greeting = 'malam';
                 }

@@ -324,7 +324,7 @@
     @endif
 
     <footer>
-        🌾 Life-Sim Dashboard · Personal Finance Report · {{ $generated->format('d/m/Y H:i') }}
+        Life-Sim Dashboard · Personal Finance Report · {{ $generated->format('d/m/Y H:i') }}
     </footer>
 </div>
 

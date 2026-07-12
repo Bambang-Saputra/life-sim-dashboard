@@ -3,7 +3,7 @@
 
     <div class="mb-6 text-center">
         <h2 class="font-pixel text-soil-dark" style="font-size: 12px; letter-spacing: 0.05em;">
-            🌾 WELCOME BACK
+            WELCOME BACK
         </h2>
         <p class="font-sans text-soil text-sm mt-2">Masuk ke dashboard kehidupanmu</p>
     </div>

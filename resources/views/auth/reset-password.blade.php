@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="mb-6 text-center">
         <h2 class="font-pixel text-soil-dark" style="font-size: 12px; letter-spacing: 0.05em;">
-            🔐 NEW PASSWORD
+            NEW PASSWORD
         </h2>
         <p class="font-sans text-soil text-sm mt-2">Buat password baru yang aman</p>
     </div>

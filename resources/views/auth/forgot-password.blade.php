@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="mb-6 text-center">
         <h2 class="font-pixel text-soil-dark" style="font-size: 12px; letter-spacing: 0.05em;">
-            🔑 RESET PASSWORD
+            RESET PASSWORD
         </h2>
         <p class="font-sans text-soil text-sm mt-3">
             Lupa password? Tenang. Masukkan email-mu dan kami akan kirim link untuk reset password.

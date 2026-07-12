@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="mb-6 text-center">
         <h2 class="font-pixel text-soil-dark" style="font-size: 12px; letter-spacing: 0.05em;">
-            📧 VERIFY EMAIL
+            VERIFY EMAIL
         </h2>
         <p class="font-sans text-soil text-sm mt-3 leading-relaxed">
             Terima kasih sudah daftar! Sebelum mulai, mohon verifikasi email-mu dengan

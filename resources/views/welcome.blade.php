@@ -13,22 +13,6 @@
         <div class="absolute inset-0"
              style="background: linear-gradient(180deg, #B5D9EC 0%, #DCE9CC 50%, #C9DDB6 75%, #8FBC8A 100%);"></div>
 
-        {{-- Pixel sun --}}
-        <div class="absolute animate-sun-shine"
-             style="top: 80px; right: 14%; width: 48px; height: 48px; background: #F1CC8E;
-                    box-shadow: 0 -12px 0 5px #F1CC8E, 0 12px 0 5px #F1CC8E,
-                                -12px 0 0 5px #F1CC8E, 12px 0 0 5px #F1CC8E,
-                                -10px -10px 0 5px #F1CC8E, 10px -10px 0 5px #F1CC8E,
-                                -10px 10px 0 5px #F1CC8E, 10px 10px 0 5px #F1CC8E,
-                                0 0 60px rgba(241,204,142,0.5);">
-        </div>
-
-        {{-- Clouds --}}
-        <div class="absolute" style="top: 140px; left: 10%; width: 60px; height: 18px; background: #fff; opacity: 0.85;
-             box-shadow: 18px 0 0 6px #fff, 36px 0 0 5px #fff, 6px -8px 0 7px #fff, 24px -8px 0 6px #fff;"></div>
-        <div class="absolute" style="top: 210px; left: 65%; width: 48px; height: 14px; background: #fff; opacity: 0.75;
-             box-shadow: 14px 0 0 5px #fff, 28px 0 0 4px #fff, 8px -6px 0 5px #fff;"></div>
-
         {{-- Hills --}}
         <div class="absolute bottom-20 left-0 right-0">
             <div class="absolute" style="bottom: 0; left: 3%;  width: 280px; height: 100px; background: #4E7D4C; border-radius: 50% 50% 0 0; opacity: 0.85;"></div>
@@ -104,11 +88,11 @@
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
             @auth
                 <a href="{{ url('/dashboard') }}" class="btn-primary px-6 py-3 text-sm">
-                    🌾 Buka Dashboard
+                    Buka Dashboard
                 </a>
             @else
                 <a href="{{ route('register') }}" class="btn-primary px-6 py-3 text-sm">
-                    ✨ Mulai Sekarang — Gratis
+                    Mulai Sekarang — Gratis
                 </a>
                 <a href="{{ route('login') }}" class="btn-ghost px-6 py-3 text-sm">
                     Sudah punya akun? Login
@@ -160,7 +144,7 @@
         </div>
 
         <p class="text-center font-sans text-soil-dark/60 text-xs mt-10">
-            🌾 Built with Laravel · Livewire · Alpine.js · Tailwind CSS
+            Built with Laravel · Livewire · Alpine.js · Tailwind CSS
         </p>
     </section>
 
