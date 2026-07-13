@@ -9,7 +9,7 @@
 ![Livewire](https://img.shields.io/badge/Livewire-4.x-FB70A9?logo=livewire&logoColor=white)
 ![Alpine.js](https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?logo=alpinedotjs&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-06B6D4?logo=tailwindcss&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-18%20passing-4E7D4C)
+![Tests](https://img.shields.io/badge/tests-25%20passing-4E7D4C)
 ![License](https://img.shields.io/badge/license-MIT-83644A)
 
 </div>
@@ -70,12 +70,16 @@ php artisan key:generate
 
 # set DB credentials in .env, then:
 php artisan migrate
-php artisan db:seed        # optional demo data
+php artisan db:seed        # optional: full demo dataset
 npm run build
 php artisan serve          # -> http://127.0.0.1:8000
 ```
 
 Register once; that account becomes the owner and registration locks itself.
+
+### Demo mode
+
+`php artisan db:seed` fills every module with realistic, date-relative data: a 6-day quest streak at level 4, three months of finances with budgets in all three HP-bar states, savings history, and a rated S-to-D tier list. It also creates the owner account `demo@example.com` / `demo1234`. Set `APP_DEMO=true` in `.env` to display those credentials on the login page for portfolio deployments.
 
 ### API keys
 
@@ -120,7 +124,7 @@ Both jobs are idempotent and also fire as a safety net when the relevant page is
 php artisan test          # feature tests (sqlite in-memory)
 ```
 
-The auth suite covers login, the registration lock, password reset, e-mail verification, and session handling: 18 tests, 38 assertions.
+The suite covers login, the registration lock, password reset, e-mail verification, session handling, and profile management: 25 tests, 61 assertions.
 
 ## Architecture
 

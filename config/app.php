@@ -123,4 +123,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Demo Mode
+    |--------------------------------------------------------------------------
+    |
+    | Saat true, halaman login menampilkan kredensial akun demo. Nyalakan
+    | hanya untuk deployment demo portfolio, matikan untuk pemakaian pribadi.
+    |
+    */
+
+    'demo' => env('APP_DEMO', false),
+
 ];

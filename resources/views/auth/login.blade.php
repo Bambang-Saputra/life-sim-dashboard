@@ -8,6 +8,14 @@
         <p class="font-sans text-soil text-sm mt-2">Masuk ke dashboard kehidupanmu</p>
     </div>
 
+    @if (config('app.demo'))
+        <div class="mb-4 px-3 py-2 bg-corn-light/40 border border-corn/50 text-center" style="border-radius: 4px;">
+            <p class="font-sans text-xs text-soil-dark">
+                Akun demo: <span class="font-semibold">demo@example.com</span> · <span class="font-semibold">demo1234</span>
+            </p>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('login') }}" class="space-y-4">
         @csrf
 
