@@ -63,6 +63,9 @@
                         <div class="px-spark" style="left:56px; top:44px;"></div>
                         <div class="px-spark" style="left:230px; top:30px; animation-delay:.6s;"></div>
                         <div class="px-spark" style="left:96px; top:20px; animation-delay:1.1s;"></div>
+                        {{-- daun senja terbawa angin --}}
+                        <div class="px-leaf" style="top:52px; width:4px; height:4px; background:#EBBE94; animation-duration:11s;"></div>
+                        <div class="px-leaf" style="top:78px; width:4px; height:4px; background:#C08A6E; animation-duration:14s; animation-delay:5s;"></div>
                     </div>
 
                     <div class="par par-near">

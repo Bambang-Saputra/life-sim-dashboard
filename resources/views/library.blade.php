@@ -47,6 +47,10 @@
                         {{-- bintang rating melayang --}}
                         <div class="px-spark" style="left:76px; top:16px;"></div>
                         <div class="px-spark" style="left:92px; top:34px; animation-delay:.7s;"></div>
+                        {{-- debu melayang dekat jendela senja --}}
+                        <span class="px-mote" style="left:126px; top:36px;"></span>
+                        <span class="px-mote" style="left:148px; top:52px; animation-delay:2s;"></span>
+                        <span class="px-mote" style="left:166px; top:28px; animation-delay:4s;"></span>
                     </div>
 
                     <div class="par par-mid">

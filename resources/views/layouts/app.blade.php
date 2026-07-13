@@ -164,6 +164,7 @@
                 window.addEventListener('quest-completed', () => this.playSfx('complete'));
                 window.addEventListener('finance-entry-saved', () => this.playSfx('coin'));
                 window.addEventListener('rating-stier', () => this.playSfx('fanfare'));
+                window.addEventListener('bird-chirp', () => this.playSfx('chirp'));
                 window.addEventListener('achievement-unlocked', (e) => {
                     const d = e.detail || {};
                     this._achQueue.push({ icon: d.icon || '🏆', title: d.title || 'Achievement', desc: d.desc || '' });
@@ -209,6 +210,7 @@
                         complete: [[659, 0, 0.09], [784, 0.09, 0.09], [1047, 0.18, 0.22]],
                         fanfare:  [[523, 0, 0.11], [659, 0.11, 0.11], [784, 0.22, 0.11], [1047, 0.33, 0.3]],
                         unlock:   [[784, 0, 0.08], [988, 0.08, 0.08], [1175, 0.16, 0.08], [1568, 0.24, 0.26]],
+                        chirp:    [[2637, 0, 0.06], [3520, 0.07, 0.14], [2794, 0.16, 0.26]],
                     };
                     (SONGS[name] || SONGS.coin).forEach(([freq, at, dur]) => {
                         const osc = ctx.createOscillator();

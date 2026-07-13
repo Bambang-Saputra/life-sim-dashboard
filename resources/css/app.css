@@ -809,6 +809,107 @@
     }
 
     /* ══════════════════════════════════════════
+       BIRD WHISTLE + ANGIN (banner dashboard & scene hero)
+    ══════════════════════════════════════════ */
+
+    .wb-bird {
+        position: absolute;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        pointer-events: auto;
+        line-height: 0;
+    }
+    .wb-bird svg {
+        display: block;
+        shape-rendering: crispEdges;
+        animation: birdBreath 3.2s ease-in-out infinite;
+        transform-origin: 50% 100%;
+    }
+    @keyframes birdBreath {
+        0%, 100% { transform: scale(1, 1); }
+        50%      { transform: scale(1.01, 1.035); }
+    }
+
+    /* paruh: default tertutup; saat .is-chirp keduanya bergantian */
+    .wb-beak-open { opacity: 0; }
+    .is-chirp .wb-beak-open   { animation: beakOpenFlap 1.1s steps(1) forwards; }
+    .is-chirp .wb-beak-closed { animation: beakCloseFlap 1.1s steps(1) forwards; }
+    @keyframes beakOpenFlap  { 0%, 45%, 80% { opacity: 1; } 25%, 60%, 100% { opacity: 0; } }
+    @keyframes beakCloseFlap { 0%, 45%, 80% { opacity: 0; } 25%, 60%, 100% { opacity: 1; } }
+
+    .wb-note { position: absolute; opacity: 0; pointer-events: none; }
+    .wb-note svg { display: block; shape-rendering: crispEdges; }
+    .is-chirp .wb-note { animation: noteFly 1.25s ease-out forwards; }
+    .is-chirp .wb-note.n2 { animation-delay: .22s; }
+    @keyframes noteFly {
+        0%   { opacity: 0; transform: translate(0, 5px); }
+        18%  { opacity: 1; }
+        100% { opacity: 0; transform: translate(14px, -30px); }
+    }
+
+    .wb-leaf {
+        position: absolute; left: -12px;
+        opacity: 0; pointer-events: none;
+        animation: leafDrift linear infinite;
+    }
+    @keyframes leafDrift {
+        0%   { transform: translate(0, 0);         opacity: 0; }
+        5%   { opacity: .85; }
+        25%  { transform: translate(330px, 14px); }
+        50%  { transform: translate(660px, -8px); }
+        75%  { transform: translate(990px, 10px); }
+        95%  { opacity: .85; }
+        100% { transform: translate(1340px, -4px); opacity: 0; }
+    }
+
+    .wb-wind {
+        position: absolute; left: -30px;
+        width: 26px; height: 2px;
+        background: rgba(251, 247, 236, .4);
+        opacity: 0; pointer-events: none;
+        animation: windDash 11s linear infinite;
+    }
+    @keyframes windDash {
+        0%   { transform: translateX(0);       opacity: 0; }
+        2%   { opacity: .7; }
+        20%  { transform: translateX(1340px);  opacity: 0; }
+        100% { transform: translateX(1340px);  opacity: 0; }
+    }
+
+    /* daun kecil untuk scene hero selebar 300px */
+    .px-leaf {
+        position: absolute; left: -10px;
+        opacity: 0; pointer-events: none;
+        animation: leafDriftS linear infinite;
+    }
+    @keyframes leafDriftS {
+        0%   { transform: translate(0, 0);        opacity: 0; }
+        7%   { opacity: .9; }
+        50%  { transform: translate(165px, 10px); }
+        93%  { opacity: .9; }
+        100% { transform: translate(330px, -5px); opacity: 0; }
+    }
+
+    /* debu melayang dekat jendela (scene indoor) */
+    .px-mote {
+        position: absolute; width: 3px; height: 3px;
+        background: rgba(251, 247, 236, .85);
+        pointer-events: none;
+        animation: moteFloat 6s ease-in-out infinite;
+    }
+    @keyframes moteFloat {
+        0%, 100% { transform: translateY(0);    opacity: .15; }
+        50%      { transform: translateY(-9px); opacity: .9; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .wb-bird svg, .wb-beak-open, .wb-beak-closed, .wb-note,
+        .wb-leaf, .wb-wind, .px-leaf, .px-mote { animation: none !important; }
+    }
+
+    /* ══════════════════════════════════════════
        BUDGET HP-BAR + INSIGHT CARDS
     ══════════════════════════════════════════ */
 

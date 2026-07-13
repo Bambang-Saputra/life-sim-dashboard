@@ -45,6 +45,10 @@
                             <span class="absolute" style="left:50%; top:5px; bottom:5px; width:4px; margin-left:-2px; background:#5C4632;"></span>
                             <span class="absolute" style="left:5px; right:5px; top:50%; height:4px; margin-top:-2px; background:#5C4632;"></span>
                         </div>
+                        {{-- debu melayang di berkas cahaya jendela --}}
+                        <span class="px-mote" style="right:36px; top:34px;"></span>
+                        <span class="px-mote" style="right:56px; top:48px; animation-delay:2s;"></span>
+                        <span class="px-mote" style="right:70px; top:26px; animation-delay:4s;"></span>
                         {{-- lukisan mini chart --}}
                         <div class="absolute" style="left:18px; top:16px; width:44px; height:34px; background:#5C4632;">
                             <span class="absolute" style="inset:4px; background:#FBF7EC;"></span>

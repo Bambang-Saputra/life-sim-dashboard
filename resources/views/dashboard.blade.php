@@ -6,6 +6,7 @@
     <div
         x-data="bannerScene()"
         x-init="init()"
+        :class="chirping && 'is-chirp'"
         class="relative w-full overflow-hidden mb-6 border-2 border-soil-dark shadow-cozy-lg"
         style="height: 200px; border-radius: 8px;"
     >
@@ -62,6 +63,15 @@
             <div class="absolute" style="bottom:0; left:8%;   width:130px; height:38px; background:#5C8F58; border-radius:50% 50% 0 0;"></div>
             <div class="absolute" style="bottom:0; left:55%;  width:160px; height:44px; background:#4E7D4C; border-radius:50% 50% 0 0;"></div>
         </div>
+
+        {{-- ░░░ ANGIN: daun terbang + garis hembusan ░░░ --}}
+        <div class="wb-leaf" style="top:36px;  width:6px; height:6px; background:#8FBC8A; animation-duration:17s;"></div>
+        <div class="wb-leaf" style="top:62px;  width:5px; height:5px; background:#6BA368; animation-duration:21s; animation-delay:4s;"></div>
+        <div class="wb-leaf" style="top:84px;  width:6px; height:6px; background:#E5B567; animation-duration:25s; animation-delay:9s;"></div>
+        <div class="wb-leaf" style="top:50px;  width:4px; height:4px; background:#8FBC8A; animation-duration:19s; animation-delay:13s;"></div>
+        <div class="wb-leaf" style="top:104px; width:5px; height:5px; background:#C99845; animation-duration:23s; animation-delay:6s;"></div>
+        <div class="wb-wind" style="top:44px;"></div>
+        <div class="wb-wind" style="top:78px; animation-delay:5.5s;"></div>
 
         {{-- ═══════ LEFT THIRD ═══════ --}}
 
@@ -133,6 +143,116 @@
                 <p class="font-pixel" style="font-size: 7px; color:#5C4632; letter-spacing:0.05em; white-space:nowrap;"
                    x-text="`SELAMAT ${greeting.toUpperCase()}!`"></p>
             </div>
+        </div>
+
+        {{-- ═══════ POHON SIUL + BURUNG (klik untuk bersiul) ═══════ --}}
+        <div class="absolute" style="bottom: 16px; left: 56%; width: 170px; height: 132px;">
+            {{-- tajuk berundak --}}
+            <div class="absolute" style="left:36px; top:0;    width:44px; height:12px; background:#8FBC8A;"></div>
+            <div class="absolute" style="left:24px; top:10px; width:70px; height:18px; background:#6BA368;"></div>
+            <div class="absolute" style="left:10px; top:26px; width:96px; height:26px; background:#4E7D4C;"></div>
+            <div class="absolute" style="left:0;    top:40px; width:26px; height:16px; background:#4E7D4C;"></div>
+            <div class="absolute" style="left:96px; top:40px; width:26px; height:16px; background:#4E7D4C;"></div>
+            {{-- batang + dahan tempat bertengger --}}
+            <div class="absolute" style="left:44px;  top:50px; width:16px; height:82px; background:#83644A;"></div>
+            <div class="absolute" style="left:55px;  top:50px; width:5px;  height:82px; background:#6E5138;"></div>
+            <div class="absolute" style="left:60px;  top:64px; width:74px; height:6px;  background:#83644A;"></div>
+            <div class="absolute" style="left:60px;  top:70px; width:74px; height:2px;  background:#6E5138;"></div>
+            <div class="absolute" style="left:134px; top:66px; width:10px; height:4px;  background:#83644A;"></div>
+
+            {{-- burung pipit --}}
+            <button type="button" class="wb-bird" style="left:72px; top:10px; width:66px; height:55px;"
+                    @click.stop="chirp()" title="Klik untuk bersiul" aria-label="Burung pipit, klik untuk bersiul">
+                <svg viewBox="0 0 24 20" width="66" height="55">
+                    <g fill="#3E2F22">
+                        <rect x="11" y="0" width="6" height="1"/><rect x="10" y="1" width="1" height="1"/><rect x="17" y="1" width="1" height="1"/>
+                        <rect x="9" y="2" width="1" height="1"/><rect x="18" y="2" width="1" height="1"/>
+                        <rect x="8" y="3" width="1" height="1"/><rect x="19" y="3" width="1" height="1"/>
+                        <rect x="8" y="4" width="1" height="1"/><rect x="14" y="4" width="2" height="1"/><rect x="19" y="4" width="1" height="1"/>
+                        <rect x="7" y="5" width="1" height="1"/><rect x="14" y="5" width="2" height="1"/><rect x="19" y="5" width="1" height="1"/>
+                        <rect x="7" y="6" width="1" height="1"/><rect x="19" y="6" width="1" height="1"/>
+                        <rect x="6" y="7" width="1" height="1"/><rect x="19" y="7" width="1" height="1"/>
+                        <rect x="5" y="8" width="1" height="1"/><rect x="19" y="8" width="1" height="1"/>
+                        <rect x="4" y="9" width="1" height="1"/><rect x="19" y="9" width="1" height="1"/>
+                        <rect x="3" y="10" width="1" height="1"/><rect x="19" y="10" width="1" height="1"/>
+                        <rect x="2" y="11" width="1" height="1"/><rect x="19" y="11" width="1" height="1"/>
+                        <rect x="1" y="12" width="1" height="1"/><rect x="18" y="12" width="1" height="1"/>
+                        <rect x="0" y="13" width="1" height="1"/><rect x="17" y="13" width="1" height="1"/>
+                        <rect x="0" y="14" width="1" height="1"/><rect x="16" y="14" width="1" height="1"/>
+                        <rect x="1" y="15" width="2" height="1"/><rect x="14" y="15" width="2" height="1"/>
+                        <rect x="3" y="16" width="2" height="1"/><rect x="10" y="16" width="5" height="1"/>
+                        <rect x="5" y="17" width="4" height="1"/>
+                    </g>
+                    <g fill="#83644A">
+                        <rect x="11" y="1" width="6" height="1"/><rect x="10" y="2" width="8" height="1"/>
+                        <rect x="9" y="3" width="4" height="1"/><rect x="18" y="3" width="1" height="1"/>
+                        <rect x="9" y="4" width="3" height="1"/><rect x="8" y="5" width="3" height="1"/><rect x="8" y="6" width="3" height="1"/>
+                        <rect x="7" y="7" width="2" height="1"/><rect x="11" y="7" width="2" height="1"/>
+                        <rect x="6" y="8" width="1" height="1"/><rect x="12" y="8" width="2" height="1"/>
+                        <rect x="5" y="9" width="1" height="1"/><rect x="13" y="9" width="1" height="1"/>
+                        <rect x="4" y="10" width="2" height="1"/>
+                        <rect x="3" y="11" width="2" height="1"/><rect x="13" y="11" width="1" height="1"/>
+                        <rect x="2" y="12" width="1" height="1"/><rect x="4" y="12" width="1" height="1"/><rect x="12" y="12" width="1" height="1"/>
+                        <rect x="1" y="13" width="1" height="1"/><rect x="4" y="13" width="2" height="1"/><rect x="11" y="13" width="1" height="1"/>
+                        <rect x="4" y="14" width="7" height="1"/><rect x="6" y="15" width="5" height="1"/><rect x="8" y="16" width="2" height="1"/>
+                    </g>
+                    <g fill="#5C4632">
+                        <rect x="3" y="12" width="1" height="1"/><rect x="2" y="13" width="2" height="1"/>
+                        <rect x="1" y="14" width="3" height="1"/><rect x="3" y="15" width="3" height="1"/><rect x="5" y="16" width="3" height="1"/>
+                    </g>
+                    <g fill="#A88B6E">
+                        <rect x="13" y="10" width="1" height="1"/><rect x="5" y="11" width="1" height="1"/><rect x="12" y="11" width="1" height="1"/>
+                        <rect x="5" y="12" width="1" height="1"/><rect x="11" y="12" width="1" height="1"/><rect x="6" y="13" width="5" height="1"/>
+                    </g>
+                    <g fill="#FBF7EC">
+                        <rect x="13" y="3" width="5" height="1"/><rect x="12" y="4" width="2" height="1"/><rect x="16" y="4" width="3" height="1"/>
+                        <rect x="11" y="5" width="3" height="1"/><rect x="16" y="5" width="3" height="1"/><rect x="11" y="6" width="8" height="1"/>
+                        <rect x="13" y="7" width="6" height="1"/><rect x="11" y="9" width="2" height="1"/>
+                        <rect x="6" y="10" width="7" height="1"/><rect x="6" y="11" width="6" height="1"/><rect x="6" y="12" width="5" height="1"/>
+                    </g>
+                    <g fill="#E5B567">
+                        <rect x="9" y="7" width="2" height="1"/><rect x="7" y="8" width="5" height="1"/><rect x="6" y="9" width="5" height="1"/>
+                    </g>
+                    <g fill="#A8CDED">
+                        <rect x="14" y="8" width="5" height="1"/><rect x="14" y="9" width="5" height="1"/><rect x="14" y="10" width="5" height="1"/>
+                        <rect x="14" y="11" width="5" height="1"/><rect x="13" y="12" width="5" height="1"/><rect x="12" y="13" width="5" height="1"/>
+                        <rect x="11" y="14" width="5" height="1"/><rect x="11" y="15" width="3" height="1"/>
+                    </g>
+                    <g fill="#9A6A3D">
+                        <rect x="10" y="17" width="1" height="1"/><rect x="14" y="17" width="1" height="1"/>
+                        <rect x="10" y="18" width="1" height="1"/><rect x="14" y="18" width="1" height="1"/>
+                        <rect x="9" y="19" width="2" height="1"/><rect x="14" y="19" width="2" height="1"/>
+                    </g>
+                    <g class="wb-beak wb-beak-closed" fill="#3E2F22">
+                        <rect x="20" y="5" width="2" height="1"/><rect x="20" y="6" width="1" height="1"/>
+                    </g>
+                    <g class="wb-beak wb-beak-open" fill="#3E2F22">
+                        <rect x="20" y="5" width="2" height="1"/><rect x="21" y="6" width="2" height="1"/>
+                    </g>
+                </svg>
+            </button>
+
+            {{-- notes siulan --}}
+            <span class="wb-note" style="left:136px; top:16px;">
+                <svg viewBox="0 0 8 9" width="16" height="18" fill="#3E2F22">
+                    <rect x="4" y="0" width="1" height="1"/><rect x="4" y="1" width="2" height="1"/>
+                    <rect x="4" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/>
+                    <rect x="4" y="3" width="1" height="1"/><rect x="4" y="4" width="1" height="1"/>
+                    <rect x="2" y="5" width="3" height="1"/><rect x="1" y="6" width="4" height="1"/>
+                    <rect x="1" y="7" width="4" height="1"/><rect x="2" y="8" width="2" height="1"/>
+                </svg>
+            </span>
+            <span class="wb-note n2" style="left:152px; top:2px;">
+                <svg viewBox="0 0 10 7" width="20" height="14" fill="#3E2F22">
+                    <rect x="1" y="0" width="7" height="1"/>
+                    <rect x="1" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/>
+                    <rect x="1" y="2" width="1" height="1"/><rect x="7" y="2" width="1" height="1"/>
+                    <rect x="1" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/>
+                    <rect x="0" y="4" width="3" height="1"/><rect x="6" y="4" width="3" height="1"/>
+                    <rect x="0" y="5" width="4" height="1"/><rect x="5" y="5" width="4" height="1"/>
+                    <rect x="1" y="6" width="2" height="1"/><rect x="6" y="6" width="2" height="1"/>
+                </svg>
+            </span>
         </div>
 
         {{-- ═══════ RIGHT THIRD ═══════ --}}
@@ -242,9 +362,10 @@
         <div class="absolute top-3 left-0 right-0 z-10 px-4">
             <div class="flex items-start justify-between gap-3">
                 <div>
-                    <h1 class="font-pixel"
+                    <h1 class="font-pixel inline-block"
                         style="font-size: clamp(11px, 2.4vw, 17px); color: #FBF7EC;
-                               text-shadow: 2px 2px 0 #5C4632, 3px 3px 0 rgba(0,0,0,0.35); letter-spacing: 0.05em;">
+                               background:#3E5A78; border:2px solid #2E4459; padding:4px 10px;
+                               box-shadow: 2px 2px 0 rgba(0,0,0,0.3); letter-spacing: 0.05em;">
                         LIFE-SIM <span style="color:#F1CC8E">DASHBOARD</span>
                     </h1>
                     <p class="font-sans text-xs mt-1.5 inline-block px-2.5 py-1 bg-black/25 backdrop-blur-sm"
@@ -279,7 +400,22 @@
             hour: new Date().getHours(),
             skyClass: 'sky-day', isDaytime: true,
             greeting: 'datang',
-            init() { this.update(); setInterval(() => this.update(), 60000); },
+            chirping: false, chirpTimer: null,
+            init() {
+                this.update();
+                setInterval(() => this.update(), 60000);
+                this.scheduleChirp();
+            },
+            chirp() {
+                if (this.chirping) return;
+                this.chirping = true;
+                window.dispatchEvent(new CustomEvent('bird-chirp'));
+                setTimeout(() => { this.chirping = false; this.scheduleChirp(); }, 1400);
+            },
+            scheduleChirp() {
+                clearTimeout(this.chirpTimer);
+                this.chirpTimer = setTimeout(() => this.chirp(), 8000 + Math.random() * 7000);
+            },
             update() {
                 this.hour = new Date().getHours();
                 this.isDaytime = this.hour >= 6 && this.hour < 18;
