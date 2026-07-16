@@ -55,9 +55,7 @@
                             class="w-full aspect-[2/3] object-cover border border-cream-dark"
                             style="border-radius: 4px;" loading="lazy">
                     @else
-                        <div class="w-full aspect-[2/3] flex items-center justify-center bg-cream border border-cream-dark" style="border-radius: 4px;">
-                            <span class="font-sans text-stone text-xs">No Image</span>
-                        </div>
+                        <x-pixel-cover :type="$item->api_type" :title="$item->title"/>
                     @endif
                     <p class="font-sans text-xs font-medium text-soil-dark mt-1.5 line-clamp-2 leading-tight">
                         {{ \Illuminate\Support\Str::limit($item->title, 22) }}

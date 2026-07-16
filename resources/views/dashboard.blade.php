@@ -8,7 +8,7 @@
         x-init="init()"
         :class="chirping && 'is-chirp'"
         class="relative w-full overflow-hidden mb-6 border-2 border-soil-dark shadow-cozy-lg"
-        style="height: 200px; border-radius: 8px;"
+        style="height: 200px; border-radius: 4px;"
     >
         {{-- ░░░ LAYER 1 - SKY ░░░ --}}
         <div class="absolute inset-0 transition-colors duration-1000" :class="skyClass"></div>
@@ -29,39 +29,46 @@
             </div>
         </template>
 
-        {{-- ░░░ LAYER 2 - Mountain Range (far back, parallax effect) ░░░ --}}
-        <div class="absolute pointer-events-none" style="bottom: 56px; left:0; right:0; height: 50px;">
-            <div class="absolute" style="bottom:0; left:-3%;  width:0; height:0;
-                 border-left: 70px solid transparent; border-right: 70px solid transparent;
-                 border-bottom: 48px solid #6E8B68; opacity:0.55;"></div>
-            <div class="absolute" style="bottom:0; left:14%;  width:0; height:0;
-                 border-left: 90px solid transparent; border-right: 90px solid transparent;
-                 border-bottom: 60px solid #5C7A56; opacity:0.6;"></div>
-            <div class="absolute" style="bottom:0; left:38%;  width:0; height:0;
-                 border-left: 60px solid transparent; border-right: 60px solid transparent;
-                 border-bottom: 42px solid #6E8B68; opacity:0.55;"></div>
-            <div class="absolute" style="bottom:0; right:18%; width:0; height:0;
-                 border-left: 80px solid transparent; border-right: 80px solid transparent;
-                 border-bottom: 56px solid #5C7A56; opacity:0.6;"></div>
-            <div class="absolute" style="bottom:0; right:-5%; width:0; height:0;
-                 border-left: 65px solid transparent; border-right: 65px solid transparent;
-                 border-bottom: 44px solid #6E8B68; opacity:0.55;"></div>
-            {{-- Snow caps on big peaks --}}
-            <div class="absolute" style="bottom:55px; left:21%; width:12px; height:6px; background:#FBF7EC; opacity:0.65; clip-path: polygon(0 100%, 50% 0, 100% 100%);"></div>
-            <div class="absolute" style="bottom:51px; right:26%; width:11px; height:5px; background:#FBF7EC; opacity:0.65; clip-path: polygon(0 100%, 50% 0, 100% 100%);"></div>
+        {{-- ░░░ LAYER 2 - Mountain Range stair-stepped ░░░ --}}
+        <div class="absolute pointer-events-none" style="bottom: 56px; left:0; right:0; height: 62px;">
+            <div class="px-mtn" style="left:-3%;  bottom:0; width:150px; height:50px; background:#6E8B68; opacity:.6;"></div>
+            <div class="px-mtn" style="left:13%;  bottom:0; width:200px; height:62px; background:#5C7A56; opacity:.65;"></div>
+            <div class="px-mtn" style="left:37%;  bottom:0; width:140px; height:46px; background:#6E8B68; opacity:.6;"></div>
+            <div class="px-mtn" style="right:16%; bottom:0; width:180px; height:58px; background:#5C7A56; opacity:.65;"></div>
+            <div class="px-mtn" style="right:-4%; bottom:0; width:150px; height:48px; background:#6E8B68; opacity:.6;"></div>
         </div>
 
-        {{-- ░░░ LAYER 3 - Distant rolling hills ░░░ --}}
+        {{-- ░░░ LAYER 3 - Distant hills, undakan kotak ░░░ --}}
         <div class="absolute bottom-10 left-0 right-0 pointer-events-none">
-            <div class="absolute" style="bottom:0; left:-5%;  width:200px; height:50px; background:#4E7D4C; border-radius:50% 50% 0 0; opacity:0.55;"></div>
-            <div class="absolute" style="bottom:0; left:30%;  width:260px; height:65px; background:#3D5A3A; border-radius:50% 50% 0 0; opacity:0.65;"></div>
-            <div class="absolute" style="bottom:0; right:-5%; width:180px; height:48px; background:#4E7D4C; border-radius:50% 50% 0 0; opacity:0.55;"></div>
+            <div class="absolute" style="bottom:0; left:-5%; width:200px; height:44px; opacity:.55;">
+                <span class="absolute inset-x-0 bottom-0" style="height:18px; background:#4E7D4C;"></span>
+                <span class="absolute" style="left:12%; right:12%; bottom:18px; height:14px; background:#4E7D4C;"></span>
+                <span class="absolute" style="left:28%; right:28%; bottom:32px; height:12px; background:#4E7D4C;"></span>
+            </div>
+            <div class="absolute" style="bottom:0; left:30%; width:260px; height:56px; opacity:.65;">
+                <span class="absolute inset-x-0 bottom-0" style="height:24px; background:#3D5A3A;"></span>
+                <span class="absolute" style="left:12%; right:12%; bottom:24px; height:18px; background:#3D5A3A;"></span>
+                <span class="absolute" style="left:28%; right:28%; bottom:42px; height:14px; background:#3D5A3A;"></span>
+            </div>
+            <div class="absolute" style="bottom:0; right:-5%; width:180px; height:42px; opacity:.55;">
+                <span class="absolute inset-x-0 bottom-0" style="height:18px; background:#4E7D4C;"></span>
+                <span class="absolute" style="left:14%; right:14%; bottom:18px; height:13px; background:#4E7D4C;"></span>
+                <span class="absolute" style="left:30%; right:30%; bottom:31px; height:11px; background:#4E7D4C;"></span>
+            </div>
         </div>
 
-        {{-- ░░░ LAYER 4 - Near hills ░░░ --}}
+        {{-- ░░░ LAYER 4 - Near hills, undakan kotak ░░░ --}}
         <div class="absolute bottom-6 left-0 right-0 pointer-events-none">
-            <div class="absolute" style="bottom:0; left:8%;   width:130px; height:38px; background:#5C8F58; border-radius:50% 50% 0 0;"></div>
-            <div class="absolute" style="bottom:0; left:55%;  width:160px; height:44px; background:#4E7D4C; border-radius:50% 50% 0 0;"></div>
+            <div class="absolute" style="bottom:0; left:8%; width:130px; height:34px;">
+                <span class="absolute inset-x-0 bottom-0" style="height:14px; background:#5C8F58;"></span>
+                <span class="absolute" style="left:14%; right:14%; bottom:14px; height:11px; background:#5C8F58;"></span>
+                <span class="absolute" style="left:30%; right:30%; bottom:25px; height:9px; background:#5C8F58;"></span>
+            </div>
+            <div class="absolute" style="bottom:0; left:55%; width:160px; height:40px;">
+                <span class="absolute inset-x-0 bottom-0" style="height:16px; background:#4E7D4C;"></span>
+                <span class="absolute" style="left:13%; right:13%; bottom:16px; height:13px; background:#4E7D4C;"></span>
+                <span class="absolute" style="left:29%; right:29%; bottom:29px; height:11px; background:#4E7D4C;"></span>
+            </div>
         </div>
 
         {{-- ░░░ ANGIN: daun terbang + garis hembusan ░░░ --}}
@@ -100,9 +107,13 @@
                         box-shadow: 0 -6px 0 #4E7D4C, 6px 6px 0 -2px #5C8F58, -6px 4px 0 -3px #5C8F58;"></div>
         </div>
 
-        {{-- 🌸 Bushes left --}}
-        <div class="absolute" style="bottom: 18px; left: 22%; width: 16px; height: 8px; background:#4E7D4C; border-radius:50% 50% 0 0;
-             box-shadow: -6px 1px 0 -2px #5C8F58, 8px 1px 0 -2px #5C8F58;"></div>
+        {{-- 🌸 Bushes left (blocky) --}}
+        <div class="absolute" style="bottom: 18px; left: 22%; width: 16px; height: 8px;">
+            <span class="absolute inset-x-0 bottom-0" style="height:5px; background:#4E7D4C;"></span>
+            <span class="absolute" style="left:3px; right:3px; bottom:5px; height:3px; background:#4E7D4C;"></span>
+            <span class="absolute" style="left:-6px; bottom:0; width:5px; height:4px; background:#5C8F58;"></span>
+            <span class="absolute" style="right:-6px; bottom:0; width:5px; height:4px; background:#5C8F58;"></span>
+        </div>
 
         {{-- 🌼 Hay bale stack --}}
         <div class="absolute" style="bottom: 22px; left: 27%;">
@@ -120,13 +131,14 @@
             <div class="anim-sway" style="width:24px; height:18px; background:#4E7D4C; margin-top:-2px; animation-delay:0.5s;"></div>
         </div>
 
-        {{-- 💧 Pixel Pond with shimmer --}}
-        <div class="absolute" style="bottom: 18px; left: 39%;">
-            <div style="width:36px; height:10px; background:#77AADD; border:1px solid #4E7AA8; border-radius: 50%;"></div>
-            <div class="anim-pond" style="position:absolute; top:2px; left:6px; width:24px; height:2px; background:#A8CDED; border-radius:50%;"></div>
-            <div class="anim-pond" style="position:absolute; top:5px; left:10px; width:14px; height:1px; background:#FBF7EC; border-radius:50%; animation-delay:1s;"></div>
+        {{-- 💧 Pixel Pond (kotak berundak) --}}
+        <div class="absolute" style="bottom: 18px; left: 39%; width:40px; height:12px;">
+            <span class="absolute" style="left:4px; right:4px; top:0; height:4px; background:#77AADD;"></span>
+            <span class="absolute" style="left:0; right:0; top:4px; height:5px; background:#77AADD;"></span>
+            <span class="absolute" style="left:4px; right:4px; top:9px; height:3px; background:#4E7AA8;"></span>
+            <span class="anim-pond absolute" style="top:4px; left:8px; width:18px; height:2px; background:#A8CDED;"></span>
             {{-- Lily pad --}}
-            <div style="position:absolute; top:1px; left:20px; width:6px; height:4px; background:#4E7D4C; border-radius: 50%;"></div>
+            <span class="absolute" style="top:2px; left:24px; width:6px; height:3px; background:#4E7D4C;"></span>
         </div>
 
         {{-- 🪨 Stones around pond --}}
@@ -146,24 +158,24 @@
         </div>
 
         {{-- ═══════ POHON SIUL + BURUNG (klik untuk bersiul) ═══════ --}}
-        <div class="absolute" style="bottom: 16px; left: 56%; width: 170px; height: 132px;">
+        <div class="absolute" style="bottom: 16px; left: 56%; width: 140px; height: 110px;">
             {{-- tajuk berundak --}}
-            <div class="absolute" style="left:36px; top:0;    width:44px; height:12px; background:#8FBC8A;"></div>
-            <div class="absolute" style="left:24px; top:10px; width:70px; height:18px; background:#6BA368;"></div>
-            <div class="absolute" style="left:10px; top:26px; width:96px; height:26px; background:#4E7D4C;"></div>
-            <div class="absolute" style="left:0;    top:40px; width:26px; height:16px; background:#4E7D4C;"></div>
-            <div class="absolute" style="left:96px; top:40px; width:26px; height:16px; background:#4E7D4C;"></div>
+            <div class="absolute" style="left:30px; top:0;    width:36px; height:10px; background:#8FBC8A;"></div>
+            <div class="absolute" style="left:20px; top:8px;  width:58px; height:15px; background:#6BA368;"></div>
+            <div class="absolute" style="left:8px;  top:21px; width:80px; height:22px; background:#4E7D4C;"></div>
+            <div class="absolute" style="left:0;    top:33px; width:22px; height:13px; background:#4E7D4C;"></div>
+            <div class="absolute" style="left:79px; top:33px; width:22px; height:13px; background:#4E7D4C;"></div>
             {{-- batang + dahan tempat bertengger --}}
-            <div class="absolute" style="left:44px;  top:50px; width:16px; height:82px; background:#83644A;"></div>
-            <div class="absolute" style="left:55px;  top:50px; width:5px;  height:82px; background:#6E5138;"></div>
-            <div class="absolute" style="left:60px;  top:64px; width:74px; height:6px;  background:#83644A;"></div>
-            <div class="absolute" style="left:60px;  top:70px; width:74px; height:2px;  background:#6E5138;"></div>
-            <div class="absolute" style="left:134px; top:66px; width:10px; height:4px;  background:#83644A;"></div>
+            <div class="absolute" style="left:36px;  top:41px; width:14px; height:69px; background:#83644A;"></div>
+            <div class="absolute" style="left:45px;  top:41px; width:5px;  height:69px; background:#6E5138;"></div>
+            <div class="absolute" style="left:49px;  top:53px; width:62px; height:5px;  background:#83644A;"></div>
+            <div class="absolute" style="left:49px;  top:58px; width:62px; height:2px;  background:#6E5138;"></div>
+            <div class="absolute" style="left:111px; top:54px; width:8px;  height:4px;  background:#83644A;"></div>
 
             {{-- burung pipit --}}
-            <button type="button" class="wb-bird" style="left:72px; top:10px; width:66px; height:55px;"
+            <button type="button" class="wb-bird" style="left:60px; top:10px; width:54px; height:45px;"
                     @click.stop="chirp()" title="Klik untuk bersiul" aria-label="Burung pipit, klik untuk bersiul">
-                <svg viewBox="0 0 24 20" width="66" height="55">
+                <svg viewBox="0 0 24 20" width="54" height="45">
                     <g fill="#3E2F22">
                         <rect x="11" y="0" width="6" height="1"/><rect x="10" y="1" width="1" height="1"/><rect x="17" y="1" width="1" height="1"/>
                         <rect x="9" y="2" width="1" height="1"/><rect x="18" y="2" width="1" height="1"/>
@@ -233,7 +245,7 @@
             </button>
 
             {{-- notes siulan --}}
-            <span class="wb-note" style="left:136px; top:16px;">
+            <span class="wb-note" style="left:114px; top:10px;">
                 <svg viewBox="0 0 8 9" width="16" height="18" fill="#3E2F22">
                     <rect x="4" y="0" width="1" height="1"/><rect x="4" y="1" width="2" height="1"/>
                     <rect x="4" y="2" width="1" height="1"/><rect x="6" y="2" width="1" height="1"/>
@@ -242,7 +254,7 @@
                     <rect x="1" y="7" width="4" height="1"/><rect x="2" y="8" width="2" height="1"/>
                 </svg>
             </span>
-            <span class="wb-note n2" style="left:152px; top:2px;">
+            <span class="wb-note n2" style="left:128px; top:0;">
                 <svg viewBox="0 0 10 7" width="20" height="14" fill="#3E2F22">
                     <rect x="1" y="0" width="7" height="1"/>
                     <rect x="1" y="1" width="1" height="1"/><rect x="7" y="1" width="1" height="1"/>
@@ -253,6 +265,20 @@
                     <rect x="1" y="6" width="2" height="1"/><rect x="6" y="6" width="2" height="1"/>
                 </svg>
             </span>
+        </div>
+
+        {{-- ═══════ KEBUN WARNA: jagung, berry, barisan bunga ═══════ --}}
+        <div class="absolute" style="bottom: 20px; left: 30%;">
+            <span class="absolute" style="bottom:0; width:3px; height:9px; background:#4E7D4C; box-shadow: 7px 0 0 #4E7D4C, 14px 1px 0 #4E7D4C;"></span>
+            <span class="absolute" style="bottom:7px; left:-1px; width:5px; height:6px; background:#E5B567; box-shadow: 7px 1px 0 #F1CC8E, 14px 0 0 #E5B567;"></span>
+        </div>
+        <div class="absolute" style="bottom: 20px; left: 47%;">
+            <span class="absolute" style="bottom:0; width:14px; height:7px; background:#4E7D4C;"></span>
+            <span class="absolute" style="bottom:3px; left:2px; width:3px; height:3px; background:#BE546E; box-shadow: 5px 1px 0 #9A3F56, 9px -1px 0 #BE546E;"></span>
+        </div>
+        <div class="absolute" style="bottom: 19px; left: 69%;">
+            <span class="absolute" style="bottom:4px; width:4px; height:4px; background:#BE546E; box-shadow: 9px 1px 0 #77AADD, 18px -1px 0 #E5B567, 27px 1px 0 #D4869A, 36px 0 0 #F1CC8E;"></span>
+            <span class="absolute" style="bottom:0; left:1px; width:2px; height:4px; background:#4E7D4C; box-shadow: 9px 1px 0 #4E7D4C, 18px -1px 0 #4E7D4C, 27px 1px 0 #4E7D4C, 36px 0 0 #4E7D4C;"></span>
         </div>
 
         {{-- ═══════ RIGHT THIRD ═══════ --}}
@@ -271,10 +297,10 @@
 
         {{-- 🏡 Farmhouse with chimney smoke --}}
         <div class="absolute" style="bottom: 30px; right: 8%;">
-            {{-- Smoke particles --}}
-            <div class="absolute anim-smoke" style="bottom: 36px; left: 8px; width:5px; height:5px; background:#fff; opacity:0.6; border-radius:50%;"></div>
-            <div class="absolute anim-smoke" style="bottom: 36px; left: 8px; width:5px; height:5px; background:#fff; opacity:0.5; border-radius:50%; animation-delay:1s;"></div>
-            <div class="absolute anim-smoke" style="bottom: 36px; left: 8px; width:5px; height:5px; background:#fff; opacity:0.4; border-radius:50%; animation-delay:2s;"></div>
+            {{-- Smoke particles (kotak) --}}
+            <div class="absolute anim-smoke" style="bottom: 36px; left: 8px; width:5px; height:5px; background:#fff; opacity:0.6;"></div>
+            <div class="absolute anim-smoke" style="bottom: 36px; left: 8px; width:5px; height:5px; background:#fff; opacity:0.5; animation-delay:1s;"></div>
+            <div class="absolute anim-smoke" style="bottom: 36px; left: 8px; width:5px; height:5px; background:#fff; opacity:0.4; animation-delay:2s;"></div>
             {{-- Chimney --}}
             <div style="position:absolute; bottom:24px; left:6px; width:6px; height:10px; background:#5C4632;"></div>
             {{-- Roof (triangle via borders) --}}
@@ -298,11 +324,17 @@
                     : 'width: 8px; height: 9px; background:#A88B6E; border:1px solid #5C4632; margin: -2px auto 0;'"></div>
         </div>
 
-        {{-- 🌸 Bushes right --}}
-        <div class="absolute" style="bottom: 18px; right: 30%; width: 14px; height: 7px; background:#4E7D4C; border-radius:50% 50% 0 0;
-             box-shadow: -5px 1px 0 -2px #5C8F58, 7px 1px 0 -2px #5C8F58;"></div>
-        <div class="absolute" style="bottom: 18px; right: 4%; width: 16px; height: 8px; background:#4E7D4C; border-radius:50% 50% 0 0;
-             box-shadow: -6px 1px 0 -2px #5C8F58;"></div>
+        {{-- 🌸 Bushes right (blocky) --}}
+        <div class="absolute" style="bottom: 18px; right: 30%; width: 14px; height: 7px;">
+            <span class="absolute inset-x-0 bottom-0" style="height:4px; background:#4E7D4C;"></span>
+            <span class="absolute" style="left:3px; right:3px; bottom:4px; height:3px; background:#4E7D4C;"></span>
+            <span class="absolute" style="left:-5px; bottom:0; width:4px; height:3px; background:#5C8F58;"></span>
+        </div>
+        <div class="absolute" style="bottom: 18px; right: 4%; width: 16px; height: 8px;">
+            <span class="absolute inset-x-0 bottom-0" style="height:5px; background:#4E7D4C;"></span>
+            <span class="absolute" style="left:3px; right:3px; bottom:5px; height:3px; background:#4E7D4C;"></span>
+            <span class="absolute" style="left:-6px; bottom:0; width:5px; height:4px; background:#5C8F58;"></span>
+        </div>
 
         {{-- 🌼 Small flowers scattered (always visible) --}}
         <div class="absolute" style="bottom: 19px; right: 14%;">

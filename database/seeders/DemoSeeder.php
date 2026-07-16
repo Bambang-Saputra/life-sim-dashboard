@@ -270,28 +270,28 @@ class DemoSeeder extends Seeder
     {
         $items = [
             // S tier (>= 9)
-            ['anime', '52991',  "Frieren: Beyond Journey's End", 'Fantasy, Adventure, Drama',   9.5, 'completed', 'Masterpiece. Pacing dan world building terbaik dekade ini.'],
-            ['tv',    '1396',   'Breaking Bad',                  'Crime, Drama, Thriller',      9.3, 'completed', null],
-            ['manga', '13',     'One Piece',                     'Action, Adventure, Fantasy',  9.0, 'ongoing',   null],
+            ['anime', '52991',  "Frieren: Beyond Journey's End", 'Fantasy, Adventure, Drama',   9.5, 'completed', 'Masterpiece. Pacing dan world building terbaik dekade ini.', 'https://cdn.myanimelist.net/images/anime/1015/138006.jpg'],
+            ['tv',    '1396',   'Breaking Bad',                  'Crime, Drama, Thriller',      9.3, 'completed', null, 'https://image.tmdb.org/t/p/w342/ztkUQFLlC19CCMYHW9o1zWhJRNq.jpg'],
+            ['manga', '13',     'One Piece',                     'Action, Adventure, Fantasy',  9.0, 'ongoing',   null, 'https://cdn.myanimelist.net/images/manga/2/253146.jpg'],
             // A tier (8 - 8.9)
-            ['movie', '157336', 'Interstellar',                  'Sci-Fi, Drama',               8.7, 'completed', 'Nonton ke-3 kalinya tetap merinding.'],
-            ['anime', '49387',  'Vinland Saga Season 2',         'Action, Drama, History',      8.5, 'completed', null],
-            ['tv',    '136315', 'The Bear',                      'Comedy, Drama',               8.2, 'ongoing',   null],
+            ['movie', '157336', 'Interstellar',                  'Sci-Fi, Drama',               8.7, 'completed', 'Nonton ke-3 kalinya tetap merinding.', 'https://image.tmdb.org/t/p/w342/yQvGrMoipbRoddT0ZR8tPoR7NfX.jpg'],
+            ['anime', '49387',  'Vinland Saga Season 2',         'Action, Drama, History',      8.5, 'completed', null, 'https://cdn.myanimelist.net/images/anime/1170/124312.jpg'],
+            ['tv',    '136315', 'The Bear',                      'Comedy, Drama',               8.2, 'ongoing',   null, 'https://image.tmdb.org/t/p/w342/eKfVzzEazSIjJMrw9ADa2x8ksLz.jpg'],
             // B tier (7 - 7.9)
-            ['anime', '50265',  'Spy x Family',                  'Comedy, Action, Slice of Life', 7.8, 'ongoing', null],
-            ['movie', '693134', 'Dune: Part Two',                'Sci-Fi, Adventure',           7.5, 'completed', null],
-            ['manga', '44347',  'Chainsaw Man',                  'Action, Horror, Supernatural', 7.2, 'ongoing',  null],
+            ['anime', '50265',  'Spy x Family',                  'Comedy, Action, Slice of Life', 7.8, 'ongoing', null, 'https://cdn.myanimelist.net/images/anime/1441/122795.jpg'],
+            ['movie', '693134', 'Dune: Part Two',                'Sci-Fi, Adventure',           7.5, 'completed', null, 'https://image.tmdb.org/t/p/w342/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg'],
+            ['manga', '116778', 'Chainsaw Man',                  'Action, Horror, Supernatural', 7.2, 'ongoing',  null, 'https://cdn.myanimelist.net/images/manga/3/216464.jpg'],
             // C tier (6 - 6.9)
-            ['tv',    '84773',  'The Rings of Power',            'Fantasy, Adventure',          6.3, 'dropped',   null],
+            ['tv',    '84773',  'The Rings of Power',            'Fantasy, Adventure',          6.3, 'dropped',   null, 'https://image.tmdb.org/t/p/w342/kf5Hz70tjNAHg4swGDzOr9BfoZ1.jpg'],
             // D tier (< 6)
-            ['anime', '34566',  'Boruto: Naruto Next Generations', 'Action, Adventure',         5.0, 'dropped',   'Nostalgia doang, fillernya kebanyakan.'],
+            ['anime', '34566',  'Boruto: Naruto Next Generations', 'Action, Adventure',         5.0, 'dropped',   'Nostalgia doang, fillernya kebanyakan.', 'https://cdn.myanimelist.net/images/anime/1091/99847.jpg'],
             // belum dirating
-            ['movie', '872585', 'Oppenheimer',                   'Drama, History',              null, 'plan_to',  null],
-            ['manga', '2',      'Berserk',                       'Action, Dark Fantasy, Horror', null, 'plan_to', null],
-            ['tv',    '94605',  'Arcane',                        'Animation, Action, Drama',    null, 'plan_to',  null],
+            ['movie', '872585', 'Oppenheimer',                   'Drama, History',              null, 'plan_to',  null, 'https://image.tmdb.org/t/p/w342/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg'],
+            ['manga', '2',      'Berserk',                       'Action, Dark Fantasy, Horror', null, 'plan_to', null, 'https://cdn.myanimelist.net/images/manga/1/157897.jpg'],
+            ['tv',    '94605',  'Arcane',                        'Animation, Action, Drama',    null, 'plan_to',  null, 'https://image.tmdb.org/t/p/w342/abf8tHznhSvl9BAElD2cQeRr7do.jpg'],
         ];
 
-        foreach ($items as [$api, $extId, $title, $genre, $rating, $status, $review]) {
+        foreach ($items as [$api, $extId, $title, $genre, $rating, $status, $review, $cover]) {
             LibraryItem::create([
                 'api_type'        => $api,
                 'external_id'     => $extId,
@@ -300,6 +300,7 @@ class DemoSeeder extends Seeder
                 'personal_rating' => $rating,
                 'personal_review' => $review,
                 'status'          => $status,
+                'cover_image'     => $cover,
             ]);
         }
     }

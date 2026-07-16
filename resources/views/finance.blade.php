@@ -139,10 +139,24 @@
                 </p>
                 <p class="form-shell-subtitle">Download transaksi untuk dicocokkan dengan rekening, e-wallet, atau catatan manual.</p>
             </div>
+            @php
+                $exportMonths = \App\Models\FinanceEntry::orderByDesc('recorded_at')
+                    ->pluck('recorded_at')
+                    ->map(fn ($d) => $d->format('Y-m'))
+                    ->unique()->values();
+                $exportRange = $exportMonths->isEmpty() ? '' :
+                    ' (' . \Carbon\Carbon::createFromFormat('Y-m', $exportMonths->last())->translatedFormat('M Y')
+                    . ' s.d. ' . \Carbon\Carbon::createFromFormat('Y-m', $exportMonths->first())->translatedFormat('M Y') . ')';
+                $defaultScope = $exportMonths->contains(now()->format('Y-m')) ? now()->format('Y-m') : 'all';
+            @endphp
             <div class="flex items-center gap-2 flex-wrap">
                 <select x-model="scope" class="input-pixel py-2 px-3" style="width: auto; font-size: 12px;">
-                    <option value="month">Bulan ini ({{ now()->format('M Y') }})</option>
-                    <option value="all">Semua waktu</option>
+                    @foreach($exportMonths as $ym)
+                        <option value="{{ $ym }}">
+                            {{ \Carbon\Carbon::createFromFormat('Y-m', $ym)->translatedFormat('F Y') }}{{ $ym === now()->format('Y-m') ? ' (bulan ini)' : '' }}
+                        </option>
+                    @endforeach
+                    <option value="all">Semua waktu{{ $exportRange }}</option>
                 </select>
                 <a :href="csvUrl()" target="_blank" class="btn-ghost">CSV / Excel</a>
                 <a :href="pdfUrl()" target="_blank" class="btn-primary">PDF / Print</a>
@@ -153,19 +167,14 @@
     <script>
     function financeExport() {
         return {
-            scope: 'month',
-            csvUrl() {
-                if (this.scope === 'month') {
-                    return `{{ route('finance.export.csv') }}?year={{ now()->year }}&month={{ now()->month }}`;
-                }
-                return `{{ route('finance.export.csv') }}`;
+            scope: '{{ $defaultScope }}',
+            withScope(base) {
+                if (this.scope === 'all') return base;
+                const [year, month] = this.scope.split('-');
+                return `${base}?year=${year}&month=${parseInt(month, 10)}`;
             },
-            pdfUrl() {
-                if (this.scope === 'month') {
-                    return `{{ route('finance.export.pdf') }}?year={{ now()->year }}&month={{ now()->month }}`;
-                }
-                return `{{ route('finance.export.pdf') }}`;
-            }
+            csvUrl() { return this.withScope(`{{ route('finance.export.csv') }}`); },
+            pdfUrl() { return this.withScope(`{{ route('finance.export.pdf') }}`); }
         }
     }
     </script>

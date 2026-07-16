@@ -409,7 +409,7 @@
     /* ─── SECTION HEADING ─── */
     .section-title {
         @apply font-pixel text-soil-dark inline-flex items-center gap-2;
-        font-size: 10px;
+        font-size: 12px;
         letter-spacing: 0.05em;
     }
 
@@ -425,10 +425,11 @@
     .moon-glow { filter: drop-shadow(0 0 4px rgba(168,205,237,0.6)); }
 
     /* ─── TIME-OF-DAY BANNER GRADIENTS ─── */
-    .sky-morning { background: linear-gradient(180deg, #FCD8B4 0%, #F8E6C9 35%, #DCE9CC 60%, #8FBC8A 85%, #6BA368 100%); }
-    .sky-day     { background: linear-gradient(180deg, #8DC8E8 0%, #B5D9EC 30%, #DBE7CF 60%, #8FBC8A 85%, #6BA368 100%); }
-    .sky-evening { background: linear-gradient(180deg, #E89B6C 0%, #F1B584 28%, #F4C99A 50%, #BDAA80 78%, #6BA368 100%); }
-    .sky-night   { background: linear-gradient(180deg, #1F2A4A 0%, #2E3D5E 30%, #3F4D70 55%, #4A5E48 82%, #3D5A3A 100%); }
+    /* langit berpita (hard stop, tanpa gradasi halus) agar tetap pixel */
+    .sky-morning { background: linear-gradient(180deg, #F6CFA5 0 22%, #F8E0BE 22% 45%, #E7E9C9 45% 64%, #8FBC8A 64% 86%, #6BA368 86% 100%); }
+    .sky-day     { background: linear-gradient(180deg, #8CB8DE 0 22%, #A9CBE7 22% 45%, #DBE7CF 45% 64%, #8FBC8A 64% 86%, #6BA368 86% 100%); }
+    .sky-evening { background: linear-gradient(180deg, #D98F72 0 22%, #EDBA92 22% 45%, #EBCFA4 45% 64%, #A8B287 64% 86%, #6BA368 86% 100%); }
+    .sky-night   { background: linear-gradient(180deg, #232E4E 0 22%, #2E3D5E 22% 45%, #3F4D70 45% 64%, #47603F 64% 86%, #3D5A3A 86% 100%); }
 
     /* ─── BANNER SCENE ANIMATIONS ─── */
     @keyframes walk-across {
