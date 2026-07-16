@@ -66,10 +66,10 @@
                 </div>
             </div>
         @empty
-            <div class="empty-state py-8">
-                <p class="font-sans text-stone text-sm">Belum ada quest aktif.</p>
-                <a href="{{ route('quests.index') }}" class="font-sans text-grass-dark text-sm font-semibold no-underline mt-2 inline-block">+ Buat Quest →</a>
-            </div>
+            <x-empty-state variant="scroll" class="py-8">
+                Belum ada quest aktif.<br>
+                <a href="{{ route('quests.index') }}" class="text-grass-dark font-semibold no-underline mt-1 inline-block">+ Buat Quest →</a>
+            </x-empty-state>
         @endforelse
     </div>
 </div>

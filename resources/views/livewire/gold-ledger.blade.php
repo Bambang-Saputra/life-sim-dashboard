@@ -241,10 +241,9 @@
                 </div>
             </div>
         @empty
-            <div class="empty-state">
-                <p class="font-pixel text-soil" style="font-size: 9px;">NO ENTRIES</p>
-                <p class="font-sans text-stone text-sm mt-2">Press <span class="font-semibold text-grass-dark">+ New Entry</span> to start</p>
-            </div>
+            <x-empty-state variant="chest" title="NO ENTRIES">
+                Press <span class="font-semibold text-grass-dark">+ New Entry</span> to start
+            </x-empty-state>
         @endforelse
     </div>
 </div>

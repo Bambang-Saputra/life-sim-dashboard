@@ -184,6 +184,22 @@
         border-radius: 6px;
     }
 
+    /* ilustrasi pixel mini di dalam empty state */
+    .empty-art {
+        position: relative;
+        width: 76px;
+        height: 56px;
+        margin: 0 auto;
+        animation: emptyBob 3.4s ease-in-out infinite;
+    }
+    @keyframes emptyBob {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-3px); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .empty-art { animation: none; }
+    }
+
     /* ─── PROGRESS ─── */
     .progress-quest {
         @apply h-2.5 bg-cream border border-cream-dark overflow-hidden;

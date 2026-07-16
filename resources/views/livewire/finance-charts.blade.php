@@ -72,9 +72,9 @@
 
             <div class="bg-cream/30 border border-cream-dark p-3" style="border-radius: 6px; min-height: 240px;">
                 @if(empty($pie['rows']))
-                    <div class="flex flex-col items-center justify-center h-full text-stone text-sm py-12">
-                        <p class="font-sans">Belum ada expense untuk periode <strong>{{ $pie['label'] }}</strong></p>
-                    </div>
+                    <x-empty-state variant="chart" class="py-12 border-0 bg-transparent">
+                        Belum ada expense untuk periode <strong>{{ $pie['label'] }}</strong>
+                    </x-empty-state>
                 @else
                     {{-- Pie label header --}}
                     <p class="font-sans text-xs text-soil text-center mb-2">

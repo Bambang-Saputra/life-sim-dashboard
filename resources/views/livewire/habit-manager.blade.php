@@ -102,12 +102,9 @@
                 </div>
             </div>
         @empty
-            <div class="empty-state">
-                <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA HABIT</p>
-                <p class="font-sans text-stone text-sm mt-2">
-                    Buat kebiasaan harian: tiap pagi otomatis jadi quest baru, selesaikan untuk menjaga streak 🔥
-                </p>
-            </div>
+            <x-empty-state variant="sprout" title="BELUM ADA HABIT">
+                Buat kebiasaan harian: tiap pagi otomatis jadi quest baru, selesaikan untuk menjaga streak 🔥
+            </x-empty-state>
         @endforelse
     </div>
 </div>

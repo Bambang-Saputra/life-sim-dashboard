@@ -226,10 +226,9 @@
                 </div>
             </div>
         @empty
-            <div class="empty-state">
-                <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA TABUNGAN</p>
-                <p class="font-sans text-stone text-sm mt-2">Buat tabungan untuk goals seperti liburan, beli motor, dll</p>
-            </div>
+            <x-empty-state variant="piggy" title="BELUM ADA TABUNGAN">
+                Buat tabungan untuk goals seperti liburan, beli motor, dll
+            </x-empty-state>
         @endforelse
     </div>
 

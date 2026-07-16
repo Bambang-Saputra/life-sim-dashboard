@@ -126,10 +126,9 @@
             </div>
         @elseif(!empty($searchQuery) && count($searchResults) === 0)
             {{-- Kosong hasil search --}}
-            <div class="empty-state">
-                <p class="font-pixel text-soil" style="font-size: 9px;">NO RESULTS FOUND</p>
-                <p class="font-sans text-stone text-sm mt-2">Coba kata kunci lain atau ganti tipe pencarian</p>
-            </div>
+            <x-empty-state variant="magnifier" title="NO RESULTS FOUND">
+                Coba kata kunci lain atau ganti tipe pencarian
+            </x-empty-state>
         @else
             {{-- Default trending OR hasil search --}}
             @php $items = count($searchResults) ? $searchResults : $defaultItems; @endphp
@@ -153,13 +152,9 @@
                     @endfor
                 </div>
             @elseif(empty($items))
-                <div class="empty-state">
-                    <svg viewBox="0 0 24 24" fill="none" class="w-10 h-10 text-cream-dark mx-auto mb-3">
-                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-                        <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <p class="font-sans text-stone text-sm">Tidak bisa memuat daftar. Cek koneksi atau coba search manual.</p>
-                </div>
+                <x-empty-state variant="magnifier">
+                    Tidak bisa memuat daftar. Cek koneksi atau coba search manual.
+                </x-empty-state>
             @else
                 {{-- Skeleton shimmer selama request API --}}
                 <div wire:loading wire:target="goToPage,nextPage,prevPage,submitSearch,search,searchType"
@@ -402,13 +397,9 @@
         </div>
 
         @if($this->library->isEmpty())
-            <div class="empty-state">
-                <svg viewBox="0 0 24 24" fill="none" class="w-10 h-10 text-cream-dark mx-auto mb-3">
-                    <path d="M4 19V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v13M4 19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2M4 19V8h16v11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <p class="font-pixel text-soil" style="font-size: 9px;">COLLECTION EMPTY</p>
-                <p class="font-sans text-stone text-sm mt-2">Go to <span class="font-semibold text-grass-dark">Search</span> to add your first title</p>
-            </div>
+            <x-empty-state variant="shelf" title="COLLECTION EMPTY">
+                Go to <span class="font-semibold text-grass-dark">Search</span> to add your first title
+            </x-empty-state>
         @elseif($collectionView === 'tier')
             {{-- ═══════ TIER LIST VIEW ═══════ --}}
             @php
@@ -598,13 +589,9 @@
         @php $stats = $this->libraryStats; @endphp
 
         @if(($stats['total'] ?? 0) === 0)
-            <div class="empty-state">
-                <svg viewBox="0 0 24 24" fill="none" class="w-10 h-10 text-cream-dark mx-auto mb-3">
-                    <path d="M3 3v18h18M7 12l4-4 4 4 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA DATA</p>
-                <p class="font-sans text-stone text-sm mt-2">Tambah minimal 1 item ke koleksimu dulu, baru stats muncul</p>
-            </div>
+            <x-empty-state variant="chart" title="BELUM ADA DATA">
+                Tambah minimal 1 item ke koleksimu dulu, baru stats muncul
+            </x-empty-state>
         @else
             {{-- ─── SUMMARY KARTUS ─── --}}
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">

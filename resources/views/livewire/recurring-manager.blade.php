@@ -130,12 +130,9 @@
                 </div>
             </div>
         @empty
-            <div class="empty-state">
-                <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA LANGGANAN</p>
-                <p class="font-sans text-stone text-sm mt-2">
-                    Daftarkan tagihan bulanan sekali, tiap bulan otomatis tercatat di ledger.
-                </p>
-            </div>
+            <x-empty-state variant="calendar" title="BELUM ADA LANGGANAN">
+                Daftarkan tagihan bulanan sekali, tiap bulan otomatis tercatat di ledger.
+            </x-empty-state>
         @endforelse
     </div>
 </div>

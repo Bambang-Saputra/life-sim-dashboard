@@ -111,7 +111,8 @@
             </div>
         @empty
             <div class="empty-state">
-                <p class="font-pixel text-soil" style="font-size: 9px;">BELUM ADA BUDGET</p>
+                <x-empty-art variant="shield"/>
+                <p class="font-pixel text-soil mt-4" style="font-size: 9px;">BELUM ADA BUDGET</p>
                 <p class="font-sans text-stone text-sm mt-2">
                     Pasang limit per kategori supaya pengeluaranmu jadi HP bar yang kelihatan menipis.
                 </p>

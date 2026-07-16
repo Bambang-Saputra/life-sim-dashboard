@@ -288,13 +288,9 @@
                 </div>
             </div>
         @empty
-            <div class="empty-state">
-                <svg viewBox="0 0 24 24" fill="none" class="w-10 h-10 text-cream-dark mx-auto mb-3">
-                    <path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <p class="font-pixel text-soil" style="font-size: 9px;">NO QUESTS YET</p>
-                <p class="font-sans text-stone text-sm mt-2">Press <span class="font-semibold text-grass-dark">+ New Quest</span> to start</p>
-            </div>
+            <x-empty-state variant="scroll" title="NO QUESTS YET">
+                Press <span class="font-semibold text-grass-dark">+ New Quest</span> to start
+            </x-empty-state>
         @endforelse
     </div>
 </div>

@@ -42,10 +42,10 @@
     </p>
 
     @if($this->recent->isEmpty())
-        <div class="empty-state py-8">
-            <p class="font-sans text-stone text-sm">Belum ada koleksi.</p>
-            <a href="{{ route('library.index') }}" class="font-sans text-grass-dark text-sm font-semibold no-underline mt-2 inline-block">+ Tambah Item →</a>
-        </div>
+        <x-empty-state variant="shelf" class="py-8">
+            Belum ada koleksi.<br>
+            <a href="{{ route('library.index') }}" class="text-grass-dark font-semibold no-underline mt-1 inline-block">+ Tambah Item →</a>
+        </x-empty-state>
     @else
         <div class="flex gap-3 overflow-x-auto pb-2">
             @foreach($this->recent as $item)

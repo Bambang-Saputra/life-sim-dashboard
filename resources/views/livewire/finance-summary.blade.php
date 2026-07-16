@@ -76,9 +76,7 @@
                 </span>
             </div>
         @empty
-            <div class="empty-state py-6">
-                <p class="font-sans text-stone text-sm">Belum ada transaksi.</p>
-            </div>
+            <x-empty-state variant="chest" class="py-6">Belum ada transaksi.</x-empty-state>
         @endforelse
     </div>
 </div>
