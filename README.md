@@ -9,7 +9,7 @@
 ![Livewire](https://img.shields.io/badge/Livewire-4.x-FB70A9?logo=livewire&logoColor=white)
 ![Alpine.js](https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?logo=alpinedotjs&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-06B6D4?logo=tailwindcss&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-25%20passing-4E7D4C)
+![Tests](https://img.shields.io/badge/tests-29%20passing-4E7D4C)
 ![License](https://img.shields.io/badge/license-MIT-83644A)
 
 </div>
@@ -124,7 +124,7 @@ Both jobs are idempotent and also fire as a safety net when the relevant page is
 php artisan test          # feature tests (sqlite in-memory)
 ```
 
-The suite covers login, the registration lock, password reset, e-mail verification, session handling, and profile management: 25 tests, 61 assertions.
+The suite covers login, the registration lock, password reset, e-mail verification, session handling, profile management, and empty-state rendering on every page: 29 tests, 79 assertions.
 
 ## Architecture
 
